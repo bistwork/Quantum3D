@@ -26,5 +26,5 @@ const awsmobile = {
   aws_appsync_apiKey: process.env.NEXT_PUBLIC_AWS_APPSYNC_APIKEY,
   //aws_appsync_authenticationType: "AMAZON_COGNITO_USER_POOLS",
 };
-
+console.log(awsmobile.aws_project_region);
 export default awsmobile;

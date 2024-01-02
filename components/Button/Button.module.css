@@ -1,0 +1,6 @@
+.customButton {
+  text-transform: none !important;
+  font-family: var(--primary-font-family) !important;
+  font-size: 13px;
+  background-color: var(--btn-color-blue);
+}

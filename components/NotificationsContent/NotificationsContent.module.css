@@ -1,0 +1,31 @@
+.container {
+  width: 540px;
+  padding: 0 10px;
+  max-height: 770px;
+  min-height: 220px;
+  overflow-y: auto;
+}
+
+.header {
+  position: sticky;
+  padding: 5px 15px;
+  top: 0;
+  z-index: 1;
+  background-color: white;
+}
+
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.markAllNotifications {
+  font-size: 12px !important;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.markAllNotifications:hover {
+  font-weight: 600 !important;
+}

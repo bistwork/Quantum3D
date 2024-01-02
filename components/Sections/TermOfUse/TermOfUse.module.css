@@ -1,0 +1,8 @@
+.termOfUse {
+  transform: skewX(-20deg);
+}
+
+.link {
+  text-decoration: underline;
+  color: blue;
+}

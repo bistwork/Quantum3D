@@ -1,0 +1,5 @@
+.mainLabel {
+  font-size: 1em !important;
+  font-weight: 600 !important;
+  font-family: var(--primary-font-family);
+}

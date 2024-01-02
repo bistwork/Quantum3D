@@ -1,0 +1,9 @@
+.accordion {
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.hoverItem:hover > div > div {
+  color: white !important;
+}

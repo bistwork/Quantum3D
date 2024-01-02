@@ -1,0 +1,42 @@
+.icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 14px;
+  width: 20px;
+  cursor: pointer;
+}
+
+.barTop {
+  height: 2px;
+  width: 16px;
+  background-color: var(--font-color-v2);
+  transition: all 0.8s;
+}
+.barMid {
+  height: 2px;
+  width: 20px;
+  background-color: var(--font-color-v2);
+  transition: all 0.8s;
+}
+.barBottom {
+  height: 2px;
+  width: 11px;
+  background-color: var(--font-color-v2);
+  transition: all 0.8s;
+}
+
+/* Estilos para el estado de "abierto" */
+.topOpen {
+  transform: translateY(3px) translateX(13px) rotate(40deg);
+  width: 10px;
+}
+
+.middleOpen {
+  width: 20px; /* Reduces la longitud de la barra del medio */
+}
+
+.bottomOpen {
+  transform: translateY(-3px) translateX(13px) rotate(-40deg);
+  width: 10px;
+}

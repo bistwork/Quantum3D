@@ -61,18 +61,21 @@ let mockData = {
       items: [
         {
           title: "Lattice",
-          url: "http://pergalum3d-lattice.s3-website-us-west-2.amazonaws.com",
+          url: "https://master.dsl41qh9h6syf.amplifyapp.com",
           addUserId: true,
+          model: "lattice",
         },
         {
           title: "Insulated",
-          url: "http://pergalum3d-insulated.s3-website-us-west-2.amazonaws.com",
+          url: "https://master.dsl41qh9h6syf.amplifyapp.com",
           addUserId: true,
+          model: "insulated",
         },
         {
           title: "Mix",
-          url: "http://pergalum3d-mix.s3-website-us-west-2.amazonaws.com",
+          url: "https://master.dsl41qh9h6syf.amplifyapp.com",
           addUserId: true,
+          model: "mixed",
         },
       ],
       title: "3D Builder",
@@ -610,6 +613,7 @@ let mockData = {
   projectsTable: [
     {
       id: 1,
+      comercialId: "PER123124324",
       orderDate: "2020-03-28",
       deliveryDate: "2020-07-04",
       customerName: "Kathryn",
@@ -618,6 +622,7 @@ let mockData = {
     },
     {
       id: 2,
+      comercialId: "PER123124324",
       orderDate: "2022-12-10",
       deliveryDate: "2023-04-27",
       customerName: "Erin",
@@ -626,6 +631,7 @@ let mockData = {
     },
     {
       id: 3,
+      comercialId: "PER123124324",
       orderDate: "2023-05-09",
       deliveryDate: "2023-12-24",
       customerName: "Danielle",
@@ -634,6 +640,7 @@ let mockData = {
     },
     {
       id: 4,
+      comercialId: "PER123124324",
       orderDate: "2021-06-24",
       deliveryDate: "2023-10-18",
       customerName: "Manuel",
@@ -642,6 +649,7 @@ let mockData = {
     },
     {
       id: 5,
+      comercialId: "PER123124324",
       orderDate: "2020-02-05",
       deliveryDate: "2020-03-19",
       customerName: "Erin",

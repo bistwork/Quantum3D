@@ -182,3 +182,92 @@ export const customersByUserId = /* GraphQL */ `
     }
   }
 `;
+export const getOrdersByUserId = /* GraphQL */ `
+  query getOrdersByUserId($userId: ID!) {
+    getCustomer(id: $id) {
+      id
+      user {
+        id
+        email
+        companyName
+        fullName
+        zipCodes
+        phone
+        additionalPhone
+        url
+        position
+        bussinesAddress
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      userId
+      primaryInfo {
+        bussinesName
+        firstName
+        lastName
+        email
+        primaryPhone
+        additionalPhone
+        status
+        __typename
+      }
+      secondaryInfo {
+        firstName
+        lastName
+        email
+        primaryPhone
+        __typename
+      }
+      mailingAddress {
+        address
+        city
+        state
+        zipcode
+        __typename
+      }
+      projectAddress {
+        address
+        city
+        state
+        zipcode
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const ordersByUserId = /* GraphQL */ `
+  query OrdersByUserId(
+    $userId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    ordersByUserId(
+      userId: $userId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        comercialId
+        customer {
+          primaryInfo {
+            firstName
+            lastName
+          }
+        }
+        deliveryDate
+        createdAt
+        retailAmount
+        id
+      }
+    }
+  }
+`;

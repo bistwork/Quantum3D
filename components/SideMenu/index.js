@@ -122,10 +122,12 @@ function DropDownMenu(props) {
             <List>
               {props.items.map((item, i) => (
                 <Link
-                  target="_blank"
+                  target={item.addUserId ? "_blank" : "_self"}
                   href={
                     item.addUserId
-                      ? `${item.url}/?dealerId=${user?.id || "testingId"}`
+                      ? `${item.url}/?dealerId=${
+                          user?.id || "testingId"
+                        }&model=${item.model}`
                       : item.url
                   }
                   key={i}

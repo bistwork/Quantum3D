@@ -27,7 +27,8 @@ export default function ProjectSelected({ projectSelected, onDelete }) {
     <Grid container p={2}>
       <Grid item xs={5}>
         <Typography noWrap fontSize={20} fontWeight={600}>
-          {projectSelected.customerName} {projectSelected.customerLastname}
+          {projectSelected?.customerName || "unknown"}{" "}
+          {projectSelected?.customerLastname || "unknown"}
         </Typography>
       </Grid>
       <Grid item xs={7} container justifyContent="flex-end" spacing={1}>
@@ -77,6 +78,7 @@ export default function ProjectSelected({ projectSelected, onDelete }) {
         mt={5}
         fieldsAndValues={projectSelected}
         fieldMappings={{
+          comercialId: "ID",
           customerName: "Customer Name",
           customerLastname: "Customer Lastname",
           orderDate: "Order Date",
@@ -84,6 +86,7 @@ export default function ProjectSelected({ projectSelected, onDelete }) {
           retailAmount: "Retail Amount",
         }}
         order={[
+          "comercialId",
           "customerName",
           "customerLastname",
           "orderDate",

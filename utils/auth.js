@@ -13,18 +13,18 @@ export const isAuthenticated = () => {
     `CognitoIdentityServiceProvider.${cognitoClientId}.${lastAuthUser}.accessToken`
   );
 
-  const authTimestamp = localStorage.getItem(
-    `CognitoIdentityServiceProvider.${cognitoClientId}.${lastAuthUser}.authTimestamp`
-  );
+  // const authTimestamp = localStorage.getItem(
+  //   `CognitoIdentityServiceProvider.${cognitoClientId}.${lastAuthUser}.authTimestamp`
+  // );
 
   if (lastAuthUser && idToken && accessToken) {
-    const currentTime = new Date().getTime();
-    const sessionTimeout = 5 * 60 * 1000; // 5 minutes in milliseconds
+    // const currentTime = new Date().getTime();
+    // const sessionTimeout = 5 * 60 * 1000; // 5 minutes in milliseconds
 
-    if (currentTime - authTimestamp < sessionTimeout) {
+    // if (currentTime - authTimestamp < sessionTimeout) {
       console.log("User authenticated");
       return true;
-    }
+    // }
   }
 
   return false;

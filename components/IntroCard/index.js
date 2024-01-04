@@ -31,7 +31,7 @@ const IntroCard = () => {
             fontFamily={"'poppins', sans-serif"}
             variant="p"
           >
-            Want to join Pergalum's dealer network? Join us for success and
+            Want to join Oasis Patio Systems' dealer network? Join us for success and
             perks!
           </Typography>
         </Grid>
@@ -54,7 +54,7 @@ const IntroCard = () => {
             fontFamily={"'poppins', sans-serif"}
             variant="p"
           >
-            © 2023 Pergalum. Powered by{"\u00A0"}
+            © 2024 Oasis Patio Systems. Powered by{"\u00A0"}
             <Link
               className={styles.bistworkLink}
               href={"https://www.bistwork.com"}

@@ -44,7 +44,7 @@ function Logout() {
         Thank you for using Pergalum.
       </Label>
       <Button fullWidth style={{ marginTop: "2em" }} onClick={handleOnclick}>
-        Sing in
+        Sign in
       </Button>
     </Box>
   );

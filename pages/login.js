@@ -15,6 +15,7 @@ import { signIn, getCurrentUser } from "aws-amplify/auth";
 import { Typography } from "@mui/material";
 import { fetchUserData } from "../api/user";
 import withPublicAccess from "../hooks/withPublicAccess";
+import { setAuthTimestamp } from "@/utils/auth";
 
 function Login() {
   const emailInput = useFormInput("", validations.email);
@@ -54,20 +55,29 @@ function Login() {
               return login(data);
             })
             .then(() => {
+              setAuthTimestamp();
               // redirection after the context
               router.push("/profile");
             })
             .catch((error) => {
               console.log("Login error", error);
             });
-        } else if (nextStep.signInStep === "CONFIRM_SIGN_UP") {
-          router.push(
-            `/confirmation?email=${encodeURIComponent(emailInput.value)}`
-          );
-        }
-        setInvalidCredential(false);
-      } catch (error) {
-        console.error("Error al iniciar sesión:", error);
+          } else if (nextStep.signInStep === "CONFIRM_SIGN_UP") {
+            router.push(
+              `/confirmation?email=${encodeURIComponent(emailInput.value)}`
+              );
+            }
+            setInvalidCredential(false);
+          } 
+          catch (error) {
+            if(error.message.includes("There is already a signed in user.")){
+              console.log("logging in...");
+              setAuthTimestamp();
+              router.push("/profile");
+            }
+            else{
+              console.error("Error al iniciar sesión:", error);
+            }
         setInvalidCredential(true);
       }
     }
@@ -84,7 +94,7 @@ function Login() {
         Welcome Back
       </Label>
       <Label component={"p"} fontSize="13px" color={"var(--font-color-v2)"}>
-        Sign In to continue with Pergalum
+        Sign In to continue with Oasis Patio Systems
       </Label>
       <TextField
         topTextField

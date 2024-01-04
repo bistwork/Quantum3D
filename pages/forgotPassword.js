@@ -67,7 +67,7 @@ function Login() {
         Forgot Password?
       </Label>
       <Label component={"p"} fontSize="13px" color="var(--font-color-v2)">
-        Reset password with Pergalum
+        Reset password with Oasis Patio System
       </Label>
       <ImageComponent alt="Send email" src={"/email.png"}></ImageComponent>
       <Label marginBottom="15px" fontSize="13px" colored>

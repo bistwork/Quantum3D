@@ -206,7 +206,7 @@ function Signup() {
 
       <TermOfUse
         sx={{ margin: "1em 0" }}
-        text="By registering you agree to the Pergalum "
+        text="By registering you agree to the Oasis Patio Systems "
         textLink="Terms of Use"
         linkPage="/terms"
       />

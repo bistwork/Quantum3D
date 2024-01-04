@@ -83,7 +83,7 @@ function NewUserForm() {
       </Box>
 
       <Fade in={showComponent} mountOnEnter timeout={500}>
-        <div style={{ width: "50%", maxWidth: "700px", minWidth: "600px" }}>
+        <div className={'dummy'} style={{ width: "50%", maxWidth: "700px", minWidth: "600px" }}>
           {components[currentIndex]}
         </div>
       </Fade>

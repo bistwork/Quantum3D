@@ -56,10 +56,10 @@ const Rings = () => {
               position={{ bottom: "40%", right: "-13%" }}
               avatarSrc="/avatar/3.jpg"
             />
-            <Typography variant="h5" component="span" color="white" zIndex={10}>
+            <Typography style={{ textAlign: "center" }} variant="h5" component="span" color="white" zIndex={10}>
               Welcome to{" "}
               <Typography variant="h5" component={"span"} color={"#3762ea"}>
-                Pergalum
+                Oasis Patio Systems
               </Typography>
             </Typography>
           </CircleContainer>

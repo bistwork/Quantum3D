@@ -30,6 +30,7 @@ const withPublicAccess = (WrappedComponent, redirectTo = "/home") => {
         }
       } else {
         // Usuario no autenticado, permite acceso
+        console.log("not authenticated user...");
         setIsAuthChecked(true);
       }
     }, [Router]);

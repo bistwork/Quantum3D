@@ -41,7 +41,7 @@ function Logout() {
         You are Logged Out
       </Label>
       <Label component={"p"} fontSize="13px" color="var(--font-color-v2)">
-        Thank you for using Pergalum.
+        Thank you for using Oasis Patio Systems.
       </Label>
       <Button fullWidth style={{ marginTop: "2em" }} onClick={handleOnclick}>
         Sign in

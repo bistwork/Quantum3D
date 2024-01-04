@@ -52,6 +52,7 @@ function MyApp({ Component, pageProps }) {
     "/404",
     "/403",
     "/terms",
+    "/privacy",
     "/logout",
     "/confirmation",
   ];
@@ -75,11 +76,12 @@ function MyApp({ Component, pageProps }) {
     <ProvidersWrappers>
       {isNewUserForm ? (
         <Component {...pageProps} />
-      ) : isExcludedRoute ? (
+      ) : isExcludedRoute ? ( 
+        router.pathname != "/terms" ? (
         <IntroWrapper>
           <Component {...pageProps} />
         </IntroWrapper>
-      ) : (
+      ) : (<Component {...pageProps}/>) ): (
         <MainWrapper>
           <Component {...pageProps} />
         </MainWrapper>

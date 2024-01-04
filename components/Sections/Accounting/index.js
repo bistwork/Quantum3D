@@ -1,4 +1,5 @@
 import TextField from "../../TextField";
+import BooleanField from "../../BooleanField";
 import { Box, Grid } from "@mui/material";
 import UpdateCancel from "../UpdateCancel";
 import useFormInput from "../../../hooks/useFormInputv2";
@@ -158,12 +159,8 @@ export default function Accounting(props) {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <TextField
-              autoComplete="off"
-              fullWidth
+            <BooleanField
               helperText={<p>Tax Exempt ****</p>}
-              placeholder="Enter Tax Exempt"
-              isValid
               value={taxExemptInput.value}
               onChange={taxExemptInput.onChange}
               onBlur={taxExemptInput.onBlur}

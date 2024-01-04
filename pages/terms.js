@@ -9,21 +9,25 @@ function TermsAndConditions() {
         <title>Terms and Conditions</title>
       </Head>
 
-      <h1 className={styles.title}>Terms and Conditions</h1>
+      <div className={styles.headerContainer}>
+        <h4 className={styles.title}>Terms and Conditions</h4>
+        <p className={styles.headerSubTitle}> Legal Information</p>
+      </div>
+      <div className={styles.termsContentContainer}>
+        <section>
+          <h2 className={styles.subTitle}>1. Introduction</h2>
+          <p className={styles.paragraph}>
+            These terms and conditions govern your use of this website...
+          </p>
+        </section>
 
-      <section>
-        <h2 className={styles.subTitle}>1. Introduction</h2>
-        <p className={styles.paragraph}>
-          These terms and conditions govern your use of this website...
-        </p>
-      </section>
-
-      <section>
-        <h2 className={styles.subTitle}>2. Copyright Information</h2>
-        <p className={styles.paragraph}>
-          All the content of this website belongs to [Your Name/Company]...
-        </p>
-      </section>
+        <section>
+          <h2 className={styles.subTitle}>2. Copyright Information</h2>
+          <p className={styles.paragraph}>
+            All the content of this website belongs to [Your Name/Company]...
+          </p>
+        </section>
+      </div>
 
       {/* ... add more sections as needed */}
     </div>

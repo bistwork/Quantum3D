@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { isAuthenticated } from "../utils/auth";
 
-const withPublicAccess = (WrappedComponent, redirectTo = "/home") => {
+const withPublicAccess = (WrappedComponent, redirectTo = "/profile") => {
   return (props) => {
     const Router = useRouter();
     const [isAuthChecked, setIsAuthChecked] = useState(false);
@@ -22,6 +22,7 @@ const withPublicAccess = (WrappedComponent, redirectTo = "/home") => {
           "/logout",
           "/confirmation",
           "/new-user-form",
+          "/privacy",
         ]; // Agrega aquí las rutas restringidas
         if (restrictedPages.includes(Router.pathname)) {
           Router.push(redirectTo);
@@ -30,7 +31,6 @@ const withPublicAccess = (WrappedComponent, redirectTo = "/home") => {
         }
       } else {
         // Usuario no autenticado, permite acceso
-        console.log("not authenticated user...");
         setIsAuthChecked(true);
       }
     }, [Router]);

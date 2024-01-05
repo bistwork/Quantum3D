@@ -61,19 +61,19 @@ let mockData = {
       items: [
         {
           title: "Lattice",
-          url: "https://master.dsl41qh9h6syf.amplifyapp.com",
+          url: "https://master.d2syxkx30o4g07.amplifyapp.com",
           addUserId: true,
           model: "lattice",
         },
         {
           title: "Insulated",
-          url: "https://master.dsl41qh9h6syf.amplifyapp.com",
+          url: "https://master.d2syxkx30o4g07.amplifyapp.com",
           addUserId: true,
           model: "insulated",
         },
         {
           title: "Mix",
-          url: "https://master.dsl41qh9h6syf.amplifyapp.com",
+          url: "https://master.d2syxkx30o4g07.amplifyapp.com",
           addUserId: true,
           model: "mixed",
         },

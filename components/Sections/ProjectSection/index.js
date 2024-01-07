@@ -8,6 +8,12 @@ import { SnackbarContext } from "../../../context/snackBar-context";
 import ProjectSelected from "./ProjectSelected";
 import { useAuth } from "../../../context/auth-context";
 import { fetchOrders } from "../../../api/projects";
+import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
+import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+
+
+const possibleStatus = ['Pending Approval','Payment Pending','Payment Received','In Production'];
 
 const initialColumns = [
   { field: "comercialId", headerName: "Project ID", flex: 1.5 },
@@ -16,7 +22,7 @@ const initialColumns = [
     field: "deliveryDate",
     headerName: "Delivery Date",
     description: "This column has a value getter and is not sortable.",
-    flex: 2,
+    flex: 1.5,
   },
   { field: "customerName", headerName: "Customer Name", flex: 1.5 },
   { field: "customerLastname", headerName: "Customer Lastname", flex: 1.5 },
@@ -30,7 +36,18 @@ const initialColumns = [
     field: "projectStatus",
     headerName: "Project Status",
     flex: 2,
-    valueGetter: (params) => `${params.row.status}`,
+    renderCell: (params) => (
+      <select
+        value={params.row.status}
+        onChange={()=>{}}
+      >
+      {possibleStatus.map((status) => (
+        <option key={possibleStatus.indexOf(status)} value={possibleStatus.indexOf(status)}>
+          {status}
+        </option>
+      ))}
+    </select>)
+      // `${possibleStatus[params.row.status]}`),
   },
   {
     field: 'selector',
@@ -38,7 +55,7 @@ const initialColumns = [
     flex: 1.5,
     sortable: false,
     renderCell: (params) => (
-      <select><option value="">Action</option></select>
+      <ul style={{display:"flex",gap:'0.5rem'}}><li><RemoveRedEyeOutlinedIcon/></li><li><CreateOutlinedIcon/></li><li><DeleteOutlineOutlinedIcon/></li></ul>
     ),
   },
 

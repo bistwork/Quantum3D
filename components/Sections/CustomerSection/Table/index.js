@@ -94,6 +94,7 @@ export default function DataTable({ tableRows, ...props }) {
           boxShadow: "none",
           borderColor: "transparent",
           fontSize: "13px",
+          backgroundColor:"#eef0f7!important",
         }}
         slots={{
           footer: FooterTable,

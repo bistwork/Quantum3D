@@ -267,6 +267,7 @@ export const ordersByUserId = /* GraphQL */ `
         createdAt
         retailAmount
         id
+        status
       }
     }
   }

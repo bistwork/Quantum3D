@@ -59,7 +59,7 @@ export default function CustomTextField(props) {
         open={!isValid && isFocused}
         arrow
       >
-      <Checkbox defaultChecked /> 
+      <Checkbox checked disabled/> 
       </Tooltip>
       {props.name === "password" && !props.isValid && (
         <p className={styles.invalidText}>Invalid Password</p>

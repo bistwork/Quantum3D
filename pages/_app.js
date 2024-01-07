@@ -57,18 +57,6 @@ function MyApp({ Component, pageProps }) {
     "/confirmation",
   ];
 
-  // useEffect(() => {
-  //   if (!isAuthenticated()) {
-  //     console.log("no userrrrrrr");
-  //     if (
-  //       !excludedRoutes.includes(router.pathname) &&
-  //       router.pathname !== "/new-user-form"
-  //     ) {
-  //       router.push("/login");
-  //     }
-  //   }
-  // }, [router.pathname]);
-
   const isExcludedRoute = excludedRoutes.includes(router.pathname);
   const isNewUserForm = router.pathname === "/new-user-form";
 

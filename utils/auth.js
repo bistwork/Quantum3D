@@ -1,4 +1,6 @@
 export const isAuthenticated = () => {
+
+
   const cognitoClientId = process.env.NEXT_PUBLIC_AWS_USER_POOLS_WEB_CLIENT_ID;
 
   const lastAuthUser = localStorage.getItem(
@@ -17,9 +19,11 @@ export const isAuthenticated = () => {
     `CognitoIdentityServiceProvider.${cognitoClientId}.${lastAuthUser}.authTimestamp`
   );
 
-  const authenticationTimeout = 5 * 60 * 1000; // 5 minutes
+  const authenticationTimeout = 15 * 60 * 1000; // 15 minutes
 
   if (lastAuthUser && idToken && accessToken && authTimestamp) {
+
+    // const {login} = useAuth();
     const currentTime = new Date().getTime();
     const lastAuthTime = parseInt(authTimestamp, 10);
 
@@ -58,3 +62,30 @@ export const setAuthTimestamp = () => {
     );
   }
 };
+
+export const setUserData = (data) => {
+  const cognitoClientId = process.env.NEXT_PUBLIC_AWS_USER_POOLS_WEB_CLIENT_ID;
+  const lastAuthUser = localStorage.getItem(
+    `CognitoIdentityServiceProvider.${cognitoClientId}.LastAuthUser`
+  );
+
+  if (lastAuthUser) {
+    localStorage.setItem(
+      `CognitoIdentityServiceProvider.${cognitoClientId}.${lastAuthUser}.userData`,
+      data
+    );
+  }
+}
+
+export const getUserData = () => {
+  if (typeof window !== 'undefined') {
+    const cognitoClientId = process.env.NEXT_PUBLIC_AWS_USER_POOLS_WEB_CLIENT_ID;
+    const lastAuthUser = localStorage.getItem(
+      `CognitoIdentityServiceProvider.${cognitoClientId}.LastAuthUser`
+    );
+    return localStorage.getItem(
+      `CognitoIdentityServiceProvider.${cognitoClientId}.${lastAuthUser}.userData`
+    );
+  }
+  return null;
+}

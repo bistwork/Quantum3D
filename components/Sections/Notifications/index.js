@@ -45,7 +45,7 @@ export default function Notifications(props) {
           <IconButton
             onClick={handleClick}
             size="small"
-            aria-label="show 17 new notifications"
+            aria-label="show 0 new notifications"
             aria-controls={open ? "notifications-menu" : undefined}
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
@@ -53,7 +53,7 @@ export default function Notifications(props) {
             className={`${styles.iconColor} bag-icon`}
           >
             <Badge
-              badgeContent={17}
+              badgeContent={0}
               color="error"
               className={styles.badgeColorError}
             >

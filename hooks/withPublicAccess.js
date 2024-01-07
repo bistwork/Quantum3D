@@ -2,6 +2,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { isAuthenticated } from "../utils/auth";
+import { useAuth } from "@/context/auth-context";
 
 const withPublicAccess = (WrappedComponent, redirectTo = "/profile") => {
   return (props) => {

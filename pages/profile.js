@@ -2,8 +2,8 @@ import { Grid, Box } from "@mui/material";
 import ProfileCard from "../components/ProfileCard";
 import ProfileInfo from "../components/Sections/ProfileInfo";
 import withAuth from "../hooks/authHOC";
-
 function Profile(props) {
+
   return (
     <>
       <Box sx={{ width: "100%" }}>

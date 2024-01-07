@@ -10,22 +10,38 @@ import { useAuth } from "../../../context/auth-context";
 import { fetchOrders } from "../../../api/projects";
 
 const initialColumns = [
-  { field: "comercialId", headerName: "ID", flex: 1.5 },
-  { field: "customerName", headerName: "Customer Name", flex: 1.5 },
-  { field: "customerLastname", headerName: "Customer Lastname", flex: 1.5 },
-  { field: "orderDate", headerName: "Order Date", flex: 1.5 },
+  { field: "comercialId", headerName: "Project ID", flex: 1.5 },
+  { field: "orderDate", headerName: "Project Date", flex: 1.5 },
   {
     field: "deliveryDate",
     headerName: "Delivery Date",
     description: "This column has a value getter and is not sortable.",
     flex: 2,
   },
+  { field: "customerName", headerName: "Customer Name", flex: 1.5 },
+  { field: "customerLastname", headerName: "Customer Lastname", flex: 1.5 },
   {
     field: "retailAmount",
     headerName: "Retail Amount",
     flex: 1.5,
     valueGetter: (params) => `$ ${params.row.retailAmount} `,
   },
+  {
+    field: "projectStatus",
+    headerName: "Project Status",
+    flex: 2,
+    valueGetter: (params) => `${params.row.status}`,
+  },
+  {
+    field: 'selector',
+    headerName: 'Action',
+    flex: 1.5,
+    sortable: false,
+    renderCell: (params) => (
+      <select><option value="">Action</option></select>
+    ),
+  },
+
 ];
 
 export default function ProjectsSection() {
@@ -75,8 +91,8 @@ export default function ProjectsSection() {
   }, []);
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} lg={8}>
+    <Grid container spacing={0}>
+      <Grid item xs={12}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <MainCard>
@@ -97,7 +113,7 @@ export default function ProjectsSection() {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12} lg={4}>
+      {/* <Grid item xs={12} lg={4}>
         <Grid container spacing={2}></Grid>
         <MainCard>
           <ProjectSelected
@@ -105,7 +121,7 @@ export default function ProjectsSection() {
             //onDelete={handleDeleteLead}
           />
         </MainCard>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 }

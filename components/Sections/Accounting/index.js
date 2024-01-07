@@ -160,7 +160,7 @@ export default function Accounting(props) {
 
           <Grid item xs={12} sm={6}>
             <BooleanField
-              helperText={<p>Tax Exempt ****</p>}
+              helperText={<p>Tax Exempt</p>}
               value={taxExemptInput.value}
               onChange={taxExemptInput.onChange}
               onBlur={taxExemptInput.onBlur}

@@ -165,10 +165,10 @@ export default function PrimarySearchAppBar(props) {
         <IconButton
           size="large"
           className={styles.iconColor}
-          aria-label="show 4 new mails"
+          aria-label="show 0 new mails"
           color="inherit"
         >
-          <Badge badgeContent={4} color="error">
+          <Badge badgeContent={0} color="error">
             <MailIcon />
           </Badge>
         </IconButton>
@@ -178,10 +178,10 @@ export default function PrimarySearchAppBar(props) {
         <IconButton
           className={styles.iconColor}
           size="large"
-          aria-label="show 17 new notifications"
+          aria-label="show 0 new notifications"
           color="inherit"
         >
-          <Badge badgeContent={17} color="error">
+          <Badge badgeContent={0} color="error">
             <NotificationsIcon />
           </Badge>
         </IconButton>

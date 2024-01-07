@@ -57,7 +57,7 @@ export default function Orders(props) {
             color="inherit"
             className={`${styles.iconColor} bag-icon`}
           >
-            <Badge badgeContent={4} color="error" className={styles.badgeColor}>
+            <Badge badgeContent={0} color="error" className={styles.badgeColor}>
               <CustomBagIcon />
             </Badge>
           </IconButton>

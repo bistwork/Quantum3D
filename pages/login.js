@@ -16,6 +16,7 @@ import { Typography } from "@mui/material";
 import { fetchUserData } from "../api/user";
 import withPublicAccess from "../hooks/withPublicAccess";
 import { setAuthTimestamp } from "@/utils/auth";
+import { setUserData } from "@/utils/auth";
 
 function Login() {
   const emailInput = useFormInput("", validations.email);
@@ -52,6 +53,7 @@ function Login() {
           const { userId } = await getCurrentUser();
           fetchUserData(userId)
             .then((data) => {
+              // setUserData(data);
               return login(data);
             })
             .then(() => {

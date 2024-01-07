@@ -11,6 +11,7 @@ export const fetchOrders = async (userId) => {
       authMode: "userPool",
     });
     return customerData.data.ordersByUserId.items.map((item) => {
+      console.log(item);
       return {
         id: item.id,
         comercialId: item.comercialId,
@@ -19,6 +20,7 @@ export const fetchOrders = async (userId) => {
         customerName: item.customer.primaryInfo.firstName,
         customerLastname: item.customer.primaryInfo.lastName,
         retailAmount: item.retailAmount,
+        status: item.status,
       };
     });
   } catch (error) {

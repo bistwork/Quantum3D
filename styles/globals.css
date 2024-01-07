@@ -66,8 +66,9 @@ form {
 }
 
 .showHeader .MuiDataGrid-columnHeaders {
-  background-color: var(--btn-color-blue);
-  color: white;
+  background-color: #eef0f7;
+  color: #000;
+  font-weight: 600!important;
 }
 
 .noHeader .MuiDataGrid-columnHeaders {

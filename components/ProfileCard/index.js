@@ -59,7 +59,7 @@ export default function FacebookCard() {
         >
           <Avatar
             alt="Profile Pic"
-            src="/avatar/6.jpg"
+            src="/avatar/default.jpg"
             className={styles.avatar}
             sx={{
               borderWidth: 3, // Puedes ajustar este valor según el grosor del borde que desees

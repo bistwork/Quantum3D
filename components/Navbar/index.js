@@ -240,7 +240,7 @@ export default function PrimarySearchAppBar(props) {
             >
               <Avatar
                 alt="Remy Sharp"
-                src="/avatar/6.jpg"
+                src="/avatar/default.jpg"
                 sx={{ width: 32, height: 32 }}
               />
               <Typography

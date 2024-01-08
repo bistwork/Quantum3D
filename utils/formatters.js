@@ -22,6 +22,25 @@ const formatters = {
   removeNumbers: (value) => {
     return value.replace(/[0-9]/g, ""); // delete all the numbers from the string.
   },
+  dateFormatter: (dateString) =>{
+    const date = new Date(dateString);
+
+    // Define month names
+    const monthNames = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
+
+    // Extract components from the Date object
+    const day = date.getDate();
+    const month = monthNames[date.getMonth()];
+    const year = date.getFullYear();
+
+    // Format the date in the desired format
+    const formattedDate = `${month} ${day}, ${year}`;
+
+    return formattedDate
+  }
 };
 
 export default formatters;

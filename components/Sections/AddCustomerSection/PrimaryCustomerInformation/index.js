@@ -39,7 +39,6 @@ export default function PrimaryCustomerInformation({
 
   useEffect(() => {
     const isValid =
-      bussinesName.value &&
       firstName.value &&
       lastName.value &&
       email.value &&
@@ -69,7 +68,6 @@ export default function PrimaryCustomerInformation({
   return (
     <Stack width="100%" spacing={1}>
       <TextField
-        required
         type="text"
         placeholder="Enter Bussines Name"
         name="Bussines Name"

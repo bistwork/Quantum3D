@@ -11,13 +11,14 @@ import { fetchOrders } from "../../../api/projects";
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-
+import InsertLinkIcon from '@mui/icons-material/InsertLink';
+import formatters from "@/utils/formatters";
 
 const possibleStatus = ['Pending Approval','Payment Pending','Payment Received','In Production'];
 
 const initialColumns = [
   { field: "comercialId", headerName: "Project ID", flex: 1.5 },
-  { field: "orderDate", headerName: "Project Date", flex: 1.5 },
+  { field: "orderDate", headerName: "Project Date", flex: 1.5, valueGetter: (params) => `${formatters.dateFormatter(params.row.orderDate)}`, },
   {
     field: "deliveryDate",
     headerName: "Delivery Date",
@@ -30,7 +31,7 @@ const initialColumns = [
     field: "retailAmount",
     headerName: "Retail Amount",
     flex: 1.5,
-    valueGetter: (params) => `$ ${params.row.retailAmount} `,
+    valueGetter: (params) => `$${parseFloat(params.row.retailAmount).toFixed(2)} `,
   },
   {
     field: "projectStatus",
@@ -47,7 +48,6 @@ const initialColumns = [
         </option>
       ))}
     </select>)
-      // `${possibleStatus[params.row.status]}`),
   },
   {
     field: 'selector',
@@ -55,7 +55,8 @@ const initialColumns = [
     flex: 1.5,
     sortable: false,
     renderCell: (params) => (
-      <ul style={{display:"flex",gap:'0.5rem'}}><li><RemoveRedEyeOutlinedIcon/></li><li><CreateOutlinedIcon/></li><li><DeleteOutlineOutlinedIcon/></li></ul>
+      <ul style={{display:"flex",gap:'0.5rem'}}><li><a style={{width:'calc(.5rem + 1.5em + 2px)',height:'calc(.5rem + 1.5em + 2px)',display:'inline=flex',justifyContent: 'center',alignItems: 'center',backgroundColor:'#e1e7fc'}}><RemoveRedEyeOutlinedIcon style={{color:'#3762ea',verticalAlign: 'middle',display:'inline-flex',width:'calc(.5rem+2px)'}}/></a></li><li><CreateOutlinedIcon/></li><li><DeleteOutlineOutlinedIcon/></li><li><InsertLinkIcon/></li></ul>
+
     ),
   },
 

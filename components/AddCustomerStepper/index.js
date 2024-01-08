@@ -62,10 +62,6 @@ const steps = [
     component: PrimaryCustomerInformation,
   },
   {
-    label: "Secondary Customer information",
-    component: SecondaryCustomerInformation,
-  },
-  {
     label: "Mailing Address",
     component: MailingAddress,
   },
@@ -120,7 +116,7 @@ export default function AddCustomerStepper(props) {
         userId: user.id,
         primaryInfo: {
           ...customerData.primaryInfo,
-          status: "Inactive",
+          status: "Active",
         },
         // Incluyendo el resto de los datos del cliente
         secondaryInfo: customerData?.secondaryInfo || {},

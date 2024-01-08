@@ -12,6 +12,8 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import styles from "../../Navbar/Navbar.module.css";
 import { Badge } from "@mui/material";
+import HandymanOutlinedIcon from '@mui/icons-material/HandymanOutlined';
+import NotificationsContent from "@/components/NotificationsContent";
 
 function CustomBagIcon(props) {
   return (
@@ -58,7 +60,7 @@ export default function Orders(props) {
             className={`${styles.iconColor} bag-icon`}
           >
             <Badge badgeContent={0} color="error" className={styles.badgeColor}>
-              <CustomBagIcon />
+              <HandymanOutlinedIcon sx={{strokeWidth:"2"}} />
             </Badge>
           </IconButton>
         </Tooltip>
@@ -98,7 +100,7 @@ export default function Orders(props) {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
+        {/* <MenuItem onClick={handleClose}>
           <Avatar /> Profile
         </MenuItem>
         <MenuItem onClick={handleClose}>
@@ -122,7 +124,8 @@ export default function Orders(props) {
             <Logout fontSize="small" />
           </ListItemIcon>
           Logout
-        </MenuItem>
+        </MenuItem> */}
+        <NotificationsContent/>
       </Menu>
     </>
   );

@@ -19,7 +19,7 @@ export const isAuthenticated = () => {
     `CognitoIdentityServiceProvider.${cognitoClientId}.${lastAuthUser}.authTimestamp`
   );
 
-  const authenticationTimeout = 15 * 60 * 1000; // 15 minutes
+  const authenticationTimeout = 25 * 60 * 1000; // 15 minutes
 
   if (lastAuthUser && idToken && accessToken && authTimestamp) {
 

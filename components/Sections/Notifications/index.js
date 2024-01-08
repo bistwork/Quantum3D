@@ -6,7 +6,7 @@ import Tooltip from "@mui/material/Tooltip";
 import styles from "../../Navbar/Navbar.module.css";
 import { Badge } from "@mui/material";
 import NotificationsContent from "../../NotificationsContent";
-
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 function CustomBellIcon(props) {
   return (
     <svg
@@ -57,7 +57,7 @@ export default function Notifications(props) {
               color="error"
               className={styles.badgeColorError}
             >
-              <CustomBellIcon />
+              <NotificationsNoneOutlinedIcon />
             </Badge>
           </IconButton>
         </Tooltip>

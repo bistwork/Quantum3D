@@ -1,0 +1,42 @@
+.overviewTable{
+  font-size: 12px;
+  font-weight: 400!important;
+  width: 100%;
+  margin:12px 0;
+  text-align: left;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-indent: 0;
+  caption-side: bottom;
+}
+.overviewContainer{
+    margin-top:auto;
+    margin-bottom:auto;
+    max-height: 70vh;
+    overflow-y:scroll;
+    padding:0 1em;
+}
+.overviewTable thead{
+    display: table-header-group;
+}
+
+.overviewTable th{
+    font-weight: 400;
+    color: #423200;
+    padding: 5px;
+    border-left: 0.5px solid rgb(240, 240, 240);
+    border-right: 0.5px solid rgb(240, 240, 240);
+    border-bottom: 1px solid rgb(224, 224, 224);
+    margin-bottom: 0px;
+    margin:0;
+}
+.overviewHeader, .secHeader{
+    font-weight: bolder!important;
+    outline: 0px;
+    border-bottom: 1px solid rgb(223, 223, 223);
+    border-right: 1px solid rgb(223, 223, 223);
+    background-color: #F7F8F8;
+}
+.overviewHeader th, .secHeader th{
+    font-weight: bolder!important;
+}

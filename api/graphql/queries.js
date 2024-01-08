@@ -272,3 +272,54 @@ export const ordersByUserId = /* GraphQL */ `
     }
   }
 `;
+
+export const orderById = /* GraphQL */ `
+  query MyQuery($id:ID!){
+    getOrder(id: $id) {
+      comercialId
+      customer {
+        mailingAddress {
+          address
+          city
+          state
+          zipcode
+        }
+        projectAddress {
+          address
+          city
+          state
+        }
+        secondaryInfo {
+          primaryPhone
+          lastName
+          firstName
+          email
+        }
+        primaryInfo {
+          primaryPhone
+          lastName
+          firstName
+          email
+          bussinesName
+        }
+      }
+      deliveryDate
+      createdAt
+      width
+      status
+      selectedRafterHeaders
+      selectedRafterEndCaps
+      selectedHead
+      selectedEnd
+      retailAmount
+      rafterSize
+      rafterAlign
+      projection
+      postType
+      mountMode
+      model
+      materials
+      height
+    }
+  }      
+`;

@@ -1,5 +1,5 @@
 import { generateClient } from "aws-amplify/api";
-import { ordersByUserId } from "./graphql/queries";
+import { orderById, ordersByUserId } from "./graphql/queries";
 
 const client = generateClient();
 
@@ -28,3 +28,21 @@ export const fetchOrders = async (userId) => {
     throw error;
   }
 };
+
+export const fetchOrder = async (id) => {
+  try {
+    if (!id) {
+      throw new Error("ID is required for fetching the order.");
+    }
+
+    const orderData = await client.graphql({
+      query: orderById,
+      variables: { id },
+      authMode: "userPool",
+    });
+
+    return orderData.data.getOrder; // Assuming getOrder returns a single item
+  } catch (error) {
+    console.error("Error fetching order data:", error);
+    throw error;}
+}

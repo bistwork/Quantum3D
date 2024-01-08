@@ -268,6 +268,7 @@ export const ordersByUserId = /* GraphQL */ `
         retailAmount
         id
         status
+        url
       }
     }
   }
@@ -320,6 +321,7 @@ export const orderById = /* GraphQL */ `
       model
       materials
       height
+      url
     }
   }      
 `;

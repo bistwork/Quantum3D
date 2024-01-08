@@ -21,6 +21,7 @@ export const fetchOrders = async (userId) => {
         customerLastname: item.customer.primaryInfo.lastName,
         retailAmount: item.retailAmount,
         status: item.status,
+        url:item.url,
       };
     });
   } catch (error) {

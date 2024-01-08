@@ -57,7 +57,7 @@ const initialColumns = [
     sortable: false,
     renderCell: (params) => (
       <div className={styles.actionBlock}>
-      <ul className={styles.projectList}><li className={styles.projectListItem}><a href={`/projects/project-overview?projectId=${params.row.id}`} className={styles.projectActionBtn}><RemoveRedEyeOutlinedIcon className={styles.eyeIcon}/></a></li><li className={styles.projectListItem}><a className={styles.projectActionBtn}><CreateOutlinedIcon className={styles.pencilIcon}/></a></li><li className={styles.projectListItem}><a className={styles.projectActionBtn}><InsertLinkIcon className={styles.urlIcon}/></a></li><li className={styles.projectListItem}><a className={styles.projectActionBtn}><DeleteOutlineOutlinedIcon className={styles.trashIcon}/></a></li></ul>
+      <ul className={styles.projectList}><li className={styles.projectListItem}><a href={`/projects/project-overview?projectId=${params.row.id}`} className={styles.projectActionBtn}><RemoveRedEyeOutlinedIcon className={styles.eyeIcon}/></a></li><li className={styles.projectListItem}><a className={styles.projectActionBtn}><CreateOutlinedIcon className={styles.pencilIcon}/></a></li><li className={styles.projectListItem}><a className={styles.projectActionBtn} href={params.row.url}><InsertLinkIcon className={styles.urlIcon}/></a></li><li className={styles.projectListItem}><a className={styles.projectActionBtn}><DeleteOutlineOutlinedIcon className={styles.trashIcon}/></a></li></ul>
       </div>
 
     ),

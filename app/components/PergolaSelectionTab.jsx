@@ -162,7 +162,7 @@ const PergolaSelectionTab = ({attrs})=>{
                 postType: attrs.props.postType,
                 mountMode: attrs.props.mountMode,
                 status:0,
-                url:String(generateShareableLink(attrs))
+                url:String(generateShareableLink(attrs.props))
             }
           };
 
@@ -224,8 +224,10 @@ const PergolaSelectionTab = ({attrs})=>{
             
             if(attrs){
                 Object.entries(attrs).forEach(([key, value]) => {
-                    const paramValue = typeof value === 'object' ? encodeURIComponent(JSON.stringify(value)) : value;
-                    params.append(key, paramValue);
+                    if(key != 'dealerId'){
+                        const paramValue = typeof value === 'object' ? encodeURIComponent(JSON.stringify(value)) : value;
+                        params.append(key, paramValue);
+                    }
                 });
             
                 return `${baseUrl}/?${params.toString()}`;}
@@ -235,64 +237,66 @@ const PergolaSelectionTab = ({attrs})=>{
     };
     const MySelectComponent = ({onSelectChange }) => {
 
+        if(!clients){
 
-        useMemo(() => {
-            const fetchData = async () => {
-              try {
-                const apiKey = 'da2-dz4zldsidrdexe5wx2bfz4dhpm';
-                const apiUrl = 'https://lzm2bp7eunag3la2hfq6oyyyq4.appsync-api.us-west-2.amazonaws.com/graphql';
-                const query = `
-                  query ListCustomersByUser {
-                    getUser(id:"${attrs.dealerId}"){
-                        tier {
-                            id
-                            discountPercentage
-                          }
-                          customers {
-                            items {
-                              primaryInfo {
-                                primaryPhone
-                                firstName
-                                lastName
-                              }
-                              id
+            useMemo(() => {
+                const fetchData = async () => {
+                    try {
+                        const apiKey = 'da2-dz4zldsidrdexe5wx2bfz4dhpm';
+                        const apiUrl = 'https://lzm2bp7eunag3la2hfq6oyyyq4.appsync-api.us-west-2.amazonaws.com/graphql';
+                        const query = `
+                        query ListCustomersByUser {
+                            getUser(id:"${attrs.dealerId}"){
+                                tier {
+                                    id
+                                    discountPercentage
+                                }
+                                customers {
+                                    items {
+                                        primaryInfo {
+                                            primaryPhone
+                                            firstName
+                                            lastName
+                                        }
+                                        id
+                                    }
+                                }
                             }
-                          }
-                        }
                       }
-                `;
+                      `;
         
                 const response = await axios.post(
                   apiUrl,
                   {
                     query: query,
                     variables: {
-                      userId: String(attrs.dealerId) // Replace with the actual user ID
+                        userId: String(attrs.dealerId) // Replace with the actual user ID
                     }
-                  },
+                },
                   {
                     headers: {
-                      'x-api-key': apiKey,
-                      'Content-Type': 'application/json'
+                        'x-api-key': apiKey,
+                        'Content-Type': 'application/json'
                     }
-                  }
+                }
                 );
-        
+                
                 const fetchedClients = response.data.data.getUser.customers.items;
                 setClients(fetchedClients);
                 setLoading(false);
                 console.log(response.data.data.getUser);
-              } catch (error) {
+            } catch (error) {
                 console.error('Error fetching data:', error);
                 setLoading(false);
-              }
-            };
+            }
+        };
         
-            if (!clients) {
-                fetchData();
-              }
-          }, []);
-
+        if (!clients) {
+            fetchData();
+        }
+    }, []);
+    }   
+    
           if (loading) {
             return <p>Loading...</p>;
           }

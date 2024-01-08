@@ -12,6 +12,7 @@ import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlin
 import ProjectOverview from '@/components/Sections/ProjectSection/ProjectOverview';
 
 const dateFormatter = (dateString) =>{
+
     const date = new Date(dateString);
 
     // Define month names
@@ -33,6 +34,7 @@ const dateFormatter = (dateString) =>{
 const ProjectOverviewPage = () => {
 
     const [projectInfo,setProjectInfo] = useState(null);
+    const possibleStatus = ['Pending Approval','Payment Pending','Payment Received','In Production'];
     const router = useRouter();
     const id = router.query.projectId;
     const projectId = null;
@@ -227,7 +229,7 @@ const ProjectOverviewPage = () => {
                 </MainCard>
             </Box>
             <Box sx={{display:"flex",justifyContent: "space-between",gap:'1em',marginTop: "1.25rem"}} mb={5}>
-                <MainCard sx={{width:'70%',
+                <MainCard sx={{width:'83.5%',
                     padding: "1.3em",
                     display: "flex",
                     flexDirection:"column"}}>
@@ -237,9 +239,75 @@ const ProjectOverviewPage = () => {
                         <ProjectOverview>{projectInfo?projectInfo:null}</ProjectOverview>
                     </Box>
 
+                    <Box sx={{
+                        display:'flex',
+                        flexDirection:'row',
+                        justifyContent:'space-between',
+                        marginTop: "12px",
+                        gap:'1em',
+                    }}>
+                        <Box sx={{
+                            width:"25%",
+                            padding:'1rem',
+                            display:'flex',
+                            flexDirection:'column',
+                            justifyContent:'center',
+                            alignContent:'center',
+                            border:"1px solid #50505040",
+                            textAlign:'center',
+                            borderRadius:'0.250rem'
+                        }}>
+                            <Typography component='p' fontSize={"14px"} color={'#878a99'}>Project Date</Typography>
+                            <Typography component='h6' fontSize={"14px"} fontWeight={600}>{dateFormatter(projectInfo?projectInfo.createdAt:"Date")}</Typography>
+                        </Box>
+                        <Box sx={{
+                            width:"25%",
+                            padding:'1rem',
+                            display:'flex',
+                            flexDirection:'column',
+                            justifyContent:'center',
+                            alignContent:'center',
+                            border:"1px solid #50505040",
+                            textAlign:'center',
+                            borderRadius:'0.250rem'
+                        }}>
+                            <Typography component='p' fontSize={"14px"} color={'#878a99'}>Delivery Date</Typography>
+                            <Typography component='h6' fontSize={"14px"} fontWeight={600}>{projectInfo?projectInfo.deliveryDate:"Delivery Date"}</Typography>
+                        </Box>
+                        <Box sx={{
+                            width:"25%",
+                            padding:'1rem',
+                            display:'flex',
+                            flexDirection:'column',
+                            justifyContent:'center',
+                            alignContent:'center',
+                            border:"1px solid #50505040",
+                            textAlign:'center',
+                            borderRadius:'0.250rem'
+                        }}>
+                            <Typography component='p' fontSize={"14px"} color={'#878a99'}>Project Amount</Typography>
+                            <Typography component='h6' fontSize={"14px"} fontWeight={600}>{projectInfo?`$${parseFloat(projectInfo.retailAmount).toFixed(2)}`:"Retail Amount"}</Typography>
+                        </Box>
+                        <Box sx={{
+                            width:"25%",
+                            padding:'1rem',
+                            display:'flex',
+                            flexDirection:'column',
+                            justifyContent:'center',
+                            alignContent:'center',
+                            border:"1px solid #50505040",
+                            textAlign:'center',
+                            borderRadius:'0.250rem'
+                        }}>
+                            <Typography component='p' fontSize={"14px"} color={'#878a99'}>Project Status</Typography>
+                            <Typography component='h6' fontSize={"14px"} fontWeight={600}>{(projectInfo?possibleStatus[projectInfo.status]:"Status")}</Typography>
+                        </Box>
+
+                    </Box>
+
                 </MainCard>
 
-                <MainCard sx={{width:'30%',
+                <MainCard sx={{width:'26.5%',
                     padding: "1.3em",
                     display: "flex",
                     flexDirection:"column"}}>

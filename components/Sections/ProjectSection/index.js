@@ -13,6 +13,7 @@ import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
 import formatters from "@/utils/formatters";
+import styles from "./ProjectSelected/ProjectSection.module.css";
 
 const possibleStatus = ['Pending Approval','Payment Pending','Payment Received','In Production'];
 
@@ -52,10 +53,12 @@ const initialColumns = [
   {
     field: 'selector',
     headerName: 'Action',
-    flex: 1.5,
+    flex: 2,
     sortable: false,
     renderCell: (params) => (
-      <ul style={{display:"flex",gap:'0.5rem'}}><li><a style={{width:'calc(.5rem + 1.5em + 2px)',height:'calc(.5rem + 1.5em + 2px)',display:'inline=flex',justifyContent: 'center',alignItems: 'center',backgroundColor:'#e1e7fc'}}><RemoveRedEyeOutlinedIcon style={{color:'#3762ea',verticalAlign: 'middle',display:'inline-flex',width:'calc(.5rem+2px)'}}/></a></li><li><CreateOutlinedIcon/></li><li><DeleteOutlineOutlinedIcon/></li><li><InsertLinkIcon/></li></ul>
+      <div className={styles.actionBlock}>
+      <ul className={styles.projectList}><li className={styles.projectListItem}><a className={styles.projectActionBtn}><RemoveRedEyeOutlinedIcon className={styles.eyeIcon}/></a></li><li className={styles.projectListItem}><a className={styles.projectActionBtn}><CreateOutlinedIcon className={styles.pencilIcon}/></a></li><li className={styles.projectListItem}><a className={styles.projectActionBtn}><InsertLinkIcon className={styles.urlIcon}/></a></li><li className={styles.projectListItem}><a className={styles.projectActionBtn}><DeleteOutlineOutlinedIcon className={styles.trashIcon}/></a></li></ul>
+      </div>
 
     ),
   },
@@ -105,6 +108,7 @@ export default function ProjectsSection() {
     }
     return () => {
       setProjectList([]);
+      console.log(projectList);
     };
   }, []);
 
@@ -123,7 +127,7 @@ export default function ProjectsSection() {
             <MainCard>
               <Table
                 onSelect={handleLeadSelection}
-                tableRows={projectList}
+                tableRows={user?projectList:mockData.projectList}
                 initialColumns={initialColumns}
                 showHeader
               />

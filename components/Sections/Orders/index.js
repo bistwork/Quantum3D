@@ -13,7 +13,7 @@ import Logout from "@mui/icons-material/Logout";
 import styles from "../../Navbar/Navbar.module.css";
 import { Badge } from "@mui/material";
 import HandymanOutlinedIcon from '@mui/icons-material/HandymanOutlined';
-import NotificationsContent from "@/components/NotificationsContent";
+import OrdersContent from "@/components/OrdersContent";
 
 function CustomBagIcon(props) {
   return (
@@ -125,7 +125,7 @@ export default function Orders(props) {
           </ListItemIcon>
           Logout
         </MenuItem> */}
-        <NotificationsContent/>
+        <OrdersContent/>
       </Menu>
     </>
   );

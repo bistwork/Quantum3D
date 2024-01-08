@@ -326,12 +326,33 @@ let mockData = {
       },
     },
   ],
-  notifications: [
-    
+  notifications: [  
   ],
   leadsTable: [
     {id:"1"}
   ],
+  projectList:[
+    {
+      comercialId:"PERCYF0KWWO",
+      customerLastname:"Grisales",
+      customerName:"Maria",
+      deliveryDate:"Pending",
+      id:"79adf136-80c9-4e6d-95ca-5661070b0ff7",
+      orderDate:"2024-01-07T16:36:03.019Z",
+      retailAmount:"584",
+      status:0
+    },
+    {
+      comercialId:"PERCYF0KWWO",
+      customerLastname:"Grisales",
+      customerName:"Maria",
+      deliveryDate:"Pending",
+      id:"79a6f136-80c9-4e6d-95ca-5661070b0ff7",
+      orderDate:"2024-01-07T16:36:03.019Z",
+      retailAmount:"584",
+      status:0
+    },
+  ]
 };
 
 export default mockData;

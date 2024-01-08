@@ -843,7 +843,7 @@ const PergolaSelectionTab = ({attrs})=>{
                                     <th></th>
                                     <th></th>
                                     <th></th>
-                                    <th>$ {prices.TotalPrice}</th>
+                                    <th>${parseFloat(prices.TotalPrice).toFixed(2)}</th>
                                     
                                 </tr>
                                 

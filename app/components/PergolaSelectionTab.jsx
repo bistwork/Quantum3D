@@ -161,7 +161,8 @@ const PergolaSelectionTab = ({attrs})=>{
                 projection: attrs.props.projection,
                 postType: attrs.props.postType,
                 mountMode: attrs.props.mountMode,
-                status:0
+                status:0,
+                url:String(generateShareableLink(attrs))
             }
           };
 

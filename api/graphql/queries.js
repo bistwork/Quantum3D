@@ -5,6 +5,7 @@ export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
       id
+      role
       email
       companyName
       fullName
@@ -46,6 +47,7 @@ export const listUsers = /* GraphQL */ `
         additionalPhone
         url
         position
+        role
         bussinesAddress
         createdAt
         updatedAt

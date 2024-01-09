@@ -57,7 +57,7 @@ export default function Notifications(props) {
               color="error"
               className={styles.badgeColorError}
             >
-              <NotificationsNoneOutlinedIcon />
+              <CustomBellIcon />
             </Badge>
           </IconButton>
         </Tooltip>

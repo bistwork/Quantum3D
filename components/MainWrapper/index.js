@@ -173,27 +173,30 @@ export default function MainWrapper(props) {
           </Typography>
         )}
         {mockData.sideMenuData.map((item, index) => {
-          return typeof item.items !== "undefined" ? (
-            <SideMenu
-              key={index}
-              icon={item.icon}
-              items={item.items}
-              title={item.title}
-              open={open}
-            />
-          ) : (
-            <SideMenu
-              icon={item.icon}
-              title={item.title}
-              key={index}
-              url={item.url}
-              fixed
-              open={open}
-            />
-          );
-        })}
-      </Drawer>
-
+          const isAdmin = user?.role === "Admin";
+          if (!isAdmin || (isAdmin && index !== 1 && index !== 2)) {
+            return typeof item.items !== "undefined" ? (
+                <SideMenu
+                key={index}
+                icon={item.icon}
+                items={item.items}
+                title={item.title}
+                open={open}
+              />
+              ) : (
+                <SideMenu
+                icon={item.icon}
+                title={item.title}
+                key={index}
+                url={item.url}
+                fixed
+                open={open}
+                />
+                );
+              }
+              })}
+              </Drawer>
+              
       <Box
         component="main"
         sx={{

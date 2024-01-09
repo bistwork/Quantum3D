@@ -12,7 +12,6 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import styles from "../../Navbar/Navbar.module.css";
 import { Badge } from "@mui/material";
-import HandymanOutlinedIcon from '@mui/icons-material/HandymanOutlined';
 import OrdersContent from "@/components/OrdersContent";
 
 function CustomBagIcon(props) {
@@ -60,7 +59,7 @@ export default function Orders(props) {
             className={`${styles.iconColor} bag-icon`}
           >
             <Badge badgeContent={0} color="error" className={styles.badgeColor}>
-              <HandymanOutlinedIcon sx={{strokeWidth:"2"}} />
+              <CustomBagIcon/>
             </Badge>
           </IconButton>
         </Tooltip>

@@ -326,7 +326,27 @@ let mockData = {
       },
     },
   ],
-  notifications: [  
+  notifications: [
+    {
+      id: "1",
+      description:
+        "Your order #12345 has been shipped! Checkout out your order!",
+      category: "Orders",
+      read: false,
+      createdAt: "2023-10-07T14:24:00Z",
+    },
+     
+  ],
+  orders:[
+    {
+      id: "1",
+      description:
+        "Your order #12345 has been shipped! Checkout out your order!",
+      category: "Orders",
+      read: false,
+      createdAt: "2023-10-07T14:24:00Z",
+    },
+    
   ],
   leadsTable: [
     {id:"1"}

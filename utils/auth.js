@@ -28,12 +28,12 @@ export const isAuthenticated = () => {
     const lastAuthTime = parseInt(authTimestamp, 10);
 
     if (currentTime - lastAuthTime < authenticationTimeout) {
-      console.log("User authenticated: Session still active");
+      console.log("User authenticated: Session still active", `Time lapsed: ${(currentTime - lastAuthTime)/(60 * 1000)} min`);
       return true;
     }
 
     else{
-      console.log("Authentication succeeded, but timestamp indicates logout")
+      console.log("Authentication succeeded, but timestamp indicates logout",`Time lapsed: ${(currentTime - lastAuthTime)/(60 * 1000)} min`)
       var cookies = document.cookie.split(";");
 
       cookies.forEach(function (cookie) {

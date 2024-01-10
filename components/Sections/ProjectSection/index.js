@@ -15,7 +15,7 @@ import InsertLinkIcon from '@mui/icons-material/InsertLink';
 import formatters from "@/utils/formatters";
 import styles from "./ProjectSelected/ProjectSection.module.css";
 
-const possibleStatus = ['Pending Approval','Payment Pending','Payment Received','In Production'];
+const possibleStatus = ['Pending Approval','Payment Received','In Production'];
 
 const initialColumns = [
   { field: "comercialId", headerName: "Project ID", flex: 1.5 },
@@ -37,11 +37,26 @@ const initialColumns = [
   {
     field: "projectStatus",
     headerName: "Project Status",
-    flex: 2,
+    flex: 2.5,
     renderCell: (params) => (
       <select
         value={params.row.status}
         onChange={()=>{}}
+        style={{
+          width:"100%",
+          padding:"0.525rem 2.7rem 0.525rem .9rem",
+          appearance:"none",
+          backgroundColor:"#fff",
+          color:"#000",
+          backgroundImage:`url("select.svg")`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "right 0.9rem center",
+          backgroundSize: "16px 12px",
+          border:"1px solid #dde1ef",
+          borderRadius:".25rem",
+          fontFamily:"'Poppins', sans-serif",
+          fontWeight:"400"
+        }}
       >
       {possibleStatus.map((status) => (
         <option key={possibleStatus.indexOf(status)} value={possibleStatus.indexOf(status)}>

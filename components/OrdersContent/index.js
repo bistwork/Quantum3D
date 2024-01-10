@@ -4,44 +4,44 @@ import { useState, useMemo } from "react";
 import { TransitionGroup } from "react-transition-group";
 import NotificationItem from "../NotificationItem";
 import Collapse from "@mui/material/Collapse";
-import { useNotifications } from "../../context/notifications-context";
+import { useOrders } from "../../context/orders-context";
 import styles from "./OrdersContent.module.css";
 import NoNewOrders from "../NoNewOrders";
 
 export default function OrdersContent() {
-  const [showUnRead, setShowUnRead] = useState(true);
-  const { notifications, setNotifications } = useNotifications();
+  const [showUnRead, setShowUnRead] = useState(false);
+  const { orders, setOrders } = useOrders();
 
-  const sortedNotifications = useMemo(() => {
-    return [...notifications].sort(
+  const sortedOrders = useMemo(() => {
+    return [...orders].sort(
       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
     );
-  }, [notifications]);
+  }, [orders]);
 
   const handleSwitchChange = (e) => setShowUnRead(e.target.checked);
 
-  const hasUnreadNotifications = useMemo(
-    () => notifications.some((notif) => !notif.read),
-    [notifications]
+  const hasUnreadOrders = useMemo(
+    () => orders.some((order) => !order.read),
+    [orders]
   );
 
-  const shouldShowNoNewNotifications = showUnRead
-    ? !hasUnreadNotifications
-    : notifications.length === 0;
+  const shouldShowNoNewOrders = showUnRead
+    ? !hasUnreadOrders
+    : orders.length === 0;
 
   const markAllAsRead = () => {
-    const updatedNotifications = notifications.map((notif) => ({
-      ...notif,
+    const updateOrders = orders.map((order) => ({
+      ...order,
       read: true,
     }));
-    setNotifications(updatedNotifications);
+    setOrders(updateOrders);
   };
 
   const handleUpdate = (id) => {
-    const updatedNotifications = notifications.map((notif) =>
-      notif.id === id ? { ...notif, read: !notif.read } : notif
+    const updateOrders = orders.map((order) =>
+      order.id === id ? { ...order, read: !order.read } : order
     );
-    setNotifications(updatedNotifications);
+    setOrders(updateOrders);
   };
 
   return (
@@ -59,7 +59,7 @@ export default function OrdersContent() {
             onChange={handleSwitchChange}
           />
         </Box>
-        <Collapse in={hasUnreadNotifications}>
+        <Collapse in={hasUnreadOrders}>
           <Typography
             className={styles.markAllNotifications}
             onClick={markAllAsRead}
@@ -73,8 +73,8 @@ export default function OrdersContent() {
       <Box>
         <List className={styles.list}>
           <TransitionGroup>
-            {sortedNotifications
-              .filter((notif) => (showUnRead ? !notif.read : true))
+            {sortedOrders
+              .filter((order) => (showUnRead ? !order.read : true))
               .map((item, index, self) => (
                 <Collapse key={item.id}>
                   <NotificationItem
@@ -86,7 +86,7 @@ export default function OrdersContent() {
               ))}
           </TransitionGroup>
         </List>
-        {shouldShowNoNewNotifications && <NoNewOrders />}
+        {shouldShowNoNewOrders && <NoNewOrders />}
       </Box>
     </Box>
   );

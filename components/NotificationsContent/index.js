@@ -9,7 +9,7 @@ import NoNewNotifications from "../NoNewNotifications";
 import styles from "./NotificationsContent.module.css";
 
 export default function NotificationsContent() {
-  const [showUnRead, setShowUnRead] = useState(true);
+  const [showUnRead, setShowUnRead] = useState(false);
   const { notifications, setNotifications } = useNotifications();
 
   const sortedNotifications = useMemo(() => {

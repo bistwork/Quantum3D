@@ -9,12 +9,13 @@ import { Amplify } from "aws-amplify";
 import { Hub } from "aws-amplify/utils";
 import { useAuth } from "../context/auth-context";
 import { isAuthenticated } from "../utils/auth";
+import { getUserData } from "../utils/auth";
 
 Amplify.configure(awsconfig);
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
-  const { logout } = useAuth();
+  const { logout, login } = useAuth();
 
   Hub.listen("auth", ({ payload }) => {
     switch (payload.event) {
@@ -28,6 +29,7 @@ function MyApp({ Component, pageProps }) {
         break;
       case "tokenRefresh":
         console.log("auth tokens have been refreshed.");
+        login(getUserData());
         break;
       case "tokenRefresh_failure":
         console.log("failure while refreshing auth tokens.");

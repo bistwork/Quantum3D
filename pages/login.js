@@ -53,7 +53,7 @@ function Login() {
           const { userId } = await getCurrentUser();
           fetchUserData(userId)
             .then((data) => {
-              // setUserData(data);
+              setUserData(data);
               return login(data);
             })
             .then(() => {

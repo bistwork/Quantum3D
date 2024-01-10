@@ -3,7 +3,6 @@ import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { fetchOrder } from '@/api/projects';
-import {formatters} from "@/utils/formatters";
 import withAuth from "@/hooks/authHOC";
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';

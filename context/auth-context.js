@@ -17,6 +17,7 @@ export function AuthProvider({ children }) {
   const value = {
     user,
     login: async (userData) => {
+      console.log(userData);
       setUser(userData);
     },
     logout: async () => {

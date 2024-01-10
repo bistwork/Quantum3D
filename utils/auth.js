@@ -28,7 +28,7 @@ export const isAuthenticated = () => {
     const lastAuthTime = parseInt(authTimestamp, 10);
 
     if (currentTime - lastAuthTime < authenticationTimeout) {
-      console.log("User authenticated");
+      console.log("User authenticated: Session still active");
       return true;
     }
 
@@ -72,7 +72,7 @@ export const setUserData = (data) => {
   if (lastAuthUser) {
     localStorage.setItem(
       `CognitoIdentityServiceProvider.${cognitoClientId}.${lastAuthUser}.userData`,
-      data
+      JSON.stringify(data)
     );
   }
 }
@@ -83,9 +83,15 @@ export const getUserData = () => {
     const lastAuthUser = localStorage.getItem(
       `CognitoIdentityServiceProvider.${cognitoClientId}.LastAuthUser`
     );
-    return localStorage.getItem(
-      `CognitoIdentityServiceProvider.${cognitoClientId}.${lastAuthUser}.userData`
-    );
+    const userDataString = localStorage.getItem(`CognitoIdentityServiceProvider.${cognitoClientId}.${lastAuthUser}.userData`);
+    try{
+      const userData = userDataString ? JSON.parse(userDataString) : null;
+      console.log('retrieving data from storage',userData?userData:null);
+      return userData
+    }catch{
+      console.log("not valid format");
+      return null
+    }
   }
   return null;
 }

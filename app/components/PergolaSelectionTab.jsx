@@ -1310,7 +1310,7 @@ const handleSubmission = () => {
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit laudantium doloribus voluptatum omnis eius et optio eos! Recusandae at maxime sequi voluptatibus laudantium quae. Doloremque impedit nihil itaque quos dolorum!</p>
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit laudantium doloribus voluptatum omnis eius et optio eos! Recusandae at maxime sequi voluptatibus laudantium quae. Doloremque impedit nihil itaque quos dolorum!</p>
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit laudantium doloribus voluptatum omnis eius et optio eos! Recusandae at maxime sequi voluptatibus laudantium quae. Doloremque impedit nihil itaque quos dolorum!</p>
-                        { !isNotified &&(<>
+                        { !isNotified &&(<><div className="checkbox-container">
                         <div class="form-check mb-2">
                         <input
                             class="form-check-input"
@@ -1337,11 +1337,12 @@ const handleSubmission = () => {
                         </label>
                         </div>
                         
+                        </div>
                         <div className="disclaimer-button-container">
-                            <button className="disclaimer-button" onClick={()=>{attrs.setSelectedBoard(attrs.selectedBoard - 1)}}>PREVIOUS</button>
-                            <button className={isCheckbox1Checked?(isCheckbox2Checked?"disclaimer-button":"disclaimer-button submit-disabled"):"disclaimer-button submit-disabled"} onClick={handleSubmission}>
-                                SUBMIT
-                            </button>
+                        <button className="disclaimer-button" onClick={()=>{attrs.setSelectedBoard(attrs.selectedBoard - 1)}}>PREVIOUS</button>
+                        <button className={isCheckbox1Checked?(isCheckbox2Checked?"disclaimer-button":"disclaimer-button submit-disabled"):"disclaimer-button submit-disabled"} onClick={handleSubmission}>
+                            SUBMIT
+                        </button>
                         </div></>)}
                         {isNotified && (<><p className="success-message">Order succesfully updated</p>
                         <p className="success-message">Thank you!</p></>)}

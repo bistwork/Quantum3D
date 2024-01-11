@@ -716,3 +716,9 @@ width: 100%;
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
+.checkbox-container{
+  color:#00000090;
+  width:50rem;
+  margin:0 auto;
+  text-align: justify;
+}

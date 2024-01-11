@@ -12,6 +12,7 @@ const PergolaSelectionTab = ({attrs})=>{
     const [clients, setClients] = useState(null);
     const [loading, setLoading] = useState(true);
     const [orderCreated,setOrderCreated] = useState(false);
+    const [orderId,setOrderId] = useState(null);
     let label = " ";
     if(attrs){ 
         switch(attrs.model){
@@ -139,10 +140,11 @@ const PergolaSelectionTab = ({attrs})=>{
         switch(attrs.model){
             case "lattice":
                 _model = "lattice"
-        }        
+        }
+        setOrderId(uuidv4());        
         const variables = {
             input: {
-                id: uuidv4(),
+                id: orderId,
                 userId: attrs.dealerId, 
                 customerId: clients[selectedClient].id,
                 comercialId: `PER${(nanoid(8)).toUpperCase()}`,
@@ -215,6 +217,75 @@ const PergolaSelectionTab = ({attrs})=>{
 
         });
 
+
+    }
+    const createOrderNotification = () => {
+        const apiKey = 'da2-dz4zldsidrdexe5wx2bfz4dhpm';
+        const apiUrl = 'https://lzm2bp7eunag3la2hfq6oyyyq4.appsync-api.us-west-2.amazonaws.com/graphql';
+        const currentDate = new Date();
+        const orderNotificationId = uuidv4()
+
+    // Format the date in ISO 8601 format
+        const isoDate = currentDate.toISOString();
+        const variables = {
+            input: {
+                id: orderNotificationId,
+                userID: attrs.dealerId,
+                createdAt:isoDate,
+                read:false,
+                description: `The Project ${orderId} has been created`,
+
+                
+            }
+          };
+
+          const mutation = `
+          mutation MyMutation($input: CreateOrderInput!) {
+            createOrder(input: $input) {
+              id
+              # Otros campos que quieras retornar
+            }
+          }
+        `;
+
+        axios({
+
+        url: apiUrl,
+
+        method: 'post',
+
+        headers: {
+
+            'x-api-key': apiKey,
+
+            'Content-Type': 'application/json'
+
+        },
+
+        data: {
+
+            query: mutation,
+
+            variables: variables
+
+        }
+
+        })
+
+        .then((response) => {
+
+            console.log(response.data);
+            if(response.data.errors==null) {
+                setOrderCreated(true);
+            }
+
+        })
+
+        .catch((error) => {
+
+            console.error("err",error);
+
+        });
 
     }
     const generateShareableLink = (attrs) => {

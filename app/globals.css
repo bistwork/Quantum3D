@@ -216,9 +216,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
   
   min-width: 108px;
 }
-.tab-changer .prev-button-disabled{
-  background-color:rgba(0, 0, 0, 0.12);
-  color:gray;
+.tab-changer .prev-button-disabled,.submit-disabled{
+  background-color:rgba(0, 0, 0, 0.12)!important;
+  color: gray!important;
 }
 .tab-changer .next-button, .tab-changer .prev-button,.overview-results-button,.rafterButton:hover,.get-estimate-button,.disclaimer-button-container button{
   color:white;
@@ -237,7 +237,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
   margin:4px;
   column-gap: 4px;
 }
-.rafter-sizing button, .rafter-alignment button{
+.rafter-sizing button, .rafter-alignment button, .PergolaOptionTab .tab-changer button{
   min-width: 104px;
   width: 100%;
   border:0;
@@ -386,7 +386,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .black-mat{
   background-color:black;
 }
-.prev-button:hover, .next-button:hover, .rafter-alignment button:hover, .rafter-sizing button:hover{
+.prev-button:hover, .next-button:hover, .rafter-alignment button:hover, .rafter-sizing button:hover,.disclaimer-button:hover{
   background-color:rgb(80, 105, 121);
 }
 .mounting-selection button:hover{
@@ -681,4 +681,38 @@ width: 100%;
   color:#4bb543;
   font-size: 1.15em;
   font-weight: 500;
+}
+.PergolaOptionTab .tab-changer{
+  position: relative;
+  left:75%;
+}
+.form-check{
+  margin:1rem 0;
+}
+
+.form-check .form-check-input {
+  cursor: pointer;
+}
+.form-check-input:checked {
+  background-color: #7396AE;
+  border-color: #7396AE;
+}
+.form-check-input[type=checkbox] {
+  border-radius: 0.25em;
+}
+
+.form-check-input {
+  flex-shrink: 0;
+  width: 1.1em;
+  height: 1.1em;
+  margin-top: 0.2em;
+  vertical-align: top;
+  background-image: url(/textures/check.svg);
+  appearance: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  border: 1px solid #000;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }

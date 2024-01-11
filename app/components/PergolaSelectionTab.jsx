@@ -26,6 +26,30 @@ const PergolaSelectionTab = ({attrs})=>{
                 break;
         }
 }
+const [isCheckbox1Checked, setIsCheckbox1Checked] = useState(false);
+const [isCheckbox2Checked, setIsCheckbox2Checked] = useState(false);
+
+// Handle checkbox changes
+const handleCheckbox1Change = (event) => {
+  setIsCheckbox1Checked(event.target.checked);
+};
+
+const handleCheckbox2Change = (event) => {
+  setIsCheckbox2Checked(event.target.checked);
+};
+
+// Handle submission logic
+const handleSubmission = () => {
+  // Check if both checkboxes are checked before allowing submission
+  if (isCheckbox1Checked && isCheckbox2Checked) {
+    // Perform your submission logic here
+    // For example, redirect to the link
+    window.location.href = "https://www.oasispatiosystems.com/";
+  } else {
+    // Display an error message or take appropriate action
+    alert("Please check both checkboxes before submitting.");
+  }
+};
     const hidePhoneNumber = (phoneNumber) => {
         return `***-****-${phoneNumber.slice(-4)}`;
     };
@@ -1156,11 +1180,37 @@ const PergolaSelectionTab = ({attrs})=>{
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit laudantium doloribus voluptatum omnis eius et optio eos! Recusandae at maxime sequi voluptatibus laudantium quae. Doloremque impedit nihil itaque quos dolorum!</p>
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit laudantium doloribus voluptatum omnis eius et optio eos! Recusandae at maxime sequi voluptatibus laudantium quae. Doloremque impedit nihil itaque quos dolorum!</p>
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit laudantium doloribus voluptatum omnis eius et optio eos! Recusandae at maxime sequi voluptatibus laudantium quae. Doloremque impedit nihil itaque quos dolorum!</p>
+                        <div class="form-check mb-2">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="formCheck1"
+                            onChange={handleCheckbox1Change}
+                            checked={isCheckbox1Checked}
+                        />
+                        <label class="form-check-label" for="formCheck1">
+                        By checking this box, I acknowledge that I have read and agree to the terms and conditions, and I confirm my acceptance of the project specifications and measures.
+                        </label>
+                        </div>
+
+                        <div class="form-check">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="formCheck2"
+                            onChange={handleCheckbox2Change}
+                            checked={isCheckbox2Checked}
+                        />
+                        <label class="form-check-label" for="formCheck2">
+                        By checking this box, I acknowledge and confirm that I have completed the payment required to initiate the project. I authorize the commencement of the project based on the agreed terms and conditions.
+                        </label>
+                        </div>
+                        
                         <div className="disclaimer-button-container">
-                            <button onClick={()=>{attrs.setSelectedBoard(attrs.selectedBoard - 1)}}>PREVIOUS</button>
-                            <a href="https://www.oasispatiosystems.com/"> 
-                                <button>SUBMIT</button>
-                            </a>
+                            <button className="disclaimer-button" onClick={()=>{attrs.setSelectedBoard(attrs.selectedBoard - 1)}}>PREVIOUS</button>
+                            <button className={isCheckbox1Checked?(isCheckbox2Checked?"disclaimer-button":"disclaimer-button submit-disabled"):"disclaimer-button submit-disabled"} onClick={handleSubmission}>
+                                SUBMIT
+                            </button>
                         </div>
                     </div>
                 </div>

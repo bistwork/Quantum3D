@@ -1,6 +1,9 @@
-import React from 'react';
+import {useState} from 'react';
 
 const PergolaOptionTab = ({attrs})=>{
+    const [noLoginBoards, setBoards] = useState([0,6,7]);
+    const [noLoginIndex, setIndex] = useState(0);
+
     
     if(attrs){
         let label;
@@ -30,12 +33,20 @@ const PergolaOptionTab = ({attrs})=>{
             </div></>;
         }
         else{
+            console.log(noLoginBoards[noLoginIndex],attrs.selectedBoard)
             return <><div className="PergolaOptionTab">
                 <span className="model">{label}</span>
                 <div className="selection-buttons">
                     <button className={attrs.selectedBoard == 0? 'activeBoard' : ''} onClick={() => attrs.setSelectedBoard(0)}><svg width="24" height="24" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.8442 13.1549V6.77975C17.8439 6.50026 17.7701 6.22576 17.6302 5.98378C17.4904 5.74181 17.2893 5.54087 17.0473 5.40112L11.469 2.21353C11.2267 2.07364 10.9519 2 10.6721 2C10.3923 2 10.1175 2.07364 9.87518 2.21353L4.2969 5.40112C4.05485 5.54087 3.85381 5.74181 3.71394 5.98378C3.57407 6.22576 3.50029 6.50026 3.5 6.77975V13.1549C3.50029 13.4344 3.57407 13.7089 3.71394 13.9509C3.85381 14.1929 4.05485 14.3938 4.2969 14.5336L9.87518 17.7212C10.1175 17.861 10.3923 17.9347 10.6721 17.9347C10.9519 17.9347 11.2267 17.861 11.469 17.7212L17.0473 14.5336C17.2893 14.3938 17.4904 14.1929 17.6302 13.9509C17.7701 13.7089 17.8439 13.4344 17.8442 13.1549Z" stroke="#232323" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"></path><path d="M3.71484 5.95074L10.6718 9.97508L17.6287 5.95074" stroke="#232323" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"></path><path d="M10.6719 18V9.96729" stroke="#232323" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"></path></svg><span>DESIGN</span></button>
                     <button className={attrs.selectedBoard == 6? 'activeBoard' : ''} onClick={() =>attrs.setSelectedBoard(6)}><svg width="26" height="24" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 9.81818C2.5 9.81818 5.40909 4 10.5 4C15.5909 4 18.5 9.81818 18.5 9.81818C18.5 9.81818 15.5909 15.6364 10.5 15.6364C5.40909 15.6364 2.5 9.81818 2.5 9.81818Z" stroke="#232323" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"></path><path d="M10.5002 11.9999C11.7052 11.9999 12.682 11.023 12.682 9.81805C12.682 8.61306 11.7052 7.63623 10.5002 7.63623C9.29519 7.63623 8.31836 8.61306 8.31836 9.81805C8.31836 11.023 9.29519 11.9999 10.5002 11.9999Z" stroke="#232323" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"></path></svg><span>OVERVIEW</span></button>
                     <button className={attrs.selectedBoard == 7? 'activeBoard' : ''} onClick={() =>attrs.setSelectedBoard(7)}><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABiUlEQVR4nO3UsUuXURTG8Y+VmaI0tQQ1BNpSg6RRRkQQQltIU7pEBEH9BRnhJBFB0CalU1MFLYHgJloN0dJWW2VuFtTQ0BIXzg8uL+8r980Chx64cM95L+d73od7LuXqQh9e4DvmI7dl7cDTKPop9rvxGufQs1XAGSxHt48wHfk5bOBH5Fv/zfEokjp+GLnpCuAWduENRtsU78cXXInu5xoAU7F/hvNtACewGvtr/wJwGouxT0X+A7aPRWdj/VXAMCZqzvTFRFcBaX6u4kApoEQdwGV8wH2sYagU0F1zpqcCmI236mDkbuNmKWAGC/HwdWxIkz6QAX7iZMQ7sYILpYA9ES/ElK/HS9rRXVzK4jt43lS8DtCBpHfpF8Y1K3X9HnvbAkaj81cVu3INhnVHNyteBxjJbMnt6qpc23cVqxp1CktZPJUNmIDcQ2+We4wHCnUIH0sP4zpeNlznRr3FxYJzY3H/97cpnnQsfL+BfTXfkz2T+ByW/pEO4wm+xfqarRSnu35kswq/AS7Zavym3XecAAAAAElFTkSuQmCC"/><span>DISCLAIMER</span></button>
+                </div>
+                <div className="tab-changer">
+                    <button className={attrs.selectedBoard==0?'prev-button-disabled':"prev-button"} onClick={()=>{
+                        attrs.setSelectedBoard(attrs.selectedBoard==0?0:(attrs.selectedBoard==6?0:6))
+                    }}><span className="prev-disabled">PREVIOUS</span></button>
+                    
+                    <button className={attrs.selectedBoard==7?'prev-button-disabled':'next-button'} onClick={()=>{attrs.setSelectedBoard(attrs.selectedBoard==0?6:7)}}><span>NEXT</span></button>
                 </div>
             </div></>;
         }

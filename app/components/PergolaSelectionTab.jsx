@@ -233,6 +233,7 @@ const PergolaSelectionTab = ({attrs})=>{
                 userID: attrs.dealerId,
                 createdAt:isoDate,
                 read:false,
+                category:"Order",
                 description: `The Project ${orderId} has been created`,
 
                 

@@ -140,13 +140,13 @@ const PergolaSelectionTab = ({attrs})=>{
             case "lattice":
                 _model = "lattice"
         }
-        const orderId = uuidv4()        
+        const orderId = `PER${(nanoid(8)).toUpperCase()}`;      
         const variables = {
             input: {
-                id: orderId,
+                id: uuidv4(),
                 userId: attrs.dealerId, 
                 customerId: clients[selectedClient].id,
-                comercialId: `PER${(nanoid(8)).toUpperCase()}`,
+                comercialId: orderId,
                 deliveryDate: "Pending",
                 retailAmount:String(prices.TotalPrice),
                 model:attrs.model,    
@@ -229,7 +229,7 @@ const PergolaSelectionTab = ({attrs})=>{
         const isoDate = currentDate.toISOString();
         const variables = {
             input: {
-                id: orderId,
+                id: uuidv4(),
                 userID: attrs.dealerId,
                 createdAt:isoDate,
                 read:false,

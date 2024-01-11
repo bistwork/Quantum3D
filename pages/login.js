@@ -17,6 +17,8 @@ import { fetchUserData } from "../api/user";
 import withPublicAccess from "../hooks/withPublicAccess";
 import { setAuthTimestamp } from "@/utils/auth";
 import { setUserData } from "@/utils/auth";
+import { fetchOrderNotifications } from "@/api/notifications";
+import { useOrders } from "@/context/orders-context";
 
 function Login() {
   const emailInput = useFormInput("", validations.email);
@@ -26,6 +28,7 @@ function Login() {
 
   const router = useRouter();
   const { login } = useAuth();
+  const { setOrders } = useOrders()
 
   const handleClick = async (event) => {
     event.preventDefault();
@@ -54,6 +57,7 @@ function Login() {
           fetchUserData(userId)
             .then((data) => {
               setUserData(data);
+              setOrders(fetchOrderNotifications(data?.id))
               return login(data);
             })
             .then(() => {

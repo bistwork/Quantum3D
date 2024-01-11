@@ -327,3 +327,17 @@ export const orderById = /* GraphQL */ `
     }
   }      
 `;
+
+export const getOrderNotificationsByUserId = /* GraphQL */ `
+  query MyQuery($userID: ID = "") {
+    orderNotificationsByUserID(userID: $userID) {
+      items {
+        category
+        createdAt
+        description
+        read
+        id
+      }
+    }
+  }
+`;

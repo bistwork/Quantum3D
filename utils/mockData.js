@@ -72,7 +72,7 @@ let mockData = {
           model: "insulated",
         },
         {
-          title: "Mix",
+          title: "Mixed",
           url: "https://master.d2syxkx30o4g07.amplifyapp.com",
           addUserId: true,
           model: "mixed",

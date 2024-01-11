@@ -20,7 +20,7 @@ export default function NotificationItem({ item, handleUpdate, isLastItem }) {
   return (
     <>
       <ButtonBase
-        onClick={toggleRadio}
+        // onClick={toggleRadio}
         style={{ width: "100%", textAlign: "left" }}
         className="item-notification"
       >

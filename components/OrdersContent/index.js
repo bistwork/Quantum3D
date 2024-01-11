@@ -1,6 +1,6 @@
 import { Box, Typography, Divider, List } from "@mui/material";
 import SwitchLabels from "../Switch";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { TransitionGroup } from "react-transition-group";
 import NotificationItem from "../NotificationItem";
 import Collapse from "@mui/material/Collapse";
@@ -11,18 +11,32 @@ import NoNewOrders from "../NoNewOrders";
 export default function OrdersContent() {
   const [showUnRead, setShowUnRead] = useState(false);
   const { orders, setOrders } = useOrders();
-
-  const sortedOrders = useMemo(() => {
-    return [...orders].sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-    );
-  }, [orders]);
-
+  const [ordersList,setOrdersList] = useState([]);
+  useEffect(() => {
+    // Check if orders is a promise
+    if (orders && orders.then) {
+      orders.then((resolvedOrders) => {
+        setOrdersList(resolvedOrders)
+        console.log(ordersList)
+      });
+    } else {
+      // If orders is not a promise, set it directly
+      setOrdersList(ordersList)
+    }
+  }, [ordersList, orders]);
   const handleSwitchChange = (e) => setShowUnRead(e.target.checked);
 
   const hasUnreadOrders = useMemo(
-    () => orders.some((order) => !order.read),
-    [orders]
+    
+
+    () => {
+      if (!Array.isArray(orders)) {
+        return [];
+      }
+      else{
+        orders.some((order) => !order.read)
+      }
+    },[orders]
   );
 
   const shouldShowNoNewOrders = showUnRead
@@ -73,17 +87,15 @@ export default function OrdersContent() {
       <Box>
         <List className={styles.list}>
           <TransitionGroup>
-            {sortedOrders
-              .filter((order) => (showUnRead ? !order.read : true))
-              .map((item, index, self) => (
+            {Array.isArray(ordersList)?(ordersList.map((item, index, self) => (
                 <Collapse key={item.id}>
                   <NotificationItem
                     item={item}
-                    handleUpdate={handleUpdate}
+                    // handleUpdate={handleUpdate}
                     isLastItem={index === self.length - 1}
                   />
-                </Collapse>
-              ))}
+                </Collapse>))):"No Orders"
+              }
           </TransitionGroup>
         </List>
         {shouldShowNoNewOrders && <NoNewOrders />}

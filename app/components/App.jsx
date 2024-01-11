@@ -67,12 +67,20 @@ function App() {
     if (model) {
       attrs.setModel(model);
     }
+    const orderId = params.get('orderId');
+    if (orderId) {
+      attrs.setOrderId(orderId);
+    }
+    const comId = params.get('comId');
+    if (comId) {
+      attrs.setComId(comId);
+    }
     setLoadingAttrs(false)
   }, [attrs]);
 
   const board = attrs!=null ? attrs.selectedBoard : 0;
   
-  if(attrs && !loadingAttrs){if(attrs.dealerId!=null){
+  if(attrs && !loadingAttrs){if(!attrs.orderId){
       return (
         <>
           <link href='https://fonts.googleapis.com/css?family=Barlow Condensed' rel='stylesheet'/>    

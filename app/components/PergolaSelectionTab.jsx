@@ -7,11 +7,13 @@ import { nanoid } from 'nanoid';
 const PergolaSelectionTab = ({attrs})=>{
     const [showLink, setShowLink] = useState(false);
     const [isPopupOpen, setPopupOpen] = useState(false);
+    const [isNotified, setNotifiedPayment] = useState(false);
     const [isClientSelected, setClientSelected] = useState(false);
     const [selectedClient, setSelectedClient] = useState("");
     const [clients, setClients] = useState(null);
     const [loading, setLoading] = useState(true);
     const [orderCreated,setOrderCreated] = useState(false);
+    
     let label = " ";
     if(attrs){ 
         switch(attrs.model){
@@ -37,18 +39,151 @@ const handleCheckbox1Change = (event) => {
 const handleCheckbox2Change = (event) => {
   setIsCheckbox2Checked(event.target.checked);
 };
+const createNotification = (orderId) => {
+    const apiKey = 'da2-dz4zldsidrdexe5wx2bfz4dhpm';
+    const apiUrl = 'https://lzm2bp7eunag3la2hfq6oyyyq4.appsync-api.us-west-2.amazonaws.com/graphql';
+    const currentDate = new Date();
 
+// Format the date in ISO 8601 format
+    const isoDate = currentDate.toISOString();
+    const variables = {
+        input: {
+            id: uuidv4(),
+            userID: attrs.dealerId,
+            createdAt:isoDate,
+            read:false,
+            category:"Update",
+            description: `The Project ${orderId} has been paid`,
+
+        }
+      };
+
+      const mutation = `
+      mutation MyMutation($input: CreateNotificationInput!) {
+        createNotification(input: $input) {
+          id
+          # Otros campos que quieras retornar
+        }
+      }
+    `;
+
+    axios({
+
+    url: apiUrl,
+
+    method: 'post',
+
+    headers: {
+
+        'x-api-key': apiKey,
+
+        'Content-Type': 'application/json'
+
+    },
+
+    data: {
+
+        query: mutation,
+
+        variables: variables
+
+    }
+
+    })
+
+    .then((response) => {
+
+        if(response.data.errors==null) {
+            console.log(response.data);
+            setNotifiedPayment(true);
+            console.log(isNotified)
+        }
+
+    })
+
+    .catch((error) => {
+
+        console.error("err",error);
+
+    });
+
+}
+const updateOrder = () => {
+    const apiKey = 'da2-dz4zldsidrdexe5wx2bfz4dhpm';
+    const apiUrl = 'https://lzm2bp7eunag3la2hfq6oyyyq4.appsync-api.us-west-2.amazonaws.com/graphql';
+    const variables = {
+        input: {
+          id: attrs.orderId,
+          comercialId: attrs.comId,
+          status: 1,
+        }
+      };
+      
+      const mutation = `
+        mutation MyMutation($input: UpdateOrderInput!) {
+          updateOrder(input: $input) {
+            id
+          }
+        }
+      `;
+
+    axios({
+
+    url: apiUrl,
+
+    method: 'post',
+
+    headers: {
+
+        'x-api-key': apiKey,
+
+        'Content-Type': 'application/json'
+
+    },
+
+    data: {
+
+        query: mutation,
+        variables:variables,
+
+    }
+
+    })
+    .then((response) => {
+
+        console.log(response.data);
+        if(response.data.errors==null) {
+            console.log("changed status");
+        }
+
+    })
+
+    .catch((error) => {
+
+        console.error("err",error);
+
+    });
+
+}
 // Handle submission logic
 const handleSubmission = () => {
+    if(attrs.orderId){
+        if (isCheckbox1Checked && isCheckbox2Checked) {
+          // Perform your submission logic here
+          // For example, redirect to the link
+          createNotification(attrs.orderId);
+          updateOrder();
+          window.location.href = "https://www.oasispatiosystems.com/";
+        }
+        else {
+          // Display an error message or take appropriate action
+          alert("Please check both checkboxes before submitting.");
+        }
+    }
+    else{
+        alert("There is not a related order to work with")
+    }
   // Check if both checkboxes are checked before allowing submission
-  if (isCheckbox1Checked && isCheckbox2Checked) {
-    // Perform your submission logic here
-    // For example, redirect to the link
-    window.location.href = "https://www.oasispatiosystems.com/";
-  } else {
-    // Display an error message or take appropriate action
-    alert("Please check both checkboxes before submitting.");
-  }
 };
     const hidePhoneNumber = (phoneNumber) => {
         return `***-****-${phoneNumber.slice(-4)}`;
@@ -159,18 +294,15 @@ const handleSubmission = () => {
     const createOrder = () => {
         const apiKey = 'da2-dz4zldsidrdexe5wx2bfz4dhpm';
         const apiUrl = 'https://lzm2bp7eunag3la2hfq6oyyyq4.appsync-api.us-west-2.amazonaws.com/graphql';
-        let _model;
-        switch(attrs.model){
-            case "lattice":
-                _model = "lattice"
-        }
-        const orderId = `PER${(nanoid(8)).toUpperCase()}`;      
+    
+        const comId = `PER${(nanoid(8)).toUpperCase()}`;
+        const orderId = uuidv4();      
         const variables = {
             input: {
-                id: uuidv4(),
+                id: orderId,
                 userId: attrs.dealerId, 
                 customerId: clients[selectedClient].id,
-                comercialId: orderId,
+                comercialId: comId,
                 deliveryDate: "Pending",
                 retailAmount:String(prices.TotalPrice),
                 model:attrs.model,    
@@ -187,7 +319,7 @@ const handleSubmission = () => {
                 postType: attrs.props.postType,
                 mountMode: attrs.props.mountMode,
                 status:0,
-                url:String(generateShareableLink(attrs.props))
+                url:String(generateShareableLink(attrs.props,comId,orderId))
             }
           };
 
@@ -313,20 +445,19 @@ const handleSubmission = () => {
         });
 
     }
-    const generateShareableLink = (attrs) => {
+
+    const generateShareableLink = (attrs,comId,orderId) => {
         if (typeof window !== 'undefined') {
             const params = new URLSearchParams();
             const baseUrl = window.location.origin; 
             
             if(attrs){
                 Object.entries(attrs).forEach(([key, value]) => {
-                    if(key != 'dealerId'){
-                        const paramValue = typeof value === 'object' ? encodeURIComponent(JSON.stringify(value)) : value;
-                        params.append(key, paramValue);
-                    }
+                    const paramValue = typeof value === 'object' ? encodeURIComponent(JSON.stringify(value)) : value;
+                    params.append(key, paramValue);
                 });
             
-                return `${baseUrl}/?${params.toString()}`;}
+                return `${baseUrl}/?orderId=${orderId}&comId=${comId}&${params.toString()}`;}
           }
         return '';
         
@@ -436,7 +567,6 @@ const handleSubmission = () => {
         setClientSelected(event.target.value!=""?true:false)
     }
 
-    const shareableLink = generateShareableLink(attrs.props);
     const beamHeaderSelections = ["Single Beam Headers","Double Beam Header"];
     const beamEndSelections = ["Beveled","Mitered","Corbel","Scallop"];
     const rafterHeadSelection = ["Single Rafter"];
@@ -1180,6 +1310,7 @@ const handleSubmission = () => {
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit laudantium doloribus voluptatum omnis eius et optio eos! Recusandae at maxime sequi voluptatibus laudantium quae. Doloremque impedit nihil itaque quos dolorum!</p>
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit laudantium doloribus voluptatum omnis eius et optio eos! Recusandae at maxime sequi voluptatibus laudantium quae. Doloremque impedit nihil itaque quos dolorum!</p>
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit laudantium doloribus voluptatum omnis eius et optio eos! Recusandae at maxime sequi voluptatibus laudantium quae. Doloremque impedit nihil itaque quos dolorum!</p>
+                        { !isNotified &&(<>
                         <div class="form-check mb-2">
                         <input
                             class="form-check-input"
@@ -1211,7 +1342,9 @@ const handleSubmission = () => {
                             <button className={isCheckbox1Checked?(isCheckbox2Checked?"disclaimer-button":"disclaimer-button submit-disabled"):"disclaimer-button submit-disabled"} onClick={handleSubmission}>
                                 SUBMIT
                             </button>
-                        </div>
+                        </div></>)}
+                        {isNotified && (<><p className="success-message">Order succesfully updated</p>
+                        <p className="success-message">Thank you!</p></>)}
                     </div>
                 </div>
             </div>

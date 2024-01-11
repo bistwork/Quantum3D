@@ -18,7 +18,7 @@ const PergolaOptionTab = ({attrs})=>{
                 label = "MIXED";
                 break;
         }
-        if(attrs.dealerId!=null){
+        if(!attrs.orderId){
             return <><div className="PergolaOptionTab">
                 <span className="model">{label}</span>
                 <div className="selection-buttons">
@@ -33,7 +33,6 @@ const PergolaOptionTab = ({attrs})=>{
             </div></>;
         }
         else{
-            console.log(noLoginBoards[noLoginIndex],attrs.selectedBoard)
             return <><div className="PergolaOptionTab">
                 <span className="model">{label}</span>
                 <div className="selection-buttons">

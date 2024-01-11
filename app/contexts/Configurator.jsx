@@ -18,8 +18,15 @@ export const ConfiguratorProvider = ({ children }) => {
     const [selectedEnd, setEnd] = useState(0);
     const [materials,setMaterials] = useState({"cover":0,"rafter":0,"beam":0,"post":0,"option":0});
     const [model,setModel] = useState(null);
+    const [orderId,setOrderId] = useState(null);
+    const [comId,setComId] = useState(null);
+
   
     const attrs = {
+        "orderId":orderId,
+        "setOrderId":setOrderId,
+        "comId":comId,
+        "setComId":setComId,
         "model":model,
         "setModel":setModel,
         "dealerId":dealerId,
@@ -64,6 +71,8 @@ export const ConfiguratorProvider = ({ children }) => {
           "selectedRafterHeaders":selectedRafterHeaders,
           "selectedRafterEndCaps":selectedRafterEndCaps,
           "materials":materials,
+          "dealerId":dealerId,
+          "comId":comId,
         } 
   }
   return (

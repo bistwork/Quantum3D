@@ -240,8 +240,8 @@ const PergolaSelectionTab = ({attrs})=>{
           };
 
           const mutation = `
-          mutation MyMutation($input: CreateOrderInput!) {
-            createOrder(input: $input) {
+          mutation MyMutation($input: CreateOrderNotificationInput!) {
+            createOrderNotification(input: $input) {
               id
               # Otros campos que quieras retornar
             }
@@ -390,7 +390,7 @@ const PergolaSelectionTab = ({attrs})=>{
                 {processedOptions}
                 </select>)}
                 <div className='get-estimate-container'>
-                {!orderCreated &&(<button className={isClientSelected?'get-estimate-button':''} onClick={()=>{if(isClientSelected){createOrder()}}}>SEND QUOTE</button>)}
+                {!orderCreated &&(<button className={isClientSelected?'get-estimate-button':''} onClick={()=>{if(isClientSelected){createOrder();createOrderNotification()}}}>SEND QUOTE</button>)}
                     {orderCreated && (<>
                         <p className="success-message">Order succesfully created</p>
                         <p className="success-message">Thank you!</p>

@@ -12,7 +12,6 @@ const PergolaSelectionTab = ({attrs})=>{
     const [clients, setClients] = useState(null);
     const [loading, setLoading] = useState(true);
     const [orderCreated,setOrderCreated] = useState(false);
-    const [orderId,setOrderId] = useState(null);
     let label = " ";
     if(attrs){ 
         switch(attrs.model){
@@ -141,7 +140,7 @@ const PergolaSelectionTab = ({attrs})=>{
             case "lattice":
                 _model = "lattice"
         }
-        setOrderId(uuidv4());        
+        const orderId = uuidv4()        
         const variables = {
             input: {
                 id: orderId,
@@ -207,6 +206,7 @@ const PergolaSelectionTab = ({attrs})=>{
             console.log(response.data);
             if(response.data.errors==null) {
                 setOrderCreated(true);
+                createOrderNotification(orderId)
             }
 
         })
@@ -219,7 +219,7 @@ const PergolaSelectionTab = ({attrs})=>{
 
 
     }
-    const createOrderNotification = () => {
+    const createOrderNotification = (orderId) => {
         const apiKey = 'da2-dz4zldsidrdexe5wx2bfz4dhpm';
         const apiUrl = 'https://lzm2bp7eunag3la2hfq6oyyyq4.appsync-api.us-west-2.amazonaws.com/graphql';
         const currentDate = new Date();
@@ -229,7 +229,7 @@ const PergolaSelectionTab = ({attrs})=>{
         const isoDate = currentDate.toISOString();
         const variables = {
             input: {
-                id: orderNotificationId,
+                id: orderId,
                 userID: attrs.dealerId,
                 createdAt:isoDate,
                 read:false,
@@ -390,7 +390,7 @@ const PergolaSelectionTab = ({attrs})=>{
                 {processedOptions}
                 </select>)}
                 <div className='get-estimate-container'>
-                {!orderCreated &&(<button className={isClientSelected?'get-estimate-button':''} onClick={()=>{if(isClientSelected){createOrder();createOrderNotification()}}}>SEND QUOTE</button>)}
+                {!orderCreated &&(<button className={isClientSelected?'get-estimate-button':''} onClick={()=>{if(isClientSelected){createOrder()}}}>SEND QUOTE</button>)}
                     {orderCreated && (<>
                         <p className="success-message">Order succesfully created</p>
                         <p className="success-message">Thank you!</p>

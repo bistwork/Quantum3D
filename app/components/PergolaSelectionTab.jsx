@@ -299,6 +299,8 @@ const handleSubmission = () => {
         const orderId = uuidv4();      
         const variables = {
             input: {
+                createdAt:new Date().toISOString(),
+                updatedAt:new Date().toISOString,
                 id: orderId,
                 userID: attrs.dealerId, 
                 customerId: clients[selectedClient].id,

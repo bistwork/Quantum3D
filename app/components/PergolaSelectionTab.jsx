@@ -300,7 +300,7 @@ const handleSubmission = () => {
         const variables = {
             input: {
                 id: orderId,
-                userId: attrs.dealerId, 
+                userID: attrs.dealerId, 
                 customerId: clients[selectedClient].id,
                 comercialId: comId,
                 deliveryDate: "Pending",

@@ -8,22 +8,9 @@ import { useOrders } from "../../context/orders-context";
 import styles from "./OrdersContent.module.css";
 import NoNewOrders from "../NoNewOrders";
 
-export default function OrdersContent() {
+export default function OrdersContent({orders}) {
   const [showUnRead, setShowUnRead] = useState(false);
-  const { orders, setOrders } = useOrders();
-  const [ordersList,setOrdersList] = useState([]);
-  useEffect(() => {
-    // Check if orders is a promise
-    if (orders && orders.then) {
-      orders.then((resolvedOrders) => {
-        setOrdersList(resolvedOrders)
-        console.log(ordersList)
-      });
-    } else {
-      // If orders is not a promise, set it directly
-      setOrdersList(ordersList)
-    }
-  }, [ordersList, orders]);
+  
   const handleSwitchChange = (e) => setShowUnRead(e.target.checked);
 
   const hasUnreadOrders = useMemo(
@@ -87,7 +74,7 @@ export default function OrdersContent() {
       <Box>
         <List className={styles.list}>
           <TransitionGroup>
-            {Array.isArray(ordersList)?(ordersList.map((item, index, self) => (
+            {Array.isArray(orders)?(orders.map((item, index, self) => (
                 <Collapse key={item.id}>
                   <NotificationItem
                     item={item}

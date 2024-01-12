@@ -168,7 +168,7 @@ export default function PrimarySearchAppBar(props) {
           aria-label="show 0 new mails"
           color="inherit"
         >
-          <Badge badgeContent={0} color="error">
+          <Badge badgeContent={1} color="error">
             <MailIcon />
           </Badge>
         </IconButton>
@@ -181,7 +181,7 @@ export default function PrimarySearchAppBar(props) {
           aria-label="show 0 new notifications"
           color="inherit"
         >
-          <Badge badgeContent={0} color="error">
+          <Badge badgeContent={1} color="error">
             <NotificationsIcon />
           </Badge>
         </IconButton>

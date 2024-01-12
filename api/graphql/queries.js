@@ -243,19 +243,11 @@ export const getOrdersByUserId = /* GraphQL */ `
   }
 `;
 export const ordersByUserId = /* GraphQL */ `
-  query OrdersByUserId(
-    $userId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelOrderFilterInput
-    $limit: Int
-    $nextToken: String
+  query MyQuery(
+    $userID: ID!
   ) {
-    ordersByUserId(
-      userId: $userId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
+    ordersByUserID(
+      userID: $userID
     ) {
       items {
         comercialId
@@ -340,4 +332,31 @@ export const getOrderNotificationsByUserId = /* GraphQL */ `
       }
     }
   }
+`;
+export const getNotificationsByUserId = /* GraphQL */ `
+  query MyQuery($userID: ID = "") {
+    notificationsByUserID(userID: $userID) {
+      items {
+        category
+        createdAt
+        description
+        read
+        id
+      }
+    }
+  }
+`;
+export const updateOrderStatus = /* GraphQL */ `
+mutation MyMutation($input: UpdateOrderInput!) {
+  updateOrder(input: $input) {
+    id
+  }
+}
+`;
+export const createAdmnOrder = /* GraphQL */ `
+mutation MyMutation($input: CreateAdminOrderInput!) {
+  createAdminOrder(input: $input) {
+    id
+  }
+}
 `;

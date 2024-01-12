@@ -24,7 +24,7 @@ export default function CustomerSection() {
       try {
         fetchCustomers(user.id)
           .then((data) => {
-            console.log(data);
+            // console.log(data);
             setAllCustomers(data);
             setCustomerSelected(data[0]);
           })

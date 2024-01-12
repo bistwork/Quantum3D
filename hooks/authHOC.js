@@ -5,7 +5,8 @@ import { isAuthenticated } from "../utils/auth";
 import { useAuth } from "@/context/auth-context";
 import { getUserData } from "../utils/auth";
 import { useOrders } from "@/context/orders-context";
-import { fetchOrderNotifications } from "@/api/notifications";
+import { fetchOrderNotifications,fetchNotifications } from "@/api/notifications";
+import { useNotifications } from "@/context/notifications-context";
 
 const withAuth = (WrappedComponent) => {
   return (props) => {
@@ -13,6 +14,7 @@ const withAuth = (WrappedComponent) => {
     const [authenticated, setAuthenticated] = useState(false);
     const { login, user } =useAuth();
     const { setOrders } = useOrders();
+    const { setNotifications } = useNotifications();
 
     useEffect(() => {
       if (!isAuthenticated()) {
@@ -22,6 +24,7 @@ const withAuth = (WrappedComponent) => {
         setAuthenticated(true);
         login(data);
         setOrders(fetchOrderNotifications(data?.id));
+        setNotifications(fetchNotifications(data?.id));
         console.log("hook triggered",user)
       }
     }, [Router]);

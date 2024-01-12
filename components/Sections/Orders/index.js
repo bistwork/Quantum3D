@@ -13,7 +13,8 @@ import Logout from "@mui/icons-material/Logout";
 import styles from "../../Navbar/Navbar.module.css";
 import { Badge } from "@mui/material";
 import OrdersContent from "@/components/OrdersContent";
-
+import { useOrders } from "@/context/orders-context";
+import { useState,useEffect } from "react";
 function CustomBagIcon(props) {
   return (
     <svg
@@ -31,6 +32,20 @@ function CustomBagIcon(props) {
 
 export default function Orders(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const { orders, setOrders } = useOrders();
+  const [ordersList,setOrdersList] = useState([]);
+  useEffect(() => {
+    // Check if orders is a promise
+    if (orders && orders.then) {
+      orders.then((resolvedOrders) => {
+        setOrdersList(resolvedOrders)
+        // console.log(ordersList)
+      });
+    } else {
+      // If orders is not a promise, set it directly
+      setOrdersList(ordersList)
+    }
+  }, [ordersList, orders]);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -58,7 +73,7 @@ export default function Orders(props) {
             color="inherit"
             className={`${styles.iconColor} bag-icon`}
           >
-            <Badge badgeContent={0} color="error" className={styles.badgeColor}>
+            <Badge badgeContent={ordersList.length} color="error" className={styles.badgeColor}>
               <CustomBagIcon/>
             </Badge>
           </IconButton>
@@ -124,7 +139,7 @@ export default function Orders(props) {
           </ListItemIcon>
           Logout
         </MenuItem> */}
-        <OrdersContent/>
+        <OrdersContent orders={ordersList}/>
       </Menu>
     </>
   );

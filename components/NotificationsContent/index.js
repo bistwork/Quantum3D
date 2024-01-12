@@ -1,28 +1,26 @@
 import { Box, Typography, Divider, List } from "@mui/material";
 import SwitchLabels from "../Switch";
-import { useState, useMemo } from "react";
+import { useState, useMemo,useEffect } from "react";
 import { TransitionGroup } from "react-transition-group";
 import NotificationItem from "../NotificationItem";
 import Collapse from "@mui/material/Collapse";
-import { useNotifications } from "../../context/notifications-context";
 import NoNewNotifications from "../NoNewNotifications";
 import styles from "./NotificationsContent.module.css";
 
-export default function NotificationsContent() {
+export default function NotificationsContent({notifications}) {
   const [showUnRead, setShowUnRead] = useState(false);
-  const { notifications, setNotifications } = useNotifications();
-
-  const sortedNotifications = useMemo(() => {
-    return [...notifications].sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-    );
-  }, [notifications]);
-
   const handleSwitchChange = (e) => setShowUnRead(e.target.checked);
 
   const hasUnreadNotifications = useMemo(
-    () => notifications.some((notif) => !notif.read),
-    [notifications]
+    
+    () => {
+      if (!Array.isArray(notifications)) {
+        return [];
+      }
+      else{
+        notifications.some((notification) => !notification.read)
+      }
+    },[notifications]
   );
 
   const shouldShowNoNewNotifications = showUnRead
@@ -73,17 +71,15 @@ export default function NotificationsContent() {
       <Box>
         <List className={styles.list}>
           <TransitionGroup>
-            {sortedNotifications
-              .filter((notif) => (showUnRead ? !notif.read : true))
-              .map((item, index, self) => (
+          {Array.isArray(notifications)?(notifications.map((item, index, self) => (
                 <Collapse key={item.id}>
                   <NotificationItem
                     item={item}
-                    handleUpdate={handleUpdate}
+                    // handleUpdate={handleUpdate}
                     isLastItem={index === self.length - 1}
                   />
-                </Collapse>
-              ))}
+                </Collapse>))):"No Notifications"
+              }
           </TransitionGroup>
         </List>
         {shouldShowNoNewNotifications && <NoNewNotifications />}

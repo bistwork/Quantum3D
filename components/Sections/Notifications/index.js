@@ -5,8 +5,9 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import styles from "../../Navbar/Navbar.module.css";
 import { Badge } from "@mui/material";
+import { useNotifications } from "@/context/notifications-context";
+import { useState,useEffect } from "react";
 import NotificationsContent from "../../NotificationsContent";
-import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 function CustomBellIcon(props) {
   return (
     <svg
@@ -24,6 +25,20 @@ function CustomBellIcon(props) {
 
 export default function Notifications(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const { notifications, setNotifications } = useNotifications();
+  const [notificationsList,setNotificationsList] = useState([]);
+  useEffect(() => {
+    // Check if notifications is a promise
+    if (notifications && notifications.then) {
+      notifications.then((resolvedOrders) => {
+        setNotificationsList(resolvedOrders)
+        // console.log(notificationsList)
+      });
+    } else {
+      // If notifications is not a promise, set it directly
+      setNotificationsList(notificationsList)
+    }
+  }, [notificationsList, notifications]);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -53,7 +68,7 @@ export default function Notifications(props) {
             className={`${styles.iconColor} bag-icon`}
           >
             <Badge
-              badgeContent={0}
+              badgeContent={notificationsList.length}
               color="error"
               className={styles.badgeColorError}
             >
@@ -96,7 +111,7 @@ export default function Notifications(props) {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <NotificationsContent />
+        <NotificationsContent notifications={notificationsList}/>
       </Menu>
     </>
   );

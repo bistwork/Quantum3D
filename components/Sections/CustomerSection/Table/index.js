@@ -94,7 +94,7 @@ export default function DataTable({ tableRows, ...props }) {
           boxShadow: "none",
           borderColor: "transparent",
           fontSize: "13px",
-          backgroundColor:"#f7f7f7"
+          backgroundColor:"#ffffff"
           // backgroundColor:"#eef0f7!important",
         }}
         slots={{

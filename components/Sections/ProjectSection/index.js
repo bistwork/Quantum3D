@@ -7,77 +7,24 @@ import mockData from "../../../utils/mockData";
 import { SnackbarContext } from "../../../context/snackBar-context";
 import ProjectSelected from "./ProjectSelected";
 import { useAuth } from "../../../context/auth-context";
-import { fetchOrders } from "../../../api/projects";
+import { createAdminOrder, fetchOrders } from "../../../api/projects";
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
 import formatters from "@/utils/formatters";
 import styles from "./ProjectSelected/ProjectSection.module.css";
+import { updateOrderState } from "../../../api/projects";
 
-const possibleStatus = ['Pending Approval','Payment Received','In Production'];
 
-const initialColumns = [
-  { field: "comercialId", headerName: "Project ID", flex: 1.5 },
-  { field: "orderDate", headerName: "Project Date", flex: 1.5, valueGetter: (params) => `${formatters.dateFormatter(params.row.orderDate)}`, },
-  {
-    field: "deliveryDate",
-    headerName: "Delivery Date",
-    description: "This column has a value getter and is not sortable.",
-    flex: 1.5,
-  },
-  { field: "customerName", headerName: "Customer Name", flex: 1.5 },
-  { field: "customerLastname", headerName: "Customer Lastname", flex: 1.5 },
-  {
-    field: "retailAmount",
-    headerName: "Retail Amount",
-    flex: 1.5,
-    valueGetter: (params) => `$${parseFloat(params.row.retailAmount).toFixed(2)} `,
-  },
-  {
-    field: "projectStatus",
-    headerName: "Project Status",
-    flex: 2.5,
-    renderCell: (params) => (
-      <select
-        value={params.row.status}
-        onChange={()=>{}}
-        style={{
-          width:"100%",
-          padding:"0.525rem 2.7rem 0.525rem .9rem",
-          appearance:"none",
-          backgroundColor:"#fff",
-          color:"#000",
-          backgroundImage:`url("select.svg")`,
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "right 0.9rem center",
-          backgroundSize: "16px 12px",
-          border:"1px solid #dde1ef",
-          borderRadius:".25rem",
-          fontFamily:"'Poppins', sans-serif",
-          fontWeight:"400"
-        }}
-      >
-      {possibleStatus.map((status) => (
-        <option key={possibleStatus.indexOf(status)} value={possibleStatus.indexOf(status)}>
-          {status}
-        </option>
-      ))}
-    </select>)
-  },
-  {
-    field: 'selector',
-    headerName: 'Action',
-    flex: 2,
-    sortable: false,
-    renderCell: (params) => (
-      <div className={styles.actionBlock}>
-      <ul className={styles.projectList}><li className={styles.projectListItem}><a href={`/projects/project-overview?projectId=${params.row.id}`} target="_blank" className={styles.projectActionBtn}><RemoveRedEyeOutlinedIcon className={styles.eyeIcon}/></a></li><li className={styles.projectListItem}><a className={styles.projectActionBtn}><CreateOutlinedIcon className={styles.pencilIcon}/></a></li><li className={styles.projectListItem}><a className={styles.projectActionBtn} href={params.row.url}><InsertLinkIcon className={styles.urlIcon}/></a></li><li className={styles.projectListItem}><a className={styles.projectActionBtn}><DeleteOutlineOutlinedIcon className={styles.trashIcon}/></a></li></ul>
-      </div>
-
-    ),
-  },
-
+const defaultStatus = [
+  'Pending Approval',
+  'Payment Pending',
+  'Payment Received',
+  'In Production',
+  'Project Completed',
+  'Project Canceled',
+  'Project Refund'
 ];
 
 export default function ProjectsSection() {
@@ -86,24 +33,150 @@ export default function ProjectsSection() {
   const { user } = useAuth();
   const [projectSelected, setProjectSelected] = useState({});
 
+  const performUpdateOrderMutation = async (orderId, newStatus) => {
+    await updateOrderState(orderId,newStatus);
+    // Update the local state directly
+    setProjectList((prevProjects) =>
+    prevProjects.map((project) =>
+      project.id === orderId ? { ...project, status: newStatus } : project
+    )
+  );
+  };
+  
+  const handleProjectStatusChange = (event, id, data) => {
+    const newStatus = parseInt(event.target.value, 10);
+    performUpdateOrderMutation(id, newStatus);
+    // if(newStatus == 3){
+    //   createAdminOrder(data)
+    // }
+  };
+
   const handleLeadSelection = (projectSelected) => {
     setProjectSelected(projectSelected);
   };
 
-  //   const handleDeleteLead = (id) => {
-  //     const updatedLeadList = leadList.filter((lead) => lead.id !== id);
-
-  //     setLeadList(updatedLeadList);
-
-  //     if (updatedLeadList.length > 0 && updatedLeadList[0]) {
-  //       setLeadSelected(updatedLeadList[0]);
-  //     } else {
-  //       setLeadSelected(null);
-  //     }
-  //     setTimeout(() => {
-  //       showSnackbar("Lead successfully deleted!", "success");
-  //     }, 500);
-  //   };
+  const defaultColumns = [
+    { field: "comercialId", headerName: "Project ID", flex: 1.5 },
+    { field: "orderDate", headerName: "Project Date", flex: 1.5, valueGetter: (params) => `${formatters.dateFormatter(params.row.orderDate)}`, },
+    {
+      field: "deliveryDate",
+      headerName: "Delivery Date",
+      description: "This column has a value getter and is not sortable.",
+      flex: 1.5,
+    },
+    { field: "customerName", headerName: "Customer Name", flex: 1.5 },
+    { field: "customerLastname", headerName: "Customer Lastname", flex: 1.5 },
+    {
+      field: "retailAmount",
+      headerName: "Retail Amount",
+      flex: 1.5,
+      valueGetter: (params) => `$${parseFloat(params.row.retailAmount).toFixed(2)} `,
+    },
+    {
+      field: "projectStatus",
+      headerName: "Project Status",
+      flex: 2.5,
+      renderCell: (params) => (
+        <select
+          value={params.row.status}
+          onChange={(event)=>handleProjectStatusChange(event,params.row.id)}
+          style={{
+            width:"100%",
+            padding:"0.525rem 2.7rem 0.525rem .9rem",
+            appearance:"none",
+            backgroundColor:"#fff",
+            color:"#000",
+            backgroundImage:`url("select.svg")`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "right 0.9rem center",
+            backgroundSize: "16px 12px",
+            border:"1px solid #dde1ef",
+            borderRadius:".25rem",
+            fontFamily:"'Poppins', sans-serif",
+            fontWeight:"400"
+          }}
+        >
+        {defaultStatus.map((status) => (
+          <option key={defaultStatus.indexOf(status)} value={defaultStatus.indexOf(status)}>
+            {status}
+          </option>
+        ))}
+      </select>)
+    },
+    {
+      field: 'selector',
+      headerName: 'Action',
+      flex: 2,
+      sortable: false,
+      renderCell: (params) => (
+        <div className={styles.actionBlock}>
+        <ul className={styles.projectList}><li className={styles.projectListItem}><a href={`/projects/project-overview?projectId=${params.row.id}`} className={styles.projectActionBtn}><RemoveRedEyeOutlinedIcon className={styles.eyeIcon}/></a></li><li className={styles.projectListItem}><a className={styles.projectActionBtn}><CreateOutlinedIcon className={styles.pencilIcon}/></a></li><li className={styles.projectListItem}><a className={styles.projectActionBtn} href={params.row.url}><InsertLinkIcon className={styles.urlIcon}/></a></li><li className={styles.projectListItem}><a className={styles.projectActionBtn}><DeleteOutlineOutlinedIcon className={styles.trashIcon}/></a></li></ul>
+        </div>
+  
+      ),
+    },
+  
+  ];
+  const adminColumns = [
+    { field: "comercialId", headerName: "Project ID", flex: 1.5 },
+    { field: "orderDate", headerName: "Project Date", flex: 1.5, valueGetter: (params) => `${formatters.dateFormatter(params.row.orderDate)}`, },
+    {
+      field: "deliveryDate",
+      headerName: "Delivery Date",
+      description: "This column has a value getter and is not sortable.",
+      flex: 1.5,
+    },
+    {
+      field: "retailAmount",
+      headerName: "Retail Amount",
+      flex: 1.5,
+      valueGetter: (params) => `$${parseFloat(params.row.retailAmount).toFixed(2)} `,
+    },
+    {
+      field: "projectStatus",
+      headerName: "Project Status",
+      flex: 2.5,
+      renderCell: (params) => (
+        <select
+          value={params.row.status}
+          onChange={(event)=>handleProjectStatusChange(event,params.row.id,params.row.data)}
+          style={{
+            width:"100%",
+            padding:"0.525rem 2.7rem 0.525rem .9rem",
+            appearance:"none",
+            backgroundColor:"#fff",
+            color:"#000",
+            backgroundImage:`url("select.svg")`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "right 0.9rem center",
+            backgroundSize: "16px 12px",
+            border:"1px solid #dde1ef",
+            borderRadius:".25rem",
+            fontFamily:"'Poppins', sans-serif",
+            fontWeight:"400"
+          }}
+        >
+        {defaultStatus.map((status) => (
+          <option key={defaultStatus.indexOf(status)} value={defaultStatus.indexOf(status)}>
+            {status}
+          </option>
+        ))}
+      </select>)
+    },
+    {
+      field: 'selector',
+      headerName: 'Action',
+      flex: 2,
+      sortable: false,
+      renderCell: (params) => (
+        <div className={styles.actionBlock}>
+        <ul className={styles.projectList}><li className={styles.projectListItem}><a href={`/projects/project-overview?projectId=${params.row.id}`} className={styles.projectActionBtn}><RemoveRedEyeOutlinedIcon className={styles.eyeIcon}/></a></li><li className={styles.projectListItem}><a className={styles.projectActionBtn}><CreateOutlinedIcon className={styles.pencilIcon}/></a></li><li className={styles.projectListItem}><a className={styles.projectActionBtn} href={params.row.url}><InsertLinkIcon className={styles.urlIcon}/></a></li><li className={styles.projectListItem}><a className={styles.projectActionBtn}><DeleteOutlineOutlinedIcon className={styles.trashIcon}/></a></li></ul>
+        </div>
+  
+      ),
+    },
+  
+  ];
 
   useEffect(() => {
     if (user) {
@@ -143,7 +216,7 @@ export default function ProjectsSection() {
               <Table
                 onSelect={handleLeadSelection}
                 tableRows={user?projectList:mockData.projectList}
-                initialColumns={initialColumns}
+                initialColumns={user?(user.role!="Admin"?defaultColumns:adminColumns):adminColumns}
                 showHeader
               />
             </MainCard>

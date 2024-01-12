@@ -33,7 +33,7 @@ const dateFormatter = (dateString) =>{
 const ProjectOverviewPage = () => {
 
     const [projectInfo,setProjectInfo] = useState(null);
-    const possibleStatus = ['Pending Approval','Payment Pending','Payment Received','In Production'];
+    const possibleStatus = ['Pending Approval','Payment Pending','Payment Received','In Production','Project Completed','Project Canceled','Project Refund'];
     const router = useRouter();
     const id = router.query.projectId;
     const projectId = null;

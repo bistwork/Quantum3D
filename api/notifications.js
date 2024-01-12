@@ -1,5 +1,5 @@
 import { generateClient } from "aws-amplify/api";
-import { getOrderNotificationsByUserId } from "./graphql/queries";
+import { getNotificationsByUserId, getOrderNotificationsByUserId } from "./graphql/queries";
 
 const client = generateClient({
     aws_appsync_graphqlEndpoint: process.env.NEXT_PUBLIC_API_ENDPOINT, // Replace with your GraphQL endpoint
@@ -14,8 +14,21 @@ export const fetchOrderNotifications = async (userID) => {
         query: getOrderNotificationsByUserId,
         variables: { userID },
       });
-      console.log("Notifications",notificationsData.data.orderNotificationsByUserID.items);
+      // console.log("Orders",notificationsData.data.orderNotificationsByUserID.items);
       return notificationsData.data.orderNotificationsByUserID.items
+    } catch (error) {
+      console.error("error retrieving notifications data:", error);
+      throw error;
+    }
+  };
+export const fetchNotifications = async (userID) => {
+    try {
+      const notificationsData = await client.graphql({
+        query: getNotificationsByUserId,
+        variables: { userID },
+      });
+      // console.log("Notifications",notificationsData);
+      return notificationsData.data.notificationsByUserID.items
     } catch (error) {
       console.error("error retrieving notifications data:", error);
       throw error;

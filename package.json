@@ -23,6 +23,7 @@
     "react-dom": "18.2.0",
     "react-spring": "^9.7.3",
     "react-transition-group": "^4.4.5",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "uuidv4": "^6.2.13"
   }
 }

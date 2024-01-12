@@ -247,3 +247,27 @@ export const deleteCustomer = /* GraphQL */ `
     }
   }
 `;
+export const createAdminOrder = /* GraphQL */ `
+mutation MyMutation($input: CreateOrderInput!) {
+  createOrder(input: $input) {
+    id
+    # Otros campos que quieras retornar
+  }
+}
+`;
+export const updateOrderStatus = /* GraphQL */ `
+mutation MyMutation($input: UpdateOrderInput!) {
+  updateOrder(input: $input) {
+    id
+  }
+}
+`;
+
+export const createOrderNotif = /* GraphQL */ `
+mutation MyMutation($input: CreateOrderNotificationInput!) {
+  createOrderNotification(input: $input) {
+    id
+    # Otros campos que quieras retornar
+  }
+}
+`;

@@ -7,14 +7,14 @@ import mockData from "../../../utils/mockData";
 import { SnackbarContext } from "../../../context/snackBar-context";
 import ProjectSelected from "./ProjectSelected";
 import { useAuth } from "../../../context/auth-context";
-import { createAdminOrder, fetchOrders } from "../../../api/projects";
+import { createAdmnOrder, fetchOrders, updateOrderState } from "../../../api/projects";
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
 import formatters from "@/utils/formatters";
 import styles from "./ProjectSelected/ProjectSection.module.css";
-import { updateOrderState } from "../../../api/projects";
+import { createOrderNotification } from "@/api/notifications";
 
 
 const defaultStatus = [
@@ -26,6 +26,15 @@ const defaultStatus = [
   'Project Canceled',
   'Project Refund'
 ];
+const adminStatus = [
+  "Pending Payment",
+  "Payment Received",
+  "In Production", 
+  "Project Completed",
+  "Project Shipped",
+  "Project Canceled",
+  "Project Refund"
+]
 
 export default function ProjectsSection() {
   const [projectList, setProjectList] = useState([]);
@@ -43,12 +52,16 @@ export default function ProjectsSection() {
   );
   };
   
-  const handleProjectStatusChange = (event, id, data) => {
+  const handleProjectStatusChange = (event, params) => {
     const newStatus = parseInt(event.target.value, 10);
-    performUpdateOrderMutation(id, newStatus);
-    // if(newStatus == 3){
-    //   createAdminOrder(data)
-    // }
+    performUpdateOrderMutation(params.row.id, newStatus);
+    if(newStatus == 3){
+      console.log(params.row.data)
+      if(params.row.data){
+        createAdmnOrder(params.row.data)
+        createOrderNotification(params.row.comercialId)
+      }
+    }
   };
 
   const handleLeadSelection = (projectSelected) => {
@@ -79,7 +92,7 @@ export default function ProjectsSection() {
       renderCell: (params) => (
         <select
           value={params.row.status}
-          onChange={(event)=>handleProjectStatusChange(event,params.row.id)}
+          onChange={(event)=>handleProjectStatusChange(event,params)}
           style={{
             width:"100%",
             padding:"0.525rem 2.7rem 0.525rem .9rem",
@@ -139,7 +152,7 @@ export default function ProjectsSection() {
       renderCell: (params) => (
         <select
           value={params.row.status}
-          onChange={(event)=>handleProjectStatusChange(event,params.row.id,params.row.data)}
+          onChange={(event)=>{if(params && params.row.data){handleProjectStatusChange(event,params)}}}
           style={{
             width:"100%",
             padding:"0.525rem 2.7rem 0.525rem .9rem",
@@ -156,8 +169,8 @@ export default function ProjectsSection() {
             fontWeight:"400"
           }}
         >
-        {defaultStatus.map((status) => (
-          <option key={defaultStatus.indexOf(status)} value={defaultStatus.indexOf(status)}>
+        {adminStatus.map((status) => (
+          <option key={adminStatus.indexOf(status)} value={adminStatus.indexOf(status)}>
             {status}
           </option>
         ))}

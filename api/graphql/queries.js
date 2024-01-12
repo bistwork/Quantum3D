@@ -251,6 +251,7 @@ export const ordersByUserId = /* GraphQL */ `
     ) {
       items {
         comercialId
+        customerId
         customer {
           primaryInfo {
             firstName
@@ -263,6 +264,19 @@ export const ordersByUserId = /* GraphQL */ `
         id
         status
         url
+        model
+        height
+        materials
+        width
+        selectedRafterHeaders
+        selectedRafterEndCaps
+        selectedHead
+        selectedEnd
+        rafterSize
+        rafterAlign
+        projection
+        postType
+        mountMode
       }
     }
   }
@@ -345,18 +359,4 @@ export const getNotificationsByUserId = /* GraphQL */ `
       }
     }
   }
-`;
-export const updateOrderStatus = /* GraphQL */ `
-mutation MyMutation($input: UpdateOrderInput!) {
-  updateOrder(input: $input) {
-    id
-  }
-}
-`;
-export const createAdmnOrder = /* GraphQL */ `
-mutation MyMutation($input: CreateAdminOrderInput!) {
-  createAdminOrder(input: $input) {
-    id
-  }
-}
 `;

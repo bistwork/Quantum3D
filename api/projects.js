@@ -1,5 +1,7 @@
 import { generateClient } from "aws-amplify/api";
-import { orderById, ordersByUserId,updateOrderStatus, createAdmnOrder } from "./graphql/queries";
+import { orderById, ordersByUserId} from "./graphql/queries";
+import { createAdminOrder,updateOrderStatus } from "./graphql/mutations";
+import { v4 as uuidv4 } from 'uuid';
 
 const client = generateClient();
 
@@ -74,17 +76,44 @@ export const updateOrderState = async (_id, _status) => {
     }
 }
 
-export const createAdminOrder = async (data) => {
+export const createAdmnOrder = async (data) => {
   try{
     if (!data) {
-      throw new Error("Data is required for fetching the order.");
+      throw new Error("ID is required for fetching the order.");
     }
-    data["assignedDealerID"] = "edd91fc9-c86c-490e-9693-b2aaf28312c0";
-    const orderData = await client.graphql({
-      query: createAdmnOrder,
-      variables: data
-    });
+    const orderId = uuidv4();      
+    const variables = {
+        input: {
+            createdAt:new Date().toISOString(),
+            updatedAt:new Date().toISOString,
+            id: orderId,
+            userID: "edd91fc9-c86c-490e-9693-b2aaf28312c0", 
+            customerId: data.customerId,
+            comercialId: data.comercialId,
+            deliveryDate: data.deliveryDate,
+            retailAmount:data.retailAmount,
+            model:data.model,    
+            height: data.height,
+            materials: data.materials,
+            width: data.width,
+            selectedRafterHeaders: data.selectedRafterHeaders,
+            selectedRafterEndCaps: data.selectedRafterEndCaps,
+            selectedHead: data.selectedHead,
+            selectedEnd: data.selectedEnd,
+            rafterSize: data.rafterSize,
+            rafterAlign: data.rafterAlign,
+            projection: data.projection,
+            postType: data.postType,
+            mountMode: data.mountMode,
+            status:0,
+            url:data.url
+        }
+      };
 
+    const orderData = await client.graphql({
+      query: createAdminOrder,
+      variables: variables
+    });
     return orderData.data.getOrder; // Assuming getOrder returns a single item
   } catch (error) {
       console.error("Error fetching order data:", error);

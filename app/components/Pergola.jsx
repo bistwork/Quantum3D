@@ -602,6 +602,31 @@ const buildLatticeAndInsulated = (attrs) =>{
     </group>
   )
 }
+
+const buildMixed = (attrs) =>{
+  if(attrs.isLatticeMiddle){
+    if(attrs.middleAttrs ){
+      return (
+        <group>
+            {buildInsulated(attrs.leftAttrs,[-(attrs.middleAttrs.width<50?attrs.middleAttrs.width:50)/(2*SCALE)-((attrs.leftAttrs.width<50?attrs.leftAttrs.width:50)/(2*SCALE)),0,-attrs.projection/(2*SCALE)],50)}
+            {buildLattice(attrs.middleAttrs,[0,0,-attrs.projection/(2*SCALE)],50)}
+            {buildInsulated(attrs.rightAttrs,[(attrs.middleAttrs.width<50?attrs.middleAttrs.width:50)/(2*SCALE)+((attrs.rightAttrs.width<50?attrs.rightAttrs.width:50)/(2*SCALE)),0,-attrs.projection/(2*SCALE)],50)}
+        </group>
+      )
+    }
+  }
+  else{
+    if(attrs.middleAttrs ){
+      return (
+        <group>
+            {buildLattice(attrs.leftAttrs,[-(attrs.middleAttrs.width<50?attrs.middleAttrs.width:50)/(2*SCALE)-((attrs.leftAttrs.width<50?attrs.leftAttrs.width:50)/(2*SCALE)),0,-attrs.projection/(2*SCALE)],50)}
+            {buildInsulated(attrs.middleAttrs,[0,0,-attrs.projection/(2*SCALE)],50)}
+            {buildLattice(attrs.rightAttrs,[(attrs.middleAttrs.width<50?attrs.middleAttrs.width:50)/(2*SCALE)+((attrs.rightAttrs.width<50?attrs.rightAttrs.width:50)/(2*SCALE)),0,-attrs.projection/(2*SCALE)],50)}
+        </group>
+      )
+    }
+  }
+}
 const Pergola = () => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -628,6 +653,9 @@ const Pergola = () => {
       break;
     case "lattice-insulated":
       pergola = buildLatticeAndInsulated(attrs);
+      break;
+    case "mixed":
+      pergola = buildMixed(attrs);
       break;
     default:
       pergola = (<>

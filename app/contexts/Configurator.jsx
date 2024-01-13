@@ -24,6 +24,9 @@ export const ConfiguratorProvider = ({ children }) => {
 
     const [mixedRight,setMixedRight] = useState(1);
     const [activeModelRight,setActiveModelRight] = useState(false);
+    const [isLatticeMiddle,setIsLatticeMiddle] = useState(true);
+    const [activeModelLeft,setActiveModelLeft] = useState(true);
+    const [activeModelMiddle,setActiveModelMiddle] = useState(false);
     
 
     // ----------LEFT PERGOLA PART PROPERTIES----------------
@@ -58,11 +61,33 @@ export const ConfiguratorProvider = ({ children }) => {
     const [rpostType, setRPostType] = useState(0);
     const [rselectedEnd, setREnd] = useState(0);
     const [rmaterials,setRMaterials] = useState({"cover":0,"rafter":0,"beam":0,"post":0,"option":0});
+    
+    
+    // ----------MIDDLE PERGOLA PART PROPERTIES----------------
 
-  
+
+    const [mwidth, setMWidth] = useState(10);
+    const [mheight, setMHeight] = useState(8);
+    const [mprojection, setMProjection] = useState(6);
+    const [mrafterSize,setMRafterSize] = useState(2);
+    const [mrafterAlign,setMRafterAlign] = useState(false);
+    const [mmountMode, setMMountMode] = useState(2);
+    const [mselectedHead, setMHead] = useState(0);
+    const [mselectedRafterHeaders, setMRafterHeader] = useState(0);
+    const [mselectedRafterEndCaps, setMRafterEndCaps] = useState(0);
+    const [mpostType, setMPostType] = useState(0);
+    const [mselectedEnd, setMEnd] = useState(0);
+    const [mmaterials,setMMaterials] = useState({"cover":0,"rafter":0,"beam":0,"post":0,"option":0});
+
     const attrs = {
+        "isLatticeMiddle":isLatticeMiddle,
+        "setIsLatticeMiddle":setIsLatticeMiddle,
         "activeModelRight":activeModelRight,
+        "activeModelLeft":activeModelLeft,
+        "activeModelMiddle":activeModelMiddle,
         "setActiveModelRight":setActiveModelRight,
+        "setActiveModelLeft":setActiveModelLeft,
+        "setActiveModelMiddle":setActiveModelMiddle,
         "mixedRight":mixedRight,
         "setMixedRight":setMixedRight,
         "orderId":orderId,
@@ -167,6 +192,32 @@ export const ConfiguratorProvider = ({ children }) => {
           "setRafterEndCaps":setRRafterEndCaps, 
           "materials":rmaterials,
           "setMaterials":setRMaterials,
+        },
+        "middleAttrs":{
+          "width":mwidth,
+          "setWidth":setMWidth, 
+          "height":mheight, 
+          "setHeight":setMHeight,  
+          "projection":mprojection, 
+          "setProjection":setMProjection, 
+          "rafterSize":mrafterSize,
+          "setRafterSize":setMRafterSize, 
+          "rafterAlign":mrafterAlign,
+          "setRafterAlign":setMRafterAlign, 
+          "mountMode":mmountMode,
+          "setMountMode":setMMountMode, 
+          "postType":mpostType,
+          "setPostType":setMPostType, 
+          "selectedEnd":mselectedEnd,
+          "setEnd":setMEnd, 
+          "selectedHead":mselectedHead,
+          "setHead":setMHead, 
+          "selectedRafterHeaders":mselectedRafterHeaders,
+          "setRafterHeader":setMRafterHeader, 
+          "selectedRafterEndCaps":mselectedRafterEndCaps,
+          "setRafterEndCaps":setMRafterEndCaps, 
+          "materials":mmaterials,
+          "setMaterials":setMMaterials,
         }
   } 
   return (

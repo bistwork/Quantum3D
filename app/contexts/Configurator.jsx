@@ -119,7 +119,7 @@ export const ConfiguratorProvider = ({ children }) => {
         "leftAttrs":{
           "width":lwidth,
           "setWidth":setLWidth, 
-          "height":rheight, 
+          "height":lheight, 
           "setHeight":setLHeight,  
           "projection":lprojection, 
           "setProjection":setLProjection, 

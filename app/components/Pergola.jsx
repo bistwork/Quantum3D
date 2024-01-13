@@ -91,7 +91,7 @@ const Model = ({ url, position, name, rotation, onLoadCallback, scale,mat_index=
   return <primitive castShadow rotation={rotation} scale={scale} object={clonedScene} position={position} name={name}/>;
 };
 
-const buildLattice = (attrs,pos=[0,0,-attrs.projection/(2*SCALE)]) => {
+const buildLattice = (attrs,pos=[0,0,-attrs.projection/(2*SCALE)],limit=90) => {
 
   function generateRandomString(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -128,29 +128,45 @@ const buildLattice = (attrs,pos=[0,0,-attrs.projection/(2*SCALE)]) => {
   let projection = attrs.projection/SCALE;
   let height = attrs.height/SCALE;
   var numberOfColumns = 2;
-  if(width>=90/SCALE){
-    width=90/SCALE;
+  if(width>=limit/SCALE){
+    width=limit/SCALE;
   }
-  if(width <= 22/SCALE){
-    numberOfColumns = 2;
+  if(limit==90){
+    if(width <= 22/SCALE){
+      numberOfColumns = 2;
+    }
+    else if(width <= 34/SCALE){
+      numberOfColumns = 3;
+    }
+    else if(width <= 45/SCALE){
+      numberOfColumns = 4;
+    }
+    else if(width <= 56/SCALE){
+      numberOfColumns = 5;
+    }
+    else if(width <= 68/SCALE){
+      numberOfColumns = 6;
+    }
+    else if(width <= 79/SCALE){
+      numberOfColumns = 7;
+    }
+    else if(width <= 90/SCALE){
+      numberOfColumns = 8;
+    }
   }
-  else if(width <= 34/SCALE){
-    numberOfColumns = 3;
-  }
-  else if(width <= 45/SCALE){
-    numberOfColumns = 4;
-  }
-  else if(width <= 56/SCALE){
-    numberOfColumns = 5;
-  }
-  else if(width <= 68/SCALE){
-    numberOfColumns = 6;
-  }
-  else if(width <= 79/SCALE){
-    numberOfColumns = 7;
-  }
-  else if(width <= 90/SCALE){
-    numberOfColumns = 8;
+  else{
+    if(width <= 22/SCALE){
+      numberOfColumns = 2;
+    }
+    else if(width <= 34/SCALE){
+      numberOfColumns = 3;
+    }
+    else if(width <= 45/SCALE){
+      numberOfColumns = 4;
+    }
+    else{
+      numberOfColumns = 4;
+    }
   }
 // ---------------------------COLS---------------------------------
   const colHeightScale = colDims ? height / colDims.height : 1;
@@ -323,7 +339,7 @@ return (<group position={pos}>
   
 }
 
-const buildInsulated = (attrs,pos=[0,0,-attrs.projection/(2*SCALE)]) => {
+const buildInsulated = (attrs,pos=[0,0,-attrs.projection/(2*SCALE)],limit=90) => {
 
   function generateRandomString(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -361,31 +377,46 @@ const buildInsulated = (attrs,pos=[0,0,-attrs.projection/(2*SCALE)]) => {
   let height = attrs.height/SCALE;
 
   var numberOfColumns = 2;
-  if(width>=90/SCALE){
-    width=90/SCALE;
+  if(width>=limit/SCALE){
+    width=limit/SCALE;
   }
-  if(width <= 22/SCALE){
-    numberOfColumns = 2;
+  if(limit==90){
+    if(width <= 22/SCALE){
+      numberOfColumns = 2;
+    }
+    else if(width <= 34/SCALE){
+      numberOfColumns = 3;
+    }
+    else if(width <= 45/SCALE){
+      numberOfColumns = 4;
+    }
+    else if(width <= 56/SCALE){
+      numberOfColumns = 5;
+    }
+    else if(width <= 68/SCALE){
+      numberOfColumns = 6;
+    }
+    else if(width <= 79/SCALE){
+      numberOfColumns = 7;
+    }
+    else if(width <= 90/SCALE){
+      numberOfColumns = 8;
+    }
   }
-  else if(width <= 34/SCALE){
-    numberOfColumns = 3;
+  else{
+    if(width <= 22/SCALE){
+      numberOfColumns = 2;
+    }
+    else if(width <= 34/SCALE){
+      numberOfColumns = 3;
+    }
+    else if(width <= 45/SCALE){
+      numberOfColumns = 4;
+    }
+    else{
+      numberOfColumns = 4;
+    }
   }
-  else if(width <= 45/SCALE){
-    numberOfColumns = 4;
-  }
-  else if(width <= 56/SCALE){
-    numberOfColumns = 5;
-  }
-  else if(width <= 68/SCALE){
-    numberOfColumns = 6;
-  }
-  else if(width <= 79/SCALE){
-    numberOfColumns = 7;
-  }
-  else if(width <= 90/SCALE){
-    numberOfColumns = 8;
-  }
-  
 // ---------------------------COLS---------------------------------
   const colHeightScale = colDims ? height / colDims.height : 1;
   if(attrs.mountMode!=3){
@@ -566,8 +597,8 @@ return (<group position={pos}>
 const buildLatticeAndInsulated = (attrs) =>{
   return (
     <group>
-      {buildInsulated(attrs.leftAttrs,[-attrs.mixedRight*attrs.leftAttrs.width/(2*SCALE),0,-attrs.projection/(2*SCALE)])}
-      {buildLattice(attrs.rightAttrs,[attrs.mixedRight*attrs.rightAttrs.width/(2*SCALE),0,-attrs.projection/(2*SCALE)])}
+      {buildInsulated(attrs.leftAttrs,[-attrs.mixedRight*(attrs.leftAttrs.width>50?50:attrs.leftAttrs.width)/(2*SCALE),0,-attrs.projection/(2*SCALE)],50)}
+      {buildLattice(attrs.rightAttrs,[attrs.mixedRight*(attrs.rightAttrs.width>50?50:attrs.rightAttrs.width)/(2*SCALE),0,-attrs.projection/(2*SCALE)],50)}
     </group>
   )
 }

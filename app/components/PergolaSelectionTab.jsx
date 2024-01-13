@@ -215,7 +215,12 @@ const handleSubmission = () => {
     const handleHeightChange =  (event) =>{
         const {value} = (event.target);
         if(attrs.model=="lattice-insulated"){
-            attrs.activeModelRight?attrs.rightAttrs.setHeight(value):attrs.leftAttrs.setHeight(value)
+            if(attrs.activeModelRight){
+                attrs.rightAttrs.setHeight(value)
+            }
+            else{
+                attrs.leftAttrs.setHeight(value)
+            }
         }
         else{
             attrs.setHeight(value);
@@ -639,8 +644,8 @@ const handleSubmission = () => {
                     </div>
                     <div className="rafter-selector">
                         <div className="rafter-sizing">
-                            <button className={attrs.rafterSize == 2? "activeMountMode":"rafterButton"} onClick={() =>{attrs.model=='lattice-insulated'?(attrs.activeModelRight?attrs.rightAttrs.setRafterSize(2):attrs.leftAttrs.setRafterSize(2)):attrs.setRafterSize(2);}}>2"</button>
-                            <button className={attrs.rafterSize == 3? "activeMountMode":"rafterButton"} onClick={() =>{attrs.model=='lattice-insulated'?(attrs.activeModelRight?attrs.rightAttrs.setRafterSize(3):attrs.leftAttrs.setRafterSize(3)):attrs.setRafterSize(3);}}>3"</button>
+                            <button className={attrs.model=='lattice-insulated'?(attrs.activeModelRight?(attrs.rightAttrs.rafterSize==2?"activeMountMode":"rafterButton"):attrs.leftAttrs.rafterSize==2?"activeMountMode":"rafterButton"):attrs.rafterSize == 2? "activeMountMode":"rafterButton"} onClick={() =>{attrs.model=='lattice-insulated'?(attrs.activeModelRight?attrs.rightAttrs.setRafterSize(2):attrs.leftAttrs.setRafterSize(2)):attrs.setRafterSize(2);}}>2"</button>
+                            <button className={attrs.model=='lattice-insulated'?(attrs.activeModelRight?(attrs.rightAttrs.rafterSize==3?"activeMountMode":"rafterButton"):attrs.leftAttrs.rafterSize==3?"activeMountMode":"rafterButton"):attrs.rafterSize == 3? "activeMountMode":"rafterButton"} onClick={() =>{attrs.model=='lattice-insulated'?(attrs.activeModelRight?attrs.rightAttrs.setRafterSize(3):attrs.leftAttrs.setRafterSize(3)):attrs.setRafterSize(3);}}>3"</button>
                         </div>
                         {attrs.model=="lattice-insulated" && (<div className="rafter-sizing">
                             <button className={!attrs.activeModelRight? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelRight(false);}}>Insulated</button>
@@ -651,7 +656,43 @@ const handleSubmission = () => {
                     <div className="dimension-selector-block">
                         <p>Length</p>
                         <div className="dim-inspector">
-                            <button className='dim-button-changer' onClick={() =>{if(attrs.width<=150 && attrs.width>10){attrs.setWidth(parseInt(attrs.width)-1)}}}><svg xmlns="http://www.w3.org/2000/svg" width="24"height="24" viewBox="0 0 24 24"><path d="M0 10h24v4h-24z"/></svg></button><label><span className="dim-label">{attrs.width}</span><span className="dim-label-scale"> ft</span></label><button className="dim-button-changer"onClick={() =>{if(attrs.width<150 && attrs.width>=10){attrs.setWidth(parseInt(attrs.width)+1)}}}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"/></svg></button>
+                            <button className='dim-button-changer' onClick={() =>{
+                                if(attrs.model=="lattice-insulated"){
+                                    if(attrs.activeModelRight){
+                                        if(attrs.rightAttrs.width<=150 && attrs.rightAttrs.width >10){
+                                            attrs.rightAttrs.setWidth(parseInt(attrs.rightAttrs.width)-1)
+                                        }
+                                    }
+                                    else{
+                                        if(attrs.leftAttrs.width<=150 && attrs.leftAttrs.width >10){
+                                            attrs.leftAttrs.setWidth(parseInt(attrs.leftAttrs.width)-1)
+                                        }
+                                    }
+                                }
+                                else{
+                                    if(attrs.width<=150 && attrs.width>10){
+                                        attrs.setWidth(parseInt(attrs.width)-1)
+                                        }
+                                    }
+                                }}><svg xmlns="http://www.w3.org/2000/svg" width="24"height="24" viewBox="0 0 24 24"><path d="M0 10h24v4h-24z"/></svg></button><label><span className="dim-label">{attrs.model=="lattice-insulated"?(attrs.activeModelRight?attrs.rightAttrs.width:attrs.leftAttrs.width):attrs.width}</span><span className="dim-label-scale"> ft</span></label><button className="dim-button-changer"onClick={() =>{
+                                    if(attrs.model=="lattice-insulated"){
+                                        if(attrs.activeModelRight){
+                                            if(attrs.rightAttrs.width<150 && attrs.rightAttrs.width >=10){
+                                                attrs.rightAttrs.setWidth(parseInt(attrs.rightAttrs.width)+1)
+                                            }
+                                        }
+                                        else{
+                                            if(attrs.leftAttrs.width<150 && attrs.leftAttrs.width >=10){
+                                                attrs.leftAttrs.setWidth(parseInt(attrs.leftAttrs.width)+1)
+                                            }
+                                        }
+                                    }
+                                    else{
+                                        if(attrs.width<150 && attrs.width>=10){
+                                            attrs.setWidth(parseInt(attrs.width)+1)
+                                            }
+                                        }
+                                    }}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"/></svg></button>
                         </div>
                         <input
                             type="range"
@@ -666,7 +707,43 @@ const handleSubmission = () => {
                     <div className="dimension-selector-block">
                         <p>Projection</p>
                         <div className="dim-inspector">
-                            <button className='dim-button-changer' onClick={() =>{if(attrs.projection<=39 && attrs.projection>6){attrs.setProjection(parseInt(attrs.projection)-1)}}}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 10h24v4h-24z"/></svg></button><label><span className="dim-label">{attrs.projection}</span><span className="dim-label-scale"> ft</span></label><button className="dim-button-changer" onClick={() =>{if(attrs.projection<39 && attrs.projection>=6){attrs.setProjection(parseInt(attrs.projection)+1)}}}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"/></svg></button>
+                            <button className='dim-button-changer' onClick={() =>{
+                                if(attrs.model=="lattice-insulated"){
+                                    if(attrs.activeModelRight){
+                                        if(attrs.rightAttrs.projection<=39 && attrs.rightAttrs.projection >6){
+                                            attrs.rightAttrs.setProjection(parseInt(attrs.rightAttrs.projection)-1)
+                                        }
+                                    }
+                                    else{
+                                        if(attrs.leftAttrs.projection<=39 && attrs.leftAttrs.projection >6){
+                                            attrs.leftAttrs.setProjection(parseInt(attrs.leftAttrs.projection)-1)
+                                        }
+                                    }
+                                }
+                                else{
+                                    if(attrs.projection<=39 && attrs.projection>6){
+                                        attrs.setProjection(parseInt(attrs.projection)-1)
+                                        }
+                                    }
+                                }}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 10h24v4h-24z"/></svg></button><label><span className="dim-label">{attrs.model=="lattice-insulated"?(attrs.activeModelRight?attrs.rightAttrs.projection:attrs.leftAttrs.projection):attrs.projection}</span><span className="dim-label-scale"> ft</span></label><button className="dim-button-changer" onClick={() =>{
+                                    if(attrs.model=="lattice-insulated"){
+                                        if(attrs.activeModelRight){
+                                            if(attrs.rightAttrs.projection<39 && attrs.rightAttrs.projection >=6){
+                                                attrs.rightAttrs.setProjection(parseInt(attrs.rightAttrs.projection)+1)
+                                            }
+                                        }
+                                        else{
+                                            if(attrs.leftAttrs.projection<39 && attrs.leftAttrs.projection >=6){
+                                                attrs.leftAttrs.setProjection(parseInt(attrs.leftAttrs.projection)+1)
+                                            }
+                                        }
+                                    }
+                                    else{
+                                        if(attrs.projection<39 && attrs.projection>=6){
+                                            attrs.setProjection(parseInt(attrs.projection)+1)
+                                            }
+                                        }
+                                    }}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"/></svg></button>
                         </div>
                         <input
                             type="range"
@@ -680,7 +757,43 @@ const handleSubmission = () => {
                     <div className="dimension-selector-block">
                         <p>Height</p>
                         <div className="dim-inspector">
-                            <button className='dim-button-changer' onClick={() =>{if(attrs.height<=12 && attrs.height>8){attrs.setHeight(parseInt(attrs.height)-2)}}}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 10h24v4h-24z"/></svg></button><label><span className="dim-label">{attrs.height}</span><span className="dim-label-scale"> ft</span></label><button className="dim-button-changer" onClick={() =>{if(attrs.height<12 && attrs.height>=8){attrs.setHeight(parseInt(attrs.height)+2)}}}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"/></svg></button>
+                            <button className='dim-button-changer' onClick={() =>{
+                                if(attrs.model=="lattice-insulated"){
+                                    if(attrs.activeModelRight){
+                                        if(attrs.rightAttrs.height<=12 && attrs.rightAttrs.height >8){
+                                            attrs.rightAttrs.setHeight(parseInt(attrs.rightAttrs.height)-2)
+                                        }
+                                    }
+                                    else{
+                                        if(attrs.leftAttrs.height<=12 && attrs.leftAttrs.height >8){
+                                            attrs.leftAttrs.setHeight(parseInt(attrs.leftAttrs.height)-2)
+                                        }
+                                    }
+                                }
+                                else{
+                                    if(attrs.height<=12 && attrs.height>8){
+                                        attrs.setHeight(parseInt(attrs.height)-2)
+                                        }
+                                    }
+                                }}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 10h24v4h-24z"/></svg></button><label><span className="dim-label">{attrs.model=="lattice-insulated"?(attrs.activeModelRight?attrs.rightAttrs.height:attrs.leftAttrs.height):attrs.height}</span><span className="dim-label-scale"> ft</span></label><button className="dim-button-changer" onClick={() =>{
+                                    if(attrs.model=="lattice-insulated"){
+                                        if(attrs.activeModelRight){
+                                            if(attrs.rightAttrs.height<12 && attrs.rightAttrs.height >=8){
+                                                attrs.rightAttrs.setHeight(parseInt(attrs.rightAttrs.height)+2)
+                                            }
+                                        }
+                                        else{
+                                            if(attrs.leftAttrs.height<12 && attrs.leftAttrs.height >=8){
+                                                attrs.leftAttrs.setHeight(parseInt(attrs.leftAttrs.height)+2)
+                                            }
+                                        }
+                                    }
+                                    else{
+                                        if(attrs.height<12 && attrs.height>=8){
+                                            attrs.setHeight(parseInt(attrs.height)+2)
+                                            }
+                                        }
+                                    }}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"/></svg></button>
                         </div>
                         <input
                             type="range"

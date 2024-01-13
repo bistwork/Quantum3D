@@ -21,8 +21,50 @@ export const ConfiguratorProvider = ({ children }) => {
     const [orderId,setOrderId] = useState(null);
     const [comId,setComId] = useState(null);
 
+
+    const [mixedRight,setMixedRight] = useState(1);
+    const [activeModelRight,setActiveModelRight] = useState(false);
+    
+
+    // ----------LEFT PERGOLA PART PROPERTIES----------------
+
+
+    const [lwidth, setLWidth] = useState(10);
+    const [lheight, setLHeight] = useState(8);
+    const [lprojection, setLProjection] = useState(6);
+    const [lrafterSize,setLRafterSize] = useState(2);
+    const [lrafterAlign,setLRafterAlign] = useState(false);
+    const [lmountMode, setLMountMode] = useState(2);
+    const [lselectedHead, setLHead] = useState(0);
+    const [lselectedRafterHeaders, setLRafterHeader] = useState(0);
+    const [lselectedRafterEndCaps, setLRafterEndCaps] = useState(0);
+    const [lpostType, setLPostType] = useState(0);
+    const [lselectedEnd, setLEnd] = useState(0);
+    const [lmaterials,setLMaterials] = useState({"cover":0,"rafter":0,"beam":0,"post":0,"option":0});
+
+
+    // ----------RIGHT PERGOLA PART PROPERTIES----------------
+
+
+    const [rwidth, setRWidth] = useState(10);
+    const [rheight, setRHeight] = useState(8);
+    const [rprojection, setRProjection] = useState(6);
+    const [rrafterSize,setRRafterSize] = useState(2);
+    const [rrafterAlign,setRRafterAlign] = useState(false);
+    const [rmountMode, setRMountMode] = useState(2);
+    const [rselectedHead, setRHead] = useState(0);
+    const [rselectedRafterHeaders, setRRafterHeader] = useState(0);
+    const [rselectedRafterEndCaps, setRRafterEndCaps] = useState(0);
+    const [rpostType, setRPostType] = useState(0);
+    const [rselectedEnd, setREnd] = useState(0);
+    const [rmaterials,setRMaterials] = useState({"cover":0,"rafter":0,"beam":0,"post":0,"option":0});
+
   
     const attrs = {
+        "activeModelRight":activeModelRight,
+        "setActiveModelRight":setActiveModelRight,
+        "mixedRight":mixedRight,
+        "setMixedRight":setMixedRight,
         "orderId":orderId,
         "setOrderId":setOrderId,
         "comId":comId,
@@ -73,8 +115,60 @@ export const ConfiguratorProvider = ({ children }) => {
           "materials":materials,
           "dealerId":dealerId,
           "comId":comId,
-        } 
-  }
+        },
+        "leftAttrs":{
+          "width":lwidth,
+          "setWidth":setLWidth, 
+          "height":rheight, 
+          "setHeight":setLHeight,  
+          "projection":lprojection, 
+          "setProjection":setLProjection, 
+          "rafterSize":lrafterSize,
+          "setRafterSize":setLRafterSize, 
+          "rafterAlign":lrafterAlign,
+          "setRafterAlign":setLRafterAlign, 
+          "mountMode":lmountMode,
+          "setMountMode":setLMountMode, 
+          "postType":lpostType,
+          "setPostType":setLPostType, 
+          "selectedEnd":lselectedEnd,
+          "setEnd":setLEnd, 
+          "selectedHead":lselectedHead,
+          "setHead":setLHead, 
+          "selectedRafterHeaders":lselectedRafterHeaders,
+          "setRafterHeader":setLRafterHeader, 
+          "selectedRafterEndCaps":lselectedRafterEndCaps,
+          "setRafterEndCaps":setLRafterEndCaps, 
+          "materials":lmaterials,
+          "setMaterials":setLMaterials,
+        },
+        "rightAttrs":{
+          "width":rwidth,
+          "setWidth":setRWidth, 
+          "height":rheight, 
+          "setHeight":setRHeight,  
+          "projection":rprojection, 
+          "setProjection":setRProjection, 
+          "rafterSize":rrafterSize,
+          "setRafterSize":setRRafterSize, 
+          "rafterAlign":rrafterAlign,
+          "setRafterAlign":setRRafterAlign, 
+          "mountMode":rmountMode,
+          "setMountMode":setRMountMode, 
+          "postType":rpostType,
+          "setPostType":setRPostType, 
+          "selectedEnd":rselectedEnd,
+          "setEnd":setREnd, 
+          "selectedHead":rselectedHead,
+          "setHead":setRHead, 
+          "selectedRafterHeaders":rselectedRafterHeaders,
+          "setRafterHeader":setRRafterHeader, 
+          "selectedRafterEndCaps":rselectedRafterEndCaps,
+          "setRafterEndCaps":setRRafterEndCaps, 
+          "materials":rmaterials,
+          "setMaterials":setRMaterials,
+        }
+  } 
   return (
     <ConfiguratorContext.Provider
       value={attrs}

@@ -26,6 +26,12 @@ const PergolaSelectionTab = ({attrs})=>{
             case "mixed":
                 label = "Mixed";
                 break;
+            case "lattice-insulated":
+                label = "Lattice & Insulated";
+                break;
+            default:
+                label = "Choice";
+                break;
         }
 }
 const [isCheckbox1Checked, setIsCheckbox1Checked] = useState(false);
@@ -190,15 +196,30 @@ const handleSubmission = () => {
     };
     if(attrs!=undefined){const handleWidthChange =  (event) =>{
         const {value} = (event.target);
-        attrs.setWidth(value);
+        if(attrs.model=="lattice-insulated"){
+            attrs.activeModelRight?attrs.rightAttrs.setWidth(value):attrs.leftAttrs.setWidth(value)
+        }
+        else{
+            attrs.setWidth(value);
+        }
     };
     const handleDepthChange =  (event) =>{
         const {value} = (event.target);
-        attrs.setProjection(value);
+        if(attrs.model=="lattice-insulated"){
+            attrs.activeModelRight?attrs.rightAttrs.setProjection(value):attrs.leftAttrs.setProjection(value)
+        }
+        else{
+            attrs.setProjection(value);
+        }
     };
     const handleHeightChange =  (event) =>{
         const {value} = (event.target);
-        attrs.setHeight(value);
+        if(attrs.model=="lattice-insulated"){
+            attrs.activeModelRight?attrs.rightAttrs.setHeight(value):attrs.leftAttrs.setHeight(value)
+        }
+        else{
+            attrs.setHeight(value);
+        }
     };
     const handleMaterialConfig = (key,option)=>{
         attrs.setMaterials((prevState) => ({
@@ -605,12 +626,26 @@ const handleSubmission = () => {
                             <span>Reset to default</span>
                         </button>
 
+                        {attrs.model == "lattice-insulated" && ( 
+                            <button className="reset-button" onClick={()=>{
+                                attrs.setMixedRight(-attrs.mixedRight);
+                            }}>
+
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.1816 2L16.0908 4.90912L13.1816 7.81823" stroke="#232323" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"></path><path d="M3 9.27285V7.8183C3 7.04675 3.3065 6.30681 3.85206 5.76124C4.39763 5.21567 5.13757 4.90918 5.90912 4.90918H16.091" stroke="#232323" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"></path><path d="M5.90912 17.9999L3 15.0908L5.90912 12.1816" stroke="#232323" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"></path><path d="M16.091 10.7275V12.1821C16.091 12.9536 15.7845 13.6936 15.239 14.2392C14.6934 14.7847 13.9535 15.0912 13.1819 15.0912H3" stroke="#232323" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+                                <span>Switch Model</span>
+                            </button>
+                        )}
+
                     </div>
                     <div className="rafter-selector">
                         <div className="rafter-sizing">
-                            <button className={attrs.rafterSize == 2? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setRafterSize(2);}}>2"</button>
-                            <button className={attrs.rafterSize == 3? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setRafterSize(3);}}>3"</button>
+                            <button className={attrs.rafterSize == 2? "activeMountMode":"rafterButton"} onClick={() =>{attrs.model=='lattice-insulated'?(attrs.activeModelRight?attrs.rightAttrs.setRafterSize(2):attrs.leftAttrs.setRafterSize(2)):attrs.setRafterSize(2);}}>2"</button>
+                            <button className={attrs.rafterSize == 3? "activeMountMode":"rafterButton"} onClick={() =>{attrs.model=='lattice-insulated'?(attrs.activeModelRight?attrs.rightAttrs.setRafterSize(3):attrs.leftAttrs.setRafterSize(3)):attrs.setRafterSize(3);}}>3"</button>
                         </div>
+                        {attrs.model=="lattice-insulated" && (<div className="rafter-sizing">
+                            <button className={!attrs.activeModelRight? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelRight(false);}}>Insulated</button>
+                            <button className={attrs.activeModelRight? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelRight(true);}}>Lattice</button>
+                        </div>)}
                     </div>
 
                     <div className="dimension-selector-block">
@@ -622,7 +657,7 @@ const handleSubmission = () => {
                             type="range"
                             min="10"
                             max="150"
-                            value={attrs.width}
+                            value={attrs.model=="lattice-insulated"?(attrs.activeModelRight?attrs.rightAttrs.width:attrs.leftAttrs.width):attrs.width}
                             onChange={handleWidthChange}
                             
                             />
@@ -637,7 +672,7 @@ const handleSubmission = () => {
                             type="range"
                             min="6"
                             max="39"
-                            value={attrs.projection}
+                            value={attrs.model=="lattice-insulated"?(attrs.activeModelRight?attrs.rightAttrs.projection:attrs.leftAttrs.projection):attrs.projection}
                             onChange={handleDepthChange}
                             />
                         <div className="dim-inspector"><span>{6}</span><span>{39}</span></div>
@@ -651,7 +686,7 @@ const handleSubmission = () => {
                             type="range"
                             min="8"
                             max="12"
-                            value={attrs.height}
+                            value={attrs.model=="lattice-insulated"?(attrs.activeModelRight?attrs.rightAttrs.height:attrs.leftAttrs.height):attrs.height}
                             onChange={handleHeightChange}
                             step="2"
                             />

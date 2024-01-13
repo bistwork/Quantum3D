@@ -17,6 +17,12 @@ const PergolaOptionTab = ({attrs})=>{
             case "mixed":
                 label = "MIXED";
                 break;
+            case "lattice-insulated":
+                label = "LATTICE & MIXED";
+                break;
+            default:
+                label = "OASIS PATIO SYSTEMS";
+                break;
         }
         if(!attrs.orderId){
             return <><div className="PergolaOptionTab">

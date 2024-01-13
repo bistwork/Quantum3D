@@ -91,7 +91,7 @@ const Model = ({ url, position, name, rotation, onLoadCallback, scale,mat_index=
   return <primitive castShadow rotation={rotation} scale={scale} object={clonedScene} position={position} name={name}/>;
 };
 
-const buildLattice = (attrs) => {
+const buildLattice = (attrs,pos=[0,0,-attrs.projection/(2*SCALE)]) => {
 
   function generateRandomString(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -310,7 +310,7 @@ if(attrs.mountMode!=3){
 else{
   cbs = null
 }
-return (<group position={[0,0,-projection/2]}>
+return (<group position={pos}>
     {columns}
     {posts}
     {rafterEnds}
@@ -323,7 +323,7 @@ return (<group position={[0,0,-projection/2]}>
   
 }
 
-const buildInsulated = (attrs) => {
+const buildInsulated = (attrs,pos=[0,0,-attrs.projection/(2*SCALE)]) => {
 
   function generateRandomString(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -551,7 +551,7 @@ if(attrs.mountMode!=3){
 else{
   cbs = null
 }
-return (<group position={[0,0,-projection/2]}>
+return (<group position={pos}>
     {columns}
     {posts}
     {rafterEnds}
@@ -563,7 +563,14 @@ return (<group position={[0,0,-projection/2]}>
   </group>)
   
 }
-
+const buildLatticeAndInsulated = (attrs) =>{
+  return (
+    <group>
+      {buildInsulated(attrs.leftAttrs,[-attrs.mixedRight*attrs.leftAttrs.width/(2*SCALE),0,-attrs.projection/(2*SCALE)])}
+      {buildLattice(attrs.rightAttrs,[attrs.mixedRight*attrs.rightAttrs.width/(2*SCALE),0,-attrs.projection/(2*SCALE)])}
+    </group>
+  )
+}
 const Pergola = () => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -587,6 +594,9 @@ const Pergola = () => {
       break;
     case "insulated":
       pergola = buildInsulated(attrs);
+      break;
+    case "lattice-insulated":
+      pergola = buildLatticeAndInsulated(attrs);
       break;
     default:
       pergola = (<>

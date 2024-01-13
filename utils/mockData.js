@@ -75,7 +75,7 @@ let mockData = {
           title: "Lattice & Insulated Mixed",
           url: "https://master.d2syxkx30o4g07.amplifyapp.com",
           addUserId: true,
-          model: "Lattice&Insulated",
+          model: "lattice-insulated",
         },
         {
           title: "Mixed",

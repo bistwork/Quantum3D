@@ -723,7 +723,7 @@ const handleSubmission = () => {
                                 handleMaterialConfig("rafter",0);
                                 handleMaterialConfig("beam",0);
                                 attrs.setRafterAlign(true);
-                                attrs.setRafterSize(1.5);
+                                attrs.setRafterSize(2);
                             }
                         }}>
 
@@ -1075,10 +1075,8 @@ const handleSubmission = () => {
                                     attrs.rightAttrs.setMountMode(index)
                                 }
                             }
-                            else{
-                                
-                                attrs.setMountMode(index)
-                            }}}>
+                            attrs.setMountMode(index)
+                            }}>
                         
                         {button}
                         </button>
@@ -1323,10 +1321,8 @@ const handleSubmission = () => {
                                     attrs.rightAttrs.setPostType(index)
                                 }
                             }
-                            else{
-                                
-                                attrs.setPostType(index)
-                            }}}>
+                            attrs.setPostType(index)
+                            }}>
                         {button}
                         </button>
                     ))}
@@ -1400,10 +1396,8 @@ const handleSubmission = () => {
                                     attrs.rightAttrs.setRafterEndCaps(0)
                                 }
                             }
-                            else{
-                                attrs.setRafterEndCaps(0)
+                            attrs.setRafterEndCaps(0)
 
-                            }
                             }}></button>
                                     <span>Beveled</span>
                                 </div>
@@ -1428,10 +1422,8 @@ const handleSubmission = () => {
                                     attrs.rightAttrs.setRafterEndCaps(1)
                                 }
                             }
-                            else{
-                                attrs.setRafterEndCaps(1)
+                            attrs.setRafterEndCaps(1)
 
-                            }
                             }}></button>
                                     <span>Mitered</span>
                                 </div>
@@ -1456,10 +1448,8 @@ const handleSubmission = () => {
                                     attrs.rightAttrs.setRafterEndCaps(2)
                                 }
                             }
-                            else{
-                                attrs.setRafterEndCaps(2)
+                            attrs.setRafterEndCaps(2)
 
-                            }
                             }}></button>
                                     <span>Corbel</span>
                                 </div>
@@ -1484,10 +1474,8 @@ const handleSubmission = () => {
                                     attrs.rightAttrs.setRafterEndCaps(3)
                                 }
                             }
-                            else{
-                                attrs.setRafterEndCaps(3)
+                            attrs.setRafterEndCaps(3)
 
-                            }
                             }}></button>
                                     <span>Scallop</span>
                                 </div>

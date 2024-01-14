@@ -785,7 +785,7 @@ const handleSubmission = () => {
                                         }
                                     }
                                 }
-                                else if(attrs.model="mixed"){
+                                else if(attrs.model=="mixed"){
                                     if(attrs.activeModelRight){
                                         if(attrs.rightAttrs.width<=150 && attrs.rightAttrs.width >10){
                                             attrs.rightAttrs.setWidth(parseInt(attrs.rightAttrs.width)-1)
@@ -1040,8 +1040,8 @@ const handleSubmission = () => {
 
                 <div className="rafter-selector">
                 {attrs.model=="lattice-insulated" && (<div className="rafter-sizing" style={{'padding':"0.5em"}}>
-                            <button className={!attrs.activeModelRight? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelRight(false);}}>Insulated</button>
-                            <button className={attrs.activeModelRight? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelRight(true);}}>Lattice</button>
+                            <button className={attrs.activeModelLeft? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelLeft(true);}}>Insulated</button>
+                            <button className={!attrs.activeModelLeft? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelLeft(false);}}>Lattice</button>
                         </div>)}
                         {attrs.model=="mixed" && (<div className="rafter-sizing" style={{'padding':"0.5em"}}>
                             <button className={attrs.activeModelLeft? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelLeft(true);attrs.setActiveModelMiddle(false);attrs.setActiveModelRight(false)}}>Left</button>
@@ -1056,7 +1056,7 @@ const handleSubmission = () => {
                         key={index}
                         className={attrs.model=="lattice-insulated"?attrs.activeModelLeft?attrs.leftAttrs.mountMode===index?'activeMountMode':'':attrs.rightAttrs.mountMode===index?'activeMountMode':'':attrs.model=='mixed'?attrs.activeModelLeft?attrs.leftAttrs.mountMode===index?'activeMountMode':'':attrs.activeModelMiddle?attrs.middleAttrs.mountMode===index?'activeMountMode':'':attrs.rightAttrs.mountMode===index?"activeMountMode":"":attrs.mountMode === index ? 'activeMountMode' : ''}
                         onClick={() => {
-                            if(attrs.model="mixed"){
+                            if(attrs.model=="mixed"){
                                 if(attrs.activeModelLeft){
                                     attrs.leftAttrs.setMountMode(index)
                                 }
@@ -1071,7 +1071,7 @@ const handleSubmission = () => {
                                 if(attrs.activeModelLeft){
                                     attrs.leftAttrs.setMountMode(index)
                                 }
-                                else{
+                                else if(!attrs.activeModelLeft){
                                     attrs.rightAttrs.setMountMode(index)
                                 }
                             }
@@ -1106,8 +1106,8 @@ const handleSubmission = () => {
 
                     <div className="rafter-selector">
                     {attrs.model=="lattice-insulated" && (<div className="rafter-sizing" style={{'padding':"0.0em"}}>
-                                <button className={!attrs.activeModelRight? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelRight(false);}}>Insulated</button>
-                                <button className={attrs.activeModelRight? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelRight(true);}}>Lattice</button>
+                                <button className={attrs.activeModelLeft? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelLeft(true);}}>Insulated</button>
+                                <button className={!attrs.activeModelLeft? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelLeft(false);}}>Lattice</button>
                             </div>)}
                             {attrs.model=="mixed" && (<div className="rafter-sizing" style={{'padding':"0.0em"}}>
                                 <button className={attrs.activeModelLeft? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelLeft(true);attrs.setActiveModelMiddle(false);attrs.setActiveModelRight(false)}}>Left</button>
@@ -1122,7 +1122,7 @@ const handleSubmission = () => {
                             <div className="header-inspector">
                                 <div className='header-selection'>
                                     <button className={attrs.model=="lattice-insulated"?attrs.activeModelLeft?attrs.leftAttrs.selectedHead == 0?'selectedhead double-beam':'double-beam':attrs.rightAttrs.selectedHead == 0?'selectedhead double-beam':'double-beam':attrs.model=='mixed'?attrs.activeModelLeft?attrs.leftAttrs.selectedHead == 0?'selectedhead double-beam':'double-beam':attrs.activeModelMiddle?attrs.middleAttrs.selectedHead == 0?'selectedhead double-beam':'double-beam':attrs.rightAttrs.selectedHead == 0?"selectedhead double-beam":"double-beam":attrs.selectedHead == 0 ? 'selectedhead double-beam' : 'double-beam'} onClick={() => {
-                            if(attrs.model="mixed"){
+                            if(attrs.model=="mixed"){
                                 if(attrs.activeModelLeft){
                                     attrs.leftAttrs.setHead(0)
                                 }
@@ -1146,7 +1146,7 @@ const handleSubmission = () => {
                                 </div>
                                 <div className='header-selection'>
                                     <button className={attrs.model=="lattice-insulated"?attrs.activeModelLeft?attrs.leftAttrs.selectedHead == 1?'selectedhead double-beam':'double-beam':attrs.rightAttrs.selectedHead == 1?'selectedhead double-beam':'double-beam':attrs.model=='mixed'?attrs.activeModelLeft?attrs.leftAttrs.selectedHead == 1?'selectedhead double-beam':'double-beam':attrs.activeModelMiddle?attrs.middleAttrs.selectedHead == 1?'selectedhead double-beam':'double-beam':attrs.rightAttrs.selectedHead == 1?"selectedhead double-beam":"double-beam":attrs.selectedHead == 1 ? 'selectedhead double-beam' : 'double-beam'} onClick={() => {
-                            if(attrs.model="mixed"){
+                            if(attrs.model=="mixed"){
                                 if(attrs.activeModelLeft){
                                     attrs.leftAttrs.setHead(1)
                                 }
@@ -1175,7 +1175,7 @@ const handleSubmission = () => {
                             <div className="ends-inspector">
                                 <div className='ends-selection'>
                                     <button className={attrs.model=="lattice-insulated"?attrs.activeModelLeft?attrs.leftAttrs.selectedEnd == 0?'selectedhead beveled':'beveled':attrs.rightAttrs.selectedEnd == 0?'selectedend beveled':'beveled':attrs.model=='mixed'?attrs.activeModelLeft?attrs.leftAttrs.selectedEnd == 0?'selectedend beveled':'beveled':attrs.activeModelMiddle?attrs.middleAttrs.selectedEnd == 0?'selectedend beveled':'beveled':attrs.rightAttrs.selectedEnd == 0?"selectedend beveled":"beveled":attrs.selectedEnd == 0 ? 'selectedend beveled' : 'beveled'} onClick={() => {
-                            if(attrs.model="mixed"){
+                            if(attrs.model=="mixed"){
                                 if(attrs.activeModelLeft){
                                     attrs.leftAttrs.setEnd(0)
                                 }
@@ -1199,7 +1199,7 @@ const handleSubmission = () => {
                                 </div>
                                 <div className='ends-selection'>
                                     <button className={attrs.model=="lattice-insulated"?attrs.activeModelLeft?attrs.leftAttrs.selectedEnd == 1?'selectedhead mitered':'mitered':attrs.rightAttrs.selectedEnd == 1?'selectedend mitered':'mitered':attrs.model=='mixed'?attrs.activeModelLeft?attrs.leftAttrs.selectedEnd == 1?'selectedend mitered':'mitered':attrs.activeModelMiddle?attrs.middleAttrs.selectedEnd == 1?'selectedend mitered':'mitered':attrs.rightAttrs.selectedEnd == 1?"selectedend mitered":"mitered":attrs.selectedEnd == 1 ? 'selectedend mitered' : 'mitered'} onClick={() => {
-                            if(attrs.model="mixed"){
+                            if(attrs.model=="mixed"){
                                 if(attrs.activeModelLeft){
                                     attrs.leftAttrs.setEnd(1)
                                 }
@@ -1223,7 +1223,7 @@ const handleSubmission = () => {
                                 </div>
                                 <div className='ends-selection'>
                                     <button className={attrs.model=="lattice-insulated"?attrs.activeModelLeft?attrs.leftAttrs.selectedEnd == 2?'selectedhead corbel':'corbel':attrs.rightAttrs.selectedEnd == 2?'selectedend corbel':'corbel':attrs.model=='mixed'?attrs.activeModelLeft?attrs.leftAttrs.selectedEnd == 2?'selectedend corbel':'corbel':attrs.activeModelMiddle?attrs.middleAttrs.selectedEnd == 2?'selectedend corbel':'corbel':attrs.rightAttrs.selectedEnd == 2?"selectedend corbel":"corbel":attrs.selectedEnd == 2 ? 'selectedend corbel' : 'corbel'} onClick={() => {
-                            if(attrs.model="mixed"){
+                            if(attrs.model=="mixed"){
                                 if(attrs.activeModelLeft){
                                     attrs.leftAttrs.setEnd(2)
                                 }
@@ -1247,7 +1247,7 @@ const handleSubmission = () => {
                                 </div>
                                 <div className='ends-selection'>
                                     <button className={attrs.model=="lattice-insulated"?attrs.activeModelLeft?attrs.leftAttrs.selectedEnd == 3?'selectedhead scallop':'scallop':attrs.rightAttrs.selectedEnd == 3?'selectedend scallop':'scallop':attrs.model=='mixed'?attrs.activeModelLeft?attrs.leftAttrs.selectedEnd == 3?'selectedend scallop':'scallop':attrs.activeModelMiddle?attrs.middleAttrs.selectedEnd == 3?'selectedend scallop':'scallop':attrs.rightAttrs.selectedEnd == 3?"selectedend scallop":"scallop":attrs.selectedEnd == 3 ? 'selectedend scallop' : 'scallop'} onClick={() => {
-                            if(attrs.model="mixed"){
+                            if(attrs.model=="mixed"){
                                 if(attrs.activeModelLeft){
                                     attrs.leftAttrs.setEnd(3)
                                 }
@@ -1286,8 +1286,8 @@ const handleSubmission = () => {
 
                 <div className="rafter-selector">
                     {attrs.model=="lattice-insulated" && (<div className="rafter-sizing" style={{'padding':"0.0em"}}>
-                                <button className={!attrs.activeModelRight? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelRight(false);}}>Insulated</button>
-                                <button className={attrs.activeModelRight? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelRight(true);}}>Lattice</button>
+                                <button className={attrs.activeModelLeft? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelLeft(true);}}>Insulated</button>
+                                <button className={!attrs.activeModelLeft? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelLeft(false);}}>Lattice</button>
                             </div>)}
                             {attrs.model=="mixed" && (<div className="rafter-sizing" style={{'padding':"0.0em"}}>
                                 <button className={attrs.activeModelLeft? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelLeft(true);attrs.setActiveModelMiddle(false);attrs.setActiveModelRight(false)}}>Left</button>
@@ -1302,7 +1302,7 @@ const handleSubmission = () => {
                         key={index}
                         className={attrs.model=="lattice-insulated"?attrs.activeModelLeft?attrs.leftAttrs.postType===index?'activeMountMode':'':attrs.rightAttrs.postType===index?'activeMountMode':'':attrs.model=='mixed'?attrs.activeModelLeft?attrs.leftAttrs.postType===index?'activeMountMode':'':attrs.activeModelMiddle?attrs.middleAttrs.postType===index?'activeMountMode':'':attrs.rightAttrs.postType===index?"activeMountMode":"":attrs.postType === index ? 'activeMountMode' : ''}
                         onClick={() => {
-                            if(attrs.model="mixed"){
+                            if(attrs.model=="mixed"){
                                 if(attrs.activeModelLeft){
                                     attrs.leftAttrs.setPostType(index)
                                 }
@@ -1351,8 +1351,8 @@ const handleSubmission = () => {
 
                     <div className="rafter-selector">
                     {attrs.model=="lattice-insulated" && (<div className="rafter-sizing" style={{'padding':"0"}}>
-                                <button className={!attrs.activeModelRight? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelRight(false);}}>Insulated</button>
-                                <button className={attrs.activeModelRight? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelRight(true);}}>Lattice</button>
+                                <button className={attrs.activeModelLeft? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelLeft(true);}}>Insulated</button>
+                                <button className={!attrs.activeModelLeft? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelLeft(false);}}>Lattice</button>
                             </div>)}
                             {attrs.model=="mixed" && (<div className="rafter-sizing" style={{'padding':"0.0"}}>
                                 <button className={attrs.activeModelLeft? "activeMountMode":"rafterButton"} onClick={() =>{attrs.setActiveModelLeft(true);attrs.setActiveModelMiddle(false);attrs.setActiveModelRight(false)}}>Left</button>
@@ -1377,7 +1377,7 @@ const handleSubmission = () => {
                             <div className="ends-inspector">
                                 <div className='ends-selection'>
                                     <button className={attrs.model=="lattice-insulated"?attrs.activeModelLeft?attrs.leftAttrs.selectedRafterEndCaps == 0?'selectedhead beveled':'beveled':attrs.rightAttrs.selectedRafterEndCaps == 0?'selectedend beveled':'beveled':attrs.model=='mixed'?attrs.activeModelLeft?attrs.leftAttrs.selectedRafterEndCaps == 0?'selectedend beveled':'beveled':attrs.activeModelMiddle?attrs.middleAttrs.selectedRafterEndCaps == 0?'selectedend beveled':'beveled':attrs.rightAttrs.selectedRafterEndCaps == 0?"selectedend beveled":"beveled":attrs.selectedRafterEndCaps == 0 ? 'selectedend beveled' : 'beveled'} onClick={() => {
-                            if(attrs.model="mixed"){
+                            if(attrs.model=="mixed"){
                                 if(attrs.activeModelLeft){
                                     attrs.leftAttrs.setRafterEndCaps(0)
                                 }
@@ -1403,7 +1403,7 @@ const handleSubmission = () => {
                                 </div>
                                 <div className='ends-selection'>
                                     <button className={attrs.model=="lattice-insulated"?attrs.activeModelLeft?attrs.leftAttrs.selectedRafterEndCaps == 1?'selectedhead mitered':'mitered':attrs.rightAttrs.selectedRafterEndCaps == 1?'selectedend mitered':'mitered':attrs.model=='mixed'?attrs.activeModelLeft?attrs.leftAttrs.selectedRafterEndCaps == 1?'selectedend mitered':'mitered':attrs.activeModelMiddle?attrs.middleAttrs.selectedRafterEndCaps == 1?'selectedend mitered':'mitered':attrs.rightAttrs.selectedRafterEndCaps == 1?"selectedend mitered":"mitered":attrs.selectedRafterEndCaps == 1 ? 'selectedend mitered' : 'mitered'} onClick={() => {
-                            if(attrs.model="mixed"){
+                            if(attrs.model=="mixed"){
                                 if(attrs.activeModelLeft){
                                     attrs.leftAttrs.setRafterEndCaps(1)
                                 }
@@ -1429,7 +1429,7 @@ const handleSubmission = () => {
                                 </div>
                                 <div className='ends-selection'>
                                     <button className={attrs.model=="lattice-insulated"?attrs.activeModelLeft?attrs.leftAttrs.selectedRafterEndCaps == 2?'selectedhead corbel':'corbel':attrs.rightAttrs.selectedRafterEndCaps == 2?'selectedend corbel':'corbel':attrs.model=='mixed'?attrs.activeModelLeft?attrs.leftAttrs.selectedRafterEndCaps == 2?'selectedend corbel':'corbel':attrs.activeModelMiddle?attrs.middleAttrs.selectedRafterEndCaps == 2?'selectedend corbel':'corbel':attrs.rightAttrs.selectedRafterEndCaps == 2?"selectedend corbel":"corbel":attrs.selectedRafterEndCaps == 2 ? 'selectedend corbel' : 'corbel'} onClick={() => {
-                            if(attrs.model="mixed"){
+                            if(attrs.model=="mixed"){
                                 if(attrs.activeModelLeft){
                                     attrs.leftAttrs.setRafterEndCaps(2)
                                 }
@@ -1455,7 +1455,7 @@ const handleSubmission = () => {
                                 </div>
                                 <div className='ends-selection'>
                                     <button className={attrs.model=="lattice-insulated"?attrs.activeModelLeft?attrs.leftAttrs.selectedRafterEndCaps == 3?'selectedhead scallop':'scallop':attrs.rightAttrs.selectedRafterEndCaps == 3?'selectedend scallop':'scallop':attrs.model=='mixed'?attrs.activeModelLeft?attrs.leftAttrs.selectedRafterEndCaps == 3?'selectedend scallop':'scallop':attrs.activeModelMiddle?attrs.middleAttrs.selectedRafterEndCaps == 3?'selectedend scallop':'scallop':attrs.rightAttrs.selectedRafterEndCaps == 3?"selectedend scallop":"scallop":attrs.selectedRafterEndCaps == 3 ? 'selectedend scallop' : 'scallop'} onClick={() => {
-                            if(attrs.model="mixed"){
+                            if(attrs.model=="mixed"){
                                 if(attrs.activeModelLeft){
                                     attrs.leftAttrs.setRafterEndCaps(3)
                                 }

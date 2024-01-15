@@ -2,10 +2,13 @@ import { Grid } from "@mui/material";
 import MainCard from "../../MainCard";
 import Filters from "../CustomerSection/Filters";
 import Table from "../CustomerSection/Table";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import mockData from "../../../utils/mockData";
 import { SnackbarContext } from "../../../context/snackBar-context";
 import LeadSelected from "./LeadSelected";
+import { useAuth } from "@/context/auth-context";
+import { fetchLeads } from "@/api/customers";
+import { v4 as uuidv4 } from 'uuid';
 
 const initialColumns = [
   { field: "fullName", headerName: "Full Name", flex: 1.5 },
@@ -26,13 +29,51 @@ const initialColumns = [
 ];
 
 export default function LeadsSection() {
-  const [leadList, setLeadList] = useState(mockData.leadsTable);
+  const [leadList, setLeadList] = useState([]);
+  const [leads, setLeads] = useState([]);
   const showSnackbar = useContext(SnackbarContext);
   const [leadSelected, setLeadSelected] = useState(mockData.leadsTable[0]);
+  const { user } = useAuth();
 
   const handleLeadSelection = (leadSelected) => {
     setLeadSelected(leadSelected);
   };
+
+  useEffect(() => {
+    // Fetch the existing leads when the component mounts
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/leads');
+        const data = await response.json();
+        setLeads(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if(user){
+      let dealerLeads = []
+      leads.map(item => {
+        if(item.projectLocation == user.zipCodes[0]){
+          dealerLeads.push({
+            'fullName':`${item.moreInfo.firstName} ${item.moreInfo.lastName}`,
+            'email': item.moreInfo.email,
+            'phoneNumber':item.moreInfo.phone,
+            'zipCode':item.projectLocation,
+            'id':uuidv4(),
+            'pergolaModel':item.typeOfProject,
+            'typeOfProperty':item.typeOfProperty,
+            'address':`${item.projectAddress.streetAddress}, ${item.projectAddress.city}, ${item.projectAddress.state}`
+        })
+        }
+    })
+    setLeadList(dealerLeads)
+  }
+  },[leads])
 
   const handleDeleteLead = (id) => {
     const updatedLeadList = leadList.filter((lead) => lead.id !== id);
@@ -64,7 +105,7 @@ export default function LeadsSection() {
             <MainCard>
               <Table
                 onSelect={handleLeadSelection}
-                tableRows={leadList}
+                tableRows={leadList?leadList:mockData.leadsTable}
                 initialColumns={initialColumns}
               />
             </MainCard>

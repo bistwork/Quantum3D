@@ -1,5 +1,5 @@
 import { generateClient } from "aws-amplify/api";
-import { customersByUserId } from "./graphql/queries";
+import { customersByUserId, listCustomers } from "./graphql/queries";
 import { createCustomer, updateCustomer } from "./graphql/mutations";
 
 const client = generateClient();
@@ -45,3 +45,30 @@ export const updateCustomerFunc = async (updateInput) => {
     throw error;
   }
 };
+
+export const fetchLeads = async (zipCode) => {
+  try {
+    const listCustomerData = await client.graphql({
+      query: listCustomers,
+    });
+    let leads = []
+    console.log("items",listCustomerData.data.listCustomers.items)
+    listCustomerData.data.listCustomers.items.map(item =>{
+      console.log(`My Zipcode ${zipCode} vs ${item.projectAddress.zipcode}`)
+      if(item.projectAddress.zipcode == zipCode){
+        leads.push({
+          'fullName':`${item.primaryInfo.firstName} ${item.primaryInfo.lastName}`,
+          'email': item.primaryInfo.email,
+          'phoneNumber':item.primaryInfo.primaryPhone,
+          'zipCode':item.projectAddress.zipCode,
+          'id':item.id,
+      })
+      }
+    });
+    console.log(leads);
+    return leads;
+  } catch (error) {
+    console.error("error updating customer data:", error);
+    throw error;
+  }
+}

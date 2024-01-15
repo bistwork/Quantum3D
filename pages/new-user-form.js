@@ -1,5 +1,5 @@
 import { Box, Fade } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LocationProject from "../components/Sections/NewUserFormSection/LocationProject";
 import TypeOfProject from "../components/Sections/NewUserFormSection/TypeOfProject";
 import ProjectFullAddress from "../components/Sections/NewUserFormSection/ProjectFullAddress";
@@ -9,13 +9,14 @@ import MoreInfo from "../components/Sections/NewUserFormSection/MoreInfo";
 import UserAgreement from "../components/Sections/NewUserFormSection/UserAgreement";
 import ThankYou from "../components/Sections/NewUserFormSection/ThankYou";
 import withPublicAccess from "../hooks/withPublicAccess";
+import { saveAs } from 'file-saver';
 
 function NewUserForm() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [data, setData] = useState({});
   const [showComponent, setShowComponent] = useState(true);
+  const [leads, setLeads] = useState([]);
 
-  console.log("data", data);
 
   const sections = [
     { Component: LocationProject, key: "location", field: "projectLocation" },
@@ -44,6 +45,41 @@ function NewUserForm() {
       setShowComponent(true);
     }, 500);
   };
+
+  useEffect(() => {
+    // Fetch the existing leads when the component mounts
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/leads');
+        const data = await response.json();
+        setLeads(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+  useEffect(() => {
+    if(data.userAgreement){
+
+      try {
+        fetch('/api/leads', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+  
+
+      } catch (error) {
+        console.error('Error adding lead:', error);
+      }
+  }
+  },[data]);
 
   const components = sections.map((section, index) => (
     <section.Component

@@ -118,23 +118,22 @@ export const getCustomer = /* GraphQL */ `
   }
 `;
 export const listCustomers = /* GraphQL */ `
-  query ListCustomers(
-    $filter: ModelCustomerFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listCustomers(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        userId
-        createdAt
-        updatedAt
-        __typename
+query MyQuery {
+  listCustomers {
+    items {
+      primaryInfo {
+        firstName
+        lastName
+        primaryPhone
+        email
       }
-      nextToken
-      __typename
+      projectAddress {
+        zipcode
+      }
+      id
     }
   }
+}
 `;
 export const customersByUserId = /* GraphQL */ `
   query CustomersByUserId(

@@ -177,7 +177,7 @@ const handleSubmission = () => {
         if (isCheckbox1Checked && isCheckbox2Checked) {
           // Perform your submission logic here
           // For example, redirect to the link
-          createNotification(attrs.orderId);
+          createNotification(attrs.comId);
           updateOrder();
           window.location.href = "https://www.oasispatiosystems.com/";
         }
@@ -427,7 +427,7 @@ const handleSubmission = () => {
             console.log(response.data);
             if(response.data.errors==null) {
                 setOrderCreated(true);
-                createOrderNotification(orderId)
+                createOrderNotification(comId)
             }
 
         })
@@ -1575,7 +1575,7 @@ const handleSubmission = () => {
                 
             </div></>;
         case 6:
-            if(attrs.dealerId!=null){return <><div className="PergolaSelectionTab overview">
+            if(attrs.orderId==null){return <><div className="PergolaSelectionTab overview">
                 <div className="share-config-container">
                     <img src="/textures/logo.webp" className='logo'/>
                     {/* <button className='share-config' onClick={()=>{setShowLink(true)}}>SHARE</button>
@@ -1780,12 +1780,6 @@ const handleSubmission = () => {
             <div className="PergolaSelectionTab overview">
                 <div className="share-config-container">
                     <img src="/textures/logo.webp" className='logo'/>
-                    {/* <button className='share-config' onClick={()=>{setShowLink(true)}}>SHARE</button>
-                    {showLink && (
-                    <div className="share-link-container">
-                        <input className="share-link" type="text" value={shareableLink} readOnly />
-                    </div>
-                    )} */}
                 </div>
                 <div className="overview-container">
                     <div className='overview-table'>
@@ -1942,23 +1936,6 @@ const handleSubmission = () => {
                             </tbody>
                         </table>
                     </div>
-                    
-                    {/* <div className='get-estimate-container'>
-                        <button className='get-estimate-button' onClick={()=>{openPopup()}}>GET ESTIMATE</button>
-                        <Popup isOpen={isPopupOpen} onClose={closePopup} onSend={()=>{console.log(getQuote())}}>
-                            <form className='popup-form'>
-                            <div className="form-selection-block" errormessages="this field is required"><label className="form-label" data-shrink="false" htmlFor=":aa:" id=":aa:-label">First Name<span aria-hidden="true" className="asterisk"> *</span></label><div className="input-container"><input aria-invalid="false" id=":aa:" name="firstName" required type="text" className="form-input" /></div></div>
-                            <div className="form-selection-block" errormessages="this field is required"><label className="form-label" data-shrink="false" htmlFor=":ab:" id=":ab:-label">Last Name<span aria-hidden="true" className="asterisk"> *</span></label><div className="input-container"><input aria-invalid="false" id=":ab:" name="lastName" required type="text" className="form-input" /></div></div>
-                            <div className="form-selection-block" errormessages="this field is required"><label className="form-label" data-shrink="false" htmlFor=":ac:" id=":ac:-label">Email<span aria-hidden="true" className="asterisk"> *</span></label><div className="input-container"><input aria-invalid="false" id=":ac:" name="lastName" required type="text" className="form-input" /></div></div>
-                            <div className="form-selection-block" errormessages="this field is required"><label className="form-label" data-shrink="false" htmlFor=":ad:" id=":ad:-label">Phone<span aria-hidden="true" className="asterisk"> *</span></label><div className="input-container"><input aria-invalid="false" id=":ad:" name="lastName" required type="text" className="form-input" /></div></div>
-                            <div className="form-selection-block" errormessages="this field is required"><label className="form-label" data-shrink="false" htmlFor=":ae:" id=":ae:-label">Address<span aria-hidden="true" className="asterisk"> *</span></label><div className="input-container"><input aria-invalid="false" id=":ae:" name="lastName" required type="text" className="form-input" /></div></div>
-                            <div className="form-selection-block" errormessages="this field is required"><label className="form-label" data-shrink="false" htmlFor=":af:" id=":af:-label">Zip code<span aria-hidden="true" className="asterisk"> *</span></label><div className="input-container"><input aria-invalid="false" id=":af:" name="lastName" required type="text" className="form-input" /></div></div>
-                            <div className="form-selection-block" errormessages="this field is required"><label className="form-label" data-shrink="false" htmlFor=":ag:" id=":ag:-label">City<span aria-hidden="true" className="asterisk"> *</span></label><div className="input-container"><input aria-invalid="false" id=":ag:" name="lastName" required type="text" className="form-input" /></div></div>
-                            <div className="form-selection-block" errormessages="this field is required"><label className="form-label" data-shrink="false" htmlFor=":ah:" id=":ah:-label">How did you hear about us?</label><div className="input-container"><input aria-invalid="false" id=":ah:" name="lastName" required type="text" className="form-input" /></div></div>
-                            <div className="form-selection-block" errormessages="this field is required"><label className="form-label" data-shrink="false" htmlFor=":ah:" id=":ah:-label">Message</label><div className="input-container"><input aria-invalid="false" id=":ah:" name="lastName" required type="text" className="form-input" /></div></div>
-                            </form>
-                        </Popup>
-                    </div> */}
                 </div>
             </div>
             </>;}

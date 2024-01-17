@@ -265,9 +265,9 @@ const rafterProjectionScale = rafterDims ? (projection) / rafterDims.width : 1;
 let numberOfBeams = Math.floor(width/spacingBeams);
 if(attrs.mountMode!=3){
   for (let i = 0; i <= numberOfBeams; i++) {
-    const position = [i*((width-4*rafterDims.depth)/numberOfBeams)-width/2+2*rafterDims.depth, height+rafterDims.height/2,projection/2+.2/SCALE];
-    rafters.push(<Model key={i} url=".\models\lattice_one_sided_beam.glb"position={position} name={"rafter"} rotation={[0, Math.PI / 2, 0]} scale={[rafterProjectionScale+.2/SCALE, 1,1]} mat_index={[attrs.materials['rafter']]}/>);
-    const rafterEnd1Position = [i*((width-4*rafterDims.depth)/numberOfBeams)-width/2+2*rafterDims.depth, height+rafterDims.height/2,projection+.5/SCALE];
+    const position = [i*((width-4*rafterDims.depth)/numberOfBeams)-width/2+2*rafterDims.depth, height+rafterDims.height/2,projection/2+0.4/SCALE];
+    rafters.push(<Model key={i} url=".\models\lattice_one_sided_beam.glb"position={position} name={"rafter"} rotation={[0, Math.PI / 2, 0]} scale={[rafterProjectionScale+0.4/SCALE, 1,1]} mat_index={[attrs.materials['rafter']]}/>);
+    const rafterEnd1Position = [i*((width-4*rafterDims.depth)/numberOfBeams)-width/2+2*rafterDims.depth, height+rafterDims.height/2,projection+1/SCALE];
     rafterEnds.push(<Model key={i} url={ends[attrs.selectedRafterEndCaps]}position={rafterEnd1Position} name={"rafter"} rotation={[0, -Math.PI / 2, 0]} scale={[1,1,1]} mat_index={[attrs.materials['rafter']]}/>);
   }
 }
@@ -289,14 +289,21 @@ const lattices = [];
 lattices.push(<Model key={null} url=".\models\lattice_rafter.glb" position={THRASH} name={"lattice"} rotation={[0, Math.PI / 2, 0]} onLoadCallback={setLatticeDims}/>)
 
 const spacingRafters = rafterSize;
-
-
-
 const latticeWidthScale = latticeDims ? width / latticeDims.depth : 1;
-let numberOfRafters = Math.floor(projection/spacingRafters);
-for (let i = 0; i <= numberOfRafters; i++) {
-  const position = [0, height+beamDims.height,i*(projection/numberOfRafters)];
-  lattices.push(<Model key={i} url=".\models\lattice_rafter.glb" position={position} name={"lattice"} rotation={[0, Math.PI / 2, 0]} scale={[1,1,latticeWidthScale]} mat_index={[attrs.materials['option']]}/>);
+if(attrs.mountMode!=3){
+  let numberOfRafters = Math.floor((projection)/spacingRafters);
+  for (let i = 0; i <= numberOfRafters; i++) {
+    const position = [0, height+beamDims.height+latticeDims.height*0.5,i*((projection+1.5/SCALE)/numberOfRafters)];
+    lattices.push(<Model key={i} url=".\models\lattice_rafter.glb" position={position} name={"lattice"} rotation={[0, Math.PI / 2, 0]} scale={[1,1,latticeWidthScale]} mat_index={[attrs.materials['option']]}/>);
+  }
+}
+else{
+  let numberOfRafters = Math.floor((projection)/spacingRafters);
+  for (let i = 0; i <= numberOfRafters; i++) {
+    const position = [0, height+beamDims.height+latticeDims.height*0.5,i*((projection+2/SCALE)/numberOfRafters)-(1/SCALE)];
+    lattices.push(<Model key={i} url=".\models\lattice_rafter.glb" position={position} name={"lattice"} rotation={[0, Math.PI / 2, 0]} scale={[1,1,latticeWidthScale]} mat_index={[attrs.materials['option']]}/>);
+  }
+
 }
 // ---------------------------END LATTICES---------------------------------
 let cbs =  null;
@@ -514,18 +521,18 @@ const rafterProjectionScale = rafterDims ? (projection) / rafterDims.width : 1;
 let numberOfBeams = Math.floor(width/spacingBeams);
 if(attrs.mountMode!=3){
   for (let i = 0; i <= numberOfBeams; i++) {
-    const position = [i*((width)/numberOfBeams)-width/2, height+rafterDims.height/2,projection+0.3/SCALE];
-    rafters.push(<Model key={i} url=".\models\lattice_one_sided_beam.glb"position={position} name={"rafter"} rotation={[0, Math.PI / 2, 0]} scale={[rafterEndDims.depth+0.1/SCALE, 1,1]} mat_index={[attrs.materials['rafter']]}/>);
-    const rafterEnd1Position = [i*((width)/numberOfBeams)-width/2, height+rafterDims.height/2,projection+0.5/SCALE];
+    const position = [i*((width)/numberOfBeams)-width/2, height+rafterDims.height/2,projection+0.8/SCALE];
+    rafters.push(<Model key={i} url=".\models\lattice_one_sided_beam.glb"position={position} name={"rafter"} rotation={[0, Math.PI / 2, 0]} scale={[rafterEndDims.depth-0.25/SCALE, 1,1]} mat_index={[attrs.materials['rafter']]}/>);
+    const rafterEnd1Position = [i*((width)/numberOfBeams)-width/2, height+rafterDims.height/2,projection+1/SCALE];
     rafterEnds.push(<Model key={i} url={ends[attrs.selectedRafterEndCaps]}position={rafterEnd1Position} name={"rafter"} rotation={[0, -Math.PI / 2, 0]} scale={[1,1,1]} mat_index={[attrs.materials['rafter']]}/>);
   }
 }
 else{
   for (let i = 0; i <= numberOfBeams; i++) {
     for(let n=0;n<2;n++){
-      const position = [i*((width)/numberOfBeams)-width/2, height+rafterDims.height/2,n*(projection+0.5/SCALE)-0.25/SCALE];
-      rafters.push(<Model key={generateRandomString(5)} url=".\models\lattice_one_sided_beam.glb"position={position} name={"rafter"} rotation={[0, Math.PI / 2, 0]} scale={[rafterEndDims.depth+0.1/SCALE, 1,1]} mat_index={[attrs.materials['rafter']]}/>);
-      const rafterEnd1Position = [i*((width)/numberOfBeams)-width/2, height+rafterDims.height/2,n*(projection-rafterEndDims.depth/2+1/SCALE)-0.5/SCALE];
+      const position = [i*((width)/numberOfBeams)-width/2, height+rafterDims.height/2,n*(projection+1.6/SCALE)-0.8/SCALE];
+      rafters.push(<Model key={generateRandomString(5)} url=".\models\lattice_one_sided_beam.glb"position={position} name={"rafter"} rotation={[0, Math.PI / 2, 0]} scale={[rafterEndDims.depth-0.25/SCALE, 1,1]} mat_index={[attrs.materials['rafter']]}/>);
+      const rafterEnd1Position = [i*((width)/numberOfBeams)-width/2, height+rafterDims.height/2,n*(projection-rafterEndDims.depth/2+2/SCALE)-1/SCALE];
       rafterEnds.push(<Model key={generateRandomString(5)} url={ends[attrs.selectedRafterEndCaps]}position={rafterEnd1Position} name={"rafter"} rotation={[0, n*2*-Math.PI / 2+Math.PI/2, 0]} scale={[1,1,1]} mat_index={[attrs.materials['rafter']]}/>);
     }
   }
@@ -537,22 +544,44 @@ else{
 const insulateds = [];
 insulateds.push(<Model key={null} url=".\models\lattice_rafter.glb" position={THRASH} name={"insulated"} rotation={[0, Math.PI / 2, 0]} onLoadCallback={setLatticeDims}/>)
 
-const spacingRafters = 4/SCALE;
-const latticeWidthScale = latticeDims ? projection / latticeDims.depth : 1;
-let numberOfRafters = Math.floor(width/(spacingRafters));
-for (let i = 0; i <= numberOfRafters; i++) {
-  const position = [width/numberOfRafters*i-width/2, height+beamDims.height/4,(projection/2)];
-  insulateds.push(<Model key={i} url=".\models\lattice_rafter.glb" position={position} name={"insulated"} rotation={[0, 0, 0]} scale={[rafterSize/latticeDims.width,1,latticeWidthScale]} mat_index={[attrs.materials['option']]}/>);
+if(attrs.mountMode!=3){
+  const spacingRafters = 4/SCALE;
+  const latticeWidthScale = latticeDims ? (projection+.7/SCALE) / latticeDims.depth : 1;
+  let numberOfRafters = Math.floor(width/(spacingRafters));
+  for (let i = 0; i <= numberOfRafters; i++) {
+    const position = [width/numberOfRafters*i-width/2, height+beamDims.height/4,(projection/2)+.35/SCALE];
+    insulateds.push(<Model key={i} url=".\models\lattice_rafter.glb" position={position} name={"insulated"} rotation={[0, 0, 0]} scale={[rafterSize/latticeDims.width,1,latticeWidthScale]} mat_index={[attrs.materials['option']]}/>);
+  }
+  const platePosition = [0,height,(projection/2)+.35/SCALE];
+  insulateds.push(<Model key={generateRandomString(5)} url=".\models\lattice_rafter.glb" position={platePosition} name={"insulated"} rotation={[0, Math.PI/2, 0]} scale={[(projection+0.7/SCALE)/latticeDims.height,1,width/latticeDims.depth]} mat_index={[attrs.materials['option']]}/>);
+  for (let i = 0; i <= 1; i++) {
+    const position1 = [0, height+beamDims.height/2,i*(projection+.7/SCALE)];
+    insulateds.push(<Model key={generateRandomString(6)} url=".\models\lattice_rafter.glb" position={position1} name={"insulated"} rotation={[0, Math.PI/2, 0]} scale={[rafterSize/latticeDims.width,0.5/SCALE/latticeDims.height,width/latticeDims.depth]} mat_index={[attrs.materials['option']]}/>);
+    const position2 = [(-width/2+latticeDims.width/2)+width*i, height+beamDims.height/2,(projection/2)+.35/SCALE];
+    insulateds.push(<Model key={generateRandomString(6)} url=".\models\lattice_rafter.glb" position={position2} name={"insulated"} rotation={[0, 0, 0]} scale={[rafterSize/latticeDims.width,0.5/SCALE/latticeDims.height,(projection+.7/SCALE)/latticeDims.depth]} mat_index={[attrs.materials['option']]}/>);
+    const position3 = [-width/2+width*i, height+beamDims.height/2,(projection/2+.35/SCALE)];
+    insulateds.push(<Model key={generateRandomString(6)} url=".\models\lattice_rafter.glb" position={position3} name={"insulated"} rotation={[0, 0, 0]} scale={[rafterSize/latticeDims.width,0.5/SCALE/latticeDims.height,(projection+.7/SCALE)/latticeDims.depth]} mat_index={[attrs.materials['option']]}/>);
+  }
+  
 }
-const platePosition = [0,height,(projection/2)];
-insulateds.push(<Model key={generateRandomString(5)} url=".\models\lattice_rafter.glb" position={platePosition} name={"insulated"} rotation={[0, Math.PI/2, 0]} scale={[projection/latticeDims.height,1,width/latticeDims.depth]} mat_index={[attrs.materials['option']]}/>);
-for (let i = 0; i <= 1; i++) {
-  const position1 = [0, height+beamDims.height/2,(projection*i)];
-  insulateds.push(<Model key={generateRandomString(6)} url=".\models\lattice_rafter.glb" position={position1} name={"insulated"} rotation={[0, Math.PI/2, 0]} scale={[rafterSize/latticeDims.width,0.5/SCALE/latticeDims.height,width/latticeDims.depth]} mat_index={[attrs.materials['option']]}/>);
-  const position2 = [(-width/2+latticeDims.width/2)+width*i, height+beamDims.height/2,(projection/2)];
-  insulateds.push(<Model key={generateRandomString(6)} url=".\models\lattice_rafter.glb" position={position2} name={"insulated"} rotation={[0, 0, 0]} scale={[rafterSize/latticeDims.width,0.5/SCALE/latticeDims.height,projection/latticeDims.depth]} mat_index={[attrs.materials['option']]}/>);
-  const position3 = [-width/2+width*i, height+beamDims.height/2,(projection/2)];
-  insulateds.push(<Model key={generateRandomString(6)} url=".\models\lattice_rafter.glb" position={position3} name={"insulated"} rotation={[0, 0, 0]} scale={[rafterSize/latticeDims.width,0.5/SCALE/latticeDims.height,projection/latticeDims.depth]} mat_index={[attrs.materials['option']]}/>);
+else{
+  const spacingRafters = 4/SCALE;
+  const latticeWidthScale = latticeDims ? (projection+1.4/SCALE) / latticeDims.depth : 1;
+  let numberOfRafters = Math.floor(width/(spacingRafters));
+  for (let i = 0; i <= numberOfRafters; i++) {
+    const position = [width/numberOfRafters*i-width/2, height+beamDims.height/4,(projection/2)];
+    insulateds.push(<Model key={i} url=".\models\lattice_rafter.glb" position={position} name={"insulated"} rotation={[0, 0, 0]} scale={[rafterSize/latticeDims.width,1,latticeWidthScale]} mat_index={[attrs.materials['option']]}/>);
+  }
+  const platePosition = [0,height,(projection/2)];
+  insulateds.push(<Model key={generateRandomString(5)} url=".\models\lattice_rafter.glb" position={platePosition} name={"insulated"} rotation={[0, Math.PI/2, 0]} scale={[(projection+1.4/SCALE)/latticeDims.height,1,width/latticeDims.depth]} mat_index={[attrs.materials['option']]}/>);
+  for (let i = 0; i <= 1; i++) {
+    const position1 = [0, height+beamDims.height/2,i*(projection+1.4/SCALE)-0.7/SCALE];
+    insulateds.push(<Model key={generateRandomString(6)} url=".\models\lattice_rafter.glb" position={position1} name={"insulated"} rotation={[0, Math.PI/2, 0]} scale={[rafterSize/latticeDims.width,0.5/SCALE/latticeDims.height,width/latticeDims.depth]} mat_index={[attrs.materials['option']]}/>);
+    const position2 = [(-width/2+latticeDims.width/2)+width*i, height+beamDims.height/2,(projection/2)];
+    insulateds.push(<Model key={generateRandomString(6)} url=".\models\lattice_rafter.glb" position={position2} name={"insulated"} rotation={[0, 0, 0]} scale={[rafterSize/latticeDims.width,0.5/SCALE/latticeDims.height,(projection+1.4/SCALE)/latticeDims.depth]} mat_index={[attrs.materials['option']]}/>);
+    const position3 = [-width/2+width*i, height+beamDims.height/2,(projection/2)];
+    insulateds.push(<Model key={generateRandomString(6)} url=".\models\lattice_rafter.glb" position={position3} name={"insulated"} rotation={[0, 0, 0]} scale={[rafterSize/latticeDims.width,0.5/SCALE/latticeDims.height,(projection+1.4/SCALE)/latticeDims.depth]} mat_index={[attrs.materials['option']]}/>);
+  }
 }
 // ---------------------------END INSULATEDS---------------------------------
 let cbs =  null;

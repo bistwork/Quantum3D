@@ -3,6 +3,7 @@ import Popup from './Popup';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import { nanoid } from 'nanoid';
+import { defaultConfig } from 'next/dist/server/config-shared';
 
 const PergolaSelectionTab = ({attrs})=>{
     const [showLink, setShowLink] = useState(false);
@@ -13,8 +14,69 @@ const PergolaSelectionTab = ({attrs})=>{
     const [clients, setClients] = useState(null);
     const [loading, setLoading] = useState(true);
     const [orderCreated,setOrderCreated] = useState(false);
+    const [dealerDiscount,setDealerDiscount] = useState(null);
+    const [isCheckbox1Checked, setIsCheckbox1Checked] = useState(false);
+    const [isCheckbox2Checked, setIsCheckbox2Checked] = useState(false);
 
-    
+    const calculateDiscount = ()=>{
+          
+        useMemo(() => {
+          const fetchData = async () => {
+              try {
+                  const apiKey = 'da2-dz4zldsidrdexe5wx2bfz4dhpm';
+                  const apiUrl = 'https://lzm2bp7eunag3la2hfq6oyyyq4.appsync-api.us-west-2.amazonaws.com/graphql';
+                  const query = `
+                  query ListCustomersByUser {
+                      getUser(id:"${attrs.dealerId}"){
+                          tierId
+                      }
+                }
+                `;
+  
+          const response = await axios.post(
+            apiUrl,
+            {
+              query: query,
+              variables: {
+                  userId: String(attrs.dealerId) // Replace with the actual user ID
+              }
+          },
+            {
+              headers: {
+                  'x-api-key': apiKey,
+                  'Content-Type': 'application/json'
+              }
+          }
+          );
+          
+          const fetchedDiscount = response.data.data.getUser.tierId;
+          switch(fetchedDiscount){
+                case "Tier0":
+                    setDealerDiscount(0)
+                    break;
+                case "Tier1":
+                    setDealerDiscount(0.05)
+                    break;
+                case "Tier2":
+                    setDealerDiscount(0.1)
+                    break;
+                case "Tier3":
+                    setDealerDiscount(0.25);
+                  break;
+                default:
+                    setDealerDiscount(0)
+                    break;
+          }
+      } catch (error) {
+          console.error('Error fetching data:', error);
+      }
+  };
+  if(!dealerDiscount)
+      fetchData()
+}, []);
+      };          
+    calculateDiscount();
+
     let label = " ";
     if(attrs){ 
         switch(attrs.model){
@@ -35,8 +97,7 @@ const PergolaSelectionTab = ({attrs})=>{
                 break;
         }
 }
-const [isCheckbox1Checked, setIsCheckbox1Checked] = useState(false);
-const [isCheckbox2Checked, setIsCheckbox2Checked] = useState(false);
+
 
 // Handle checkbox changes
 const handleCheckbox1Change = (event) => {
@@ -270,7 +331,8 @@ const handleSubmission = () => {
           [key]: option,
         }));
       };
-      
+    
+            
       const calculateLatticeQuote = (attrs)=>{
           
         const lattice2x2Price = 1.69;
@@ -325,9 +387,9 @@ const handleSubmission = () => {
 
             latticePrice = attrs.rafterSize == 2? lattice2x2Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize)): lattice3x3Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize));
             columnPrice = attrs.postType == 0? post3x3Price*attrs.height*numberOfColumns:post4x4Price*attrs.height*numberOfColumns;
-            raftersPrice = attrs.projection * rafterPrice * Math.floor(attrs.width/2.5);
+            raftersPrice = attrs.projection * rafterPrice * (Math.floor(attrs.width/2.5)+1);
             beamsPrice = attrs.selectedHead == 0? attrs.width*beamPrice: 2*attrs.width*beamPrice;
-            beamAndRafterEnds =  attrs.selectedHead == 0? 2*tailKitsPrice* Math.floor(attrs.width/2.5): 4*tailKitsPrice* Math.floor(attrs.width/2.5);
+            beamAndRafterEnds =  attrs.selectedHead == 0? 2*tailKitsPrice* (Math.floor(attrs.width/2.5)+1): 4*tailKitsPrice* (Math.floor(attrs.width/2.5)+1);
             rectBeamsPrice = attrs.selectedHead == 0? attrs.width*rectBeamPrice: 2*attrs.width*rectBeamPrice;
             postPrice = squareTubePrice*attrs.height*numberOfColumns;
             optionalPostCorePrice = attrs.optionalPostCore==0?0:attrs.optionalPostCore==1?5.20*numberOfColumns:15.33*numberOfColumns;
@@ -338,7 +400,7 @@ const handleSubmission = () => {
             columnPrice = attrs.postType == 0? 2*post3x3Price*attrs.height*numberOfColumns:2*post4x4Price*attrs.height*numberOfColumns;
             raftersPrice = attrs.projection * rafterPrice * Math.floor(attrs.width/2.5);
             beamsPrice = attrs.selectedHead == 0? 2*attrs.width*beamPrice: 4*attrs.width*beamPrice;
-            beamAndRafterEnds =  attrs.selectedHead == 0? 4*tailKitsPrice* Math.floor(attrs.width/2.5): 8*tailKitsPrice* Math.floor(attrs.width/2.5);
+            beamAndRafterEnds =  attrs.selectedHead == 0? 4*tailKitsPrice* (Math.floor(attrs.width/2.5)+1): 8*tailKitsPrice* (Math.floor(attrs.width/2.5)+1);
             rectBeamsPrice = attrs.selectedHead == 0? 2*attrs.width*rectBeamPrice: 4*attrs.width*rectBeamPrice;
             postPrice = 2*squareTubePrice*attrs.height*numberOfColumns;
             optionalPostCorePrice = attrs.optionalPostCore==0?0:attrs.optionalPostCore==1?5.20*numberOfColumns*2:15.33*numberOfColumns*2;
@@ -347,7 +409,8 @@ const handleSubmission = () => {
 
         totalPrice+= latticePrice+columnPrice+raftersPrice+beamsPrice+beamAndRafterEnds+rectBeamsPrice+postPrice+optionalPostCorePrice;
 
-        return totalPrice;
+
+        return dealerDiscount?totalPrice*(1-dealerDiscount):totalPrice;
         
 
     }
@@ -410,7 +473,7 @@ const handleSubmission = () => {
             columnPrice = attrs.postType == 0? post3x3Price*attrs.height*numberOfColumns:post4x4Price*attrs.height*numberOfColumns;
             raftersPrice = attrs.projection * rafterPrice * Math.floor(attrs.width/2.5);
             beamsPrice = attrs.selectedHead == 0? attrs.width*beamPrice: 2*attrs.width*beamPrice;
-            beamAndRafterEnds =  attrs.selectedHead == 0? 2*tailKitsPrice* Math.floor(attrs.width/2.5): 4*tailKitsPrice* Math.floor(attrs.width/2.5);
+            beamAndRafterEnds =  attrs.selectedHead == 0? 2*tailKitsPrice* (Math.floor(attrs.width/2.5)+1): 4*tailKitsPrice* (Math.floor(attrs.width/2.5)+1);
             rectBeamsPrice = attrs.selectedHead == 0? attrs.width*rectBeamPrice: 2*attrs.width*rectBeamPrice;
             postPrice = squareTubePrice*attrs.height*numberOfColumns;
             optionalPostCorePrice = attrs.optionalPostCore==0?0:attrs.optionalPostCore==1?5.20*numberOfColumns:15.33*numberOfColumns;
@@ -422,9 +485,9 @@ const handleSubmission = () => {
         else{
             latticePrice = attrs.rafterSize == 2? lattice2x2Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize)): lattice3x3Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize));
             columnPrice = attrs.postType == 0? 2*post3x3Price*attrs.height*numberOfColumns:2*post4x4Price*attrs.height*numberOfColumns;
-            raftersPrice = attrs.projection * rafterPrice * Math.floor(attrs.width/2.5);
+            raftersPrice = attrs.projection * rafterPrice * (Math.floor(attrs.width/2.5)+1);
             beamsPrice = attrs.selectedHead == 0? 2*attrs.width*beamPrice: 4*attrs.width*beamPrice;
-            beamAndRafterEnds =  attrs.selectedHead == 0? 4*tailKitsPrice* Math.floor(attrs.width/2.5): 8*tailKitsPrice* Math.floor(attrs.width/2.5);
+            beamAndRafterEnds =  attrs.selectedHead == 0? 4*tailKitsPrice* (Math.floor(attrs.width/2.5)+1): 8*tailKitsPrice* (Math.floor(attrs.width/2.5)+1);
             rectBeamsPrice = attrs.selectedHead == 0? 2*attrs.width*rectBeamPrice: 4*attrs.width*rectBeamPrice;
             postPrice = 2*squareTubePrice*attrs.height*numberOfColumns;
             optionalPostCorePrice = attrs.optionalPostCore==0?0:attrs.optionalPostCore==1?5.20*numberOfColumns*2:15.33*numberOfColumns*2;
@@ -435,7 +498,7 @@ const handleSubmission = () => {
 
         totalPrice+= latticePrice+columnPrice+raftersPrice+beamsPrice+beamAndRafterEnds+rectBeamsPrice+postPrice+optionalPostCorePrice+vPrice+gutterPrice+platePrice;
 
-        return totalPrice;
+        return dealerDiscount?totalPrice*(1-dealerDiscount):totalPrice;
     
 
     }
@@ -1272,7 +1335,7 @@ const handleSubmission = () => {
                             <h3>Headers</h3>
                             <div className="header-inspector">
                                 <div className='header-selection'>
-                                    <button className={attrs.model=="lattice-insulated"?attrs.activeModelLeft?attrs.leftAttrs.selectedHead == 0?'selectedhead double-beam':'double-beam':attrs.rightAttrs.selectedHead == 0?'selectedhead double-beam':'double-beam':attrs.model=='mixed'?attrs.activeModelLeft?attrs.leftAttrs.selectedHead == 0?'selectedhead double-beam':'double-beam':attrs.activeModelMiddle?attrs.middleAttrs.selectedHead == 0?'selectedhead double-beam':'double-beam':attrs.rightAttrs.selectedHead == 0?"selectedhead double-beam":"double-beam":attrs.selectedHead == 0 ? 'selectedhead double-beam' : 'double-beam'} onClick={() => {
+                                    <button className={attrs.model=="lattice-insulated"?attrs.activeModelLeft?attrs.leftAttrs.selectedHead == 0?'selectedhead single-beam':'single-beam':attrs.rightAttrs.selectedHead == 0?'selectedhead single-beam':'single-beam':attrs.model=='mixed'?attrs.activeModelLeft?attrs.leftAttrs.selectedHead == 0?'selectedhead single-beam':'single-beam':attrs.activeModelMiddle?attrs.middleAttrs.selectedHead == 0?'selectedhead single-beam':'single-beam':attrs.rightAttrs.selectedHead == 0?"selectedhead single-beam":"single-beam":attrs.selectedHead == 0 ? 'selectedhead single-beam' : 'single-beam'} onClick={() => {
                             if(attrs.model=="mixed"){
                                 if(attrs.activeModelLeft){
                                     attrs.leftAttrs.setHead(0)
@@ -1826,7 +1889,7 @@ const handleSubmission = () => {
                                     <th>Ends</th>
                                     <th>{beamEndSelections[attrs.selectedEnd]}</th>
                                     <th></th>
-                                    <th>1</th>
+                                    <th>{attrs.selectedHead==1?attrs.mountMode!=3?"4":"8":attrs.mountMode!=3?"2":"4"}</th>
                                     
                                 </tr>
                                 <tr className='sec-header'>
@@ -1874,7 +1937,7 @@ const handleSubmission = () => {
                                     <th>Rafter End Caps</th>
                                     <th>{rafterEndCapsSelection[attrs.selectedRafterEndCaps]}</th>
                                     <th></th>
-                                    <th>1</th>
+                                    <th>{Math.floor(attrs.width/(2.5))+1}</th>
                                     
                                 </tr>
                                 <tr className='sec-header'>
@@ -1932,7 +1995,7 @@ const handleSubmission = () => {
                                     <th></th>
                                     <th></th>
                                     <th></th>
-                                    <th>${parseFloat(prices.TotalPrice).toFixed(2)}</th>
+                                    <th>${parseFloat(prices.TotalPrice).toFixed(2)} <span className="original-price">${dealerDiscount?prices.TotalPrice*(1+dealerDiscount):""}</span></th>
                                     
                                 </tr>
                                 
@@ -2029,7 +2092,7 @@ const handleSubmission = () => {
                                     <th>Ends</th>
                                     <th>{beamEndSelections[attrs.selectedEnd]}</th>
                                     <th></th>
-                                    <th>1</th>
+                                    <th>{attrs.selectedHead==1?attrs.mountMode!=3?"4":"8":attrs.mountMode!=3?"2":"4"}</th>
                                     
                                 </tr>
                                 <tr className='sec-header'>
@@ -2077,7 +2140,7 @@ const handleSubmission = () => {
                                     <th>Rafter End Caps</th>
                                     <th>{rafterEndCapsSelection[attrs.selectedRafterEndCaps]}</th>
                                     <th></th>
-                                    <th>1</th>
+                                    <th>{(Math.floor(attrs.width/(2.5))+1)}</th>
                                     
                                 </tr>
                                 <tr className='sec-header'>

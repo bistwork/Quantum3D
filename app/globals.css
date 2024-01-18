@@ -725,3 +725,9 @@ width: 100%;
   margin:0 auto;
   text-align: justify;
 }
+.original-price{
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  color:#75757580;
+  text-decoration-color:#ff505070;
+}

@@ -432,6 +432,8 @@ const buildInsulated = (attrs,pos=[0,0,-attrs.projection/(2*SCALE)],limit=90) =>
       columns.push(<Model key={i} url="./models/lattice_column.glb"position={position} name={"column"} rotation={[0, Math.PI / 2, 0]} scale={[1, colHeightScale,1]} mat_index={[attrs.materials['cover']]}/>);
       posts.push(<Model key={i} url="./models/lattice_post.glb" position={position} name={"post"} rotation={[0, Math.PI / 2, 0]} scale={[1, colHeightScale,1]} mat_index={[attrs.materials['post']]}/>);
     }
+    const gutterPosition = [- width/2 +colDims.width/2, 0, projection];
+    columns.push(<Model key={generateRandomString(8)} url="./models/gutter.glb"position={gutterPosition} name={"column"} rotation={[0, Math.PI, 0]} scale={[1, colHeightScale,1]} mat_index={[attrs.materials['cover']]}/>);
   }
   else{
     columns = [];

@@ -689,8 +689,11 @@ width: 100%;
 .form-check{
   margin:1rem 0;
 }
+.post-form-check{
+  margin-bottom:0.5rem;
+}
 
-.form-check .form-check-input {
+.form-check .form-check-input,.post-form-check .form-check-input {
   cursor: pointer;
 }
 .form-check-input:checked {

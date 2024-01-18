@@ -270,6 +270,49 @@ const handleSubmission = () => {
         }));
       };
 
+    const calculateLatticeQuote = (attrs)=>{
+
+        const lattice2x2Price = 1.69;
+        const lattice3x3Price = 2.47;
+        const post3x3Price = 2.47;
+        const post4x4Price = 2.75;
+        const rafterPrice = 3.87;
+        const beamPrice = 4.27;
+        const tailKitsPrice = 15.79;
+        const rectBeamPrice = 15.02;
+        const squareTubePrice = 6.17;
+
+        let totalPrice = 0;
+
+        let numberOfColumns = 2;
+        if(attrs.width <= 22){
+            numberOfColumns = 2;
+            }
+        else if(attrs.width <= 34){
+            numberOfColumns = 3;
+        }
+        else if(attrs.width <= 45){
+            numberOfColumns = 4;
+        }
+        else if(attrs.width <= 56){
+            numberOfColumns = 5;
+        }
+        else if(attrs.width <= 68){
+            numberOfColumns = 6;
+        }
+        else if(attrs.width <= 79){
+            numberOfColumns = 7;
+        }
+        else if(attrs.width <= 90){
+            numberOfColumns = 8;
+        }
+        else if(attrs.width > 90){
+            numberOfColumns = Math.floor(0.0883*attrs.width + 0.0291);
+        }
+        
+
+    }
+
     const getQuote = () => {
 
         const lattice2x2Price = 1.69;
@@ -311,13 +354,17 @@ const handleSubmission = () => {
                 numberOfColumns = 0.0883*attrs.width + 0.0291;
             }
 
-            let latticePrice;
-            let columnPrice;
-            let raftersPrice;
-            let beamsPrice;
-            let beamAndRafterEnds;
-            let rectBeamsPrice;
-            let postPrice;
+            let latticePrice = 0;
+            let columnPrice = 0;
+            let raftersPrice = 0;
+            let beamsPrice = 0;
+            let beamAndRafterEnds = 0;
+            let rectBeamsPrice = 0;
+            let postPrice = 0;
+            let optionalPostCorePrice = 0;
+            let vPrice = 0;
+            let gutterPrice = 0;
+            let platePrice = 0;
 
             if(attrs.mountMode!=3){
 
@@ -328,6 +375,15 @@ const handleSubmission = () => {
                 beamAndRafterEnds =  attrs.selectedHead == 0? 2*tailKitsPrice* Math.floor(attrs.width/2.5): 4*tailKitsPrice* Math.floor(attrs.width/2.5);
                 rectBeamsPrice = attrs.selectedHead == 0? attrs.width*rectBeamPrice: 2*attrs.width*rectBeamPrice;
                 postPrice = squareTubePrice*attrs.height*numberOfColumns;
+                optionalPostCorePrice = attrs.optionalPostCore==0?0:attrs.optionalPostCore==1?5.20*numberOfColumns:15.33*numberOfColumns;
+
+                if(attrs.model!="lattice"){
+
+                    vPrice = attrs.width * 4.448;
+                    gutterPrice = attrs.width * 8.9;
+                    platePrice = attrs.width * attrs.projection * 6.5;
+
+                }
             }
             else{
                 latticePrice = attrs.rafterSize == 2? lattice2x2Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize)): lattice3x3Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize));
@@ -337,9 +393,11 @@ const handleSubmission = () => {
                 beamAndRafterEnds =  attrs.selectedHead == 0? 4*tailKitsPrice* Math.floor(attrs.width/2.5): 8*tailKitsPrice* Math.floor(attrs.width/2.5);
                 rectBeamsPrice = attrs.selectedHead == 0? 2*attrs.width*rectBeamPrice: 4*attrs.width*rectBeamPrice;
                 postPrice = 2*squareTubePrice*attrs.height*numberOfColumns;
+                optionalPostCorePrice = attrs.optionalPostCore==0?0:attrs.optionalPostCore==1?5.20*numberOfColumns*2:15.33*numberOfColumns*2;
             }
 
-            totalPrice+= latticePrice+columnPrice+raftersPrice+beamsPrice+beamAndRafterEnds+rectBeamsPrice+postPrice
+
+            totalPrice+= latticePrice+columnPrice+raftersPrice+beamsPrice+beamAndRafterEnds+rectBeamsPrice+postPrice+optionalPostCorePrice+vPrice+gutterPrice+platePrice;
 
             let prices = {
                 "LatticePrice": latticePrice,
@@ -630,6 +688,43 @@ const handleSubmission = () => {
     const handleSelectionChange = (event) => {
         setSelectedClient(event.target.value);
         setClientSelected(event.target.value!=""?true:false)
+    }
+
+    const handleOptional3x3 = (event) => {
+        if(attrs.model=="lattice-insulated"){
+
+        }
+        else if(attrs.model=="mixed"){
+
+        }
+        else{
+            if(event.target.checked){
+                attrs.setOptionalPostCore(1);
+            }
+            else{
+                if(attrs.optionalPostCore!=2){
+                    attrs.setOptionalPostCore(0);
+                }
+            }
+        }
+    }
+    const handleOptional4x4 = (event) => {
+        if(attrs.model=="lattice-insulated"){
+
+        }
+        else if(attrs.model=="mixed"){
+
+        }
+        else{
+            if(event.target.checked){
+                attrs.setOptionalPostCore(2);
+            }
+            else{
+                if(attrs.optionalPostCore!=1){
+                    attrs.setOptionalPostCore(0);
+                }
+            }
+        }
     }
 
     const beamHeaderSelections = ["Single Beam Headers","Double Beam Header"];
@@ -1296,6 +1391,7 @@ const handleSubmission = () => {
                             </div>)}
                 </div>
 
+
                 <div className="mounting-selection">
                     {postSizing.map((button, index) => (
                         <button
@@ -1322,11 +1418,39 @@ const handleSubmission = () => {
                                 }
                             }
                             attrs.setPostType(index)
-                            }}>
+                        }}>
                         {button}
                         </button>
                     ))}
                 </div>
+                <h3>Aluminum Inserts (PCS)</h3>
+
+                <div class="post-form-check mb-2">
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="3x3optional"
+                        onChange={handleOptional3x3}
+                        checked={attrs.model=="lattice-insulated"?false:attrs.model=="mixed"?false:attrs.optionalPostCore==1}
+                    />
+                    <label class="form-check-label" for="3x3optional">
+                        3x3 (PCS) Price: $5.20
+                    </label>
+                </div>
+
+                <div class="post-form-check">
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="4x4optional"
+                        onChange={handleOptional4x4}
+                        checked={attrs.model=="lattice-insulated"?false:attrs.model=="mixed"?false:attrs.optionalPostCore==2}
+                    />
+                    <label class="form-check-label" for="4x4optional">
+                        4x4 (PCS) Price: $15.33
+                    </label>
+                </div>
+                        
                 <div className="tab-changer">
                     <button className='prev-button' onClick={()=>{
                         attrs.setSelectedBoard(attrs.selectedBoard-1);
@@ -1665,6 +1789,14 @@ const handleSubmission = () => {
                                     <th>1</th>
                                     
                                 </tr>
+                                <tr>
+                                    <th></th>
+                                    <th>Aluminum Insert (PCS)</th>
+                                    <th>{attrs.optionalPostCore==0?"None":attrs.optionalPostCore==1?"3x3":"4x4"}</th>
+                                    <th></th>
+                                    <th>1</th>
+                                    
+                                </tr>
                                 <tr className='sec-header'>
                                     <th>Rafter</th>
                                     <th>Property</th>
@@ -1856,6 +1988,14 @@ const handleSubmission = () => {
                                     <th></th>
                                     <th>Size</th>
                                     <th>{postSizing[attrs.postType]}</th>
+                                    <th></th>
+                                    <th>1</th>
+                                    
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th>Aluminum Insert (PCS)</th>
+                                    <th>{optionalPostCore==0?"None":optionalPostCore==1?"3x3":"4x4"}</th>
                                     <th></th>
                                     <th>1</th>
                                     

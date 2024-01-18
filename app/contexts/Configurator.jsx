@@ -15,23 +15,25 @@ export const ConfiguratorProvider = ({ children }) => {
     const [selectedRafterHeaders, setRafterHeader] = useState(0);
     const [selectedRafterEndCaps, setRafterEndCaps] = useState(0);
     const [postType, setPostType] = useState(0);
+    const [optionalPostCore, setOptionalPostCore] = useState(0);
     const [selectedEnd, setEnd] = useState(0);
     const [materials,setMaterials] = useState({"cover":0,"rafter":0,"beam":0,"post":0,"option":0});
     const [model,setModel] = useState(null);
     const [orderId,setOrderId] = useState(null);
     const [comId,setComId] = useState(null);
-
-
+    
+    
     const [mixedRight,setMixedRight] = useState(1);
     const [activeModelRight,setActiveModelRight] = useState(false);
     const [isLatticeMiddle,setIsLatticeMiddle] = useState(true);
     const [activeModelLeft,setActiveModelLeft] = useState(true);
     const [activeModelMiddle,setActiveModelMiddle] = useState(false);
     
-
+    
     // ----------LEFT PERGOLA PART PROPERTIES----------------
-
-
+    
+    
+    const [loptionalPostCore, setLOptionalPostCore] = useState(0);
     const [lwidth, setLWidth] = useState(10);
     const [lheight, setLHeight] = useState(8);
     const [lprojection, setLProjection] = useState(6);
@@ -44,11 +46,12 @@ export const ConfiguratorProvider = ({ children }) => {
     const [lpostType, setLPostType] = useState(0);
     const [lselectedEnd, setLEnd] = useState(0);
     const [lmaterials,setLMaterials] = useState({"cover":0,"rafter":0,"beam":0,"post":0,"option":0});
-
-
+    
+    
     // ----------RIGHT PERGOLA PART PROPERTIES----------------
-
-
+    
+    
+    const [roptionalPostCore, setROptionalPostCore] = useState(0);
     const [rwidth, setRWidth] = useState(10);
     const [rheight, setRHeight] = useState(8);
     const [rprojection, setRProjection] = useState(6);
@@ -64,8 +67,9 @@ export const ConfiguratorProvider = ({ children }) => {
     
     
     // ----------MIDDLE PERGOLA PART PROPERTIES----------------
-
-
+    
+    
+    const [moptionalPostCore, setMOptionalPostCore] = useState(0);
     const [mwidth, setMWidth] = useState(10);
     const [mheight, setMHeight] = useState(8);
     const [mprojection, setMProjection] = useState(6);
@@ -80,6 +84,8 @@ export const ConfiguratorProvider = ({ children }) => {
     const [mmaterials,setMMaterials] = useState({"cover":0,"rafter":0,"beam":0,"post":0,"option":0});
 
     const attrs = {
+        "optionalPostCore":optionalPostCore,
+        "setOptionalPostCore":setOptionalPostCore,
         "isLatticeMiddle":isLatticeMiddle,
         "setIsLatticeMiddle":setIsLatticeMiddle,
         "activeModelRight":activeModelRight,
@@ -142,6 +148,8 @@ export const ConfiguratorProvider = ({ children }) => {
           "comId":comId,
         },
         "leftAttrs":{
+          "optionalPostCore":loptionalPostCore,
+          "setOptionalPostCore":setLOptionalPostCore,  
           "width":lwidth,
           "setWidth":setLWidth, 
           "height":lheight, 
@@ -168,6 +176,8 @@ export const ConfiguratorProvider = ({ children }) => {
           "setMaterials":setLMaterials,
         },
         "rightAttrs":{
+          "optionalPostCore":roptionalPostCore,
+          "setOptionalPostCore":setROptionalPostCore,  
           "width":rwidth,
           "setWidth":setRWidth, 
           "height":rheight, 
@@ -194,6 +204,8 @@ export const ConfiguratorProvider = ({ children }) => {
           "setMaterials":setRMaterials,
         },
         "middleAttrs":{
+          "optionalPostCore":moptionalPostCore,
+          "setOptionalPostCore":setMOptionalPostCore,  
           "width":mwidth,
           "setWidth":setMWidth, 
           "height":mheight, 

@@ -13,6 +13,7 @@ const PergolaSelectionTab = ({attrs})=>{
     const [clients, setClients] = useState(null);
     const [loading, setLoading] = useState(true);
     const [orderCreated,setOrderCreated] = useState(false);
+
     
     let label = " ";
     if(attrs){ 
@@ -269,9 +270,9 @@ const handleSubmission = () => {
           [key]: option,
         }));
       };
-
-    const calculateLatticeQuote = (attrs)=>{
-
+      
+      const calculateLatticeQuote = (attrs)=>{
+          
         const lattice2x2Price = 1.69;
         const lattice3x3Price = 2.47;
         const post3x3Price = 2.47;
@@ -309,12 +310,50 @@ const handleSubmission = () => {
         else if(attrs.width > 90){
             numberOfColumns = Math.floor(0.0883*attrs.width + 0.0291);
         }
+
+        let latticePrice = 0;
+        let columnPrice = 0;
+        let raftersPrice = 0;
+        let beamsPrice = 0;
+        let beamAndRafterEnds = 0;
+        let rectBeamsPrice = 0;
+        let postPrice = 0;
+        let optionalPostCorePrice = 0;
+        
+
+        if(attrs.mountMode!=3){
+
+            latticePrice = attrs.rafterSize == 2? lattice2x2Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize)): lattice3x3Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize));
+            columnPrice = attrs.postType == 0? post3x3Price*attrs.height*numberOfColumns:post4x4Price*attrs.height*numberOfColumns;
+            raftersPrice = attrs.projection * rafterPrice * Math.floor(attrs.width/2.5);
+            beamsPrice = attrs.selectedHead == 0? attrs.width*beamPrice: 2*attrs.width*beamPrice;
+            beamAndRafterEnds =  attrs.selectedHead == 0? 2*tailKitsPrice* Math.floor(attrs.width/2.5): 4*tailKitsPrice* Math.floor(attrs.width/2.5);
+            rectBeamsPrice = attrs.selectedHead == 0? attrs.width*rectBeamPrice: 2*attrs.width*rectBeamPrice;
+            postPrice = squareTubePrice*attrs.height*numberOfColumns;
+            optionalPostCorePrice = attrs.optionalPostCore==0?0:attrs.optionalPostCore==1?5.20*numberOfColumns:15.33*numberOfColumns;
+
+        }
+        else{
+            latticePrice = attrs.rafterSize == 2? lattice2x2Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize)): lattice3x3Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize));
+            columnPrice = attrs.postType == 0? 2*post3x3Price*attrs.height*numberOfColumns:2*post4x4Price*attrs.height*numberOfColumns;
+            raftersPrice = attrs.projection * rafterPrice * Math.floor(attrs.width/2.5);
+            beamsPrice = attrs.selectedHead == 0? 2*attrs.width*beamPrice: 4*attrs.width*beamPrice;
+            beamAndRafterEnds =  attrs.selectedHead == 0? 4*tailKitsPrice* Math.floor(attrs.width/2.5): 8*tailKitsPrice* Math.floor(attrs.width/2.5);
+            rectBeamsPrice = attrs.selectedHead == 0? 2*attrs.width*rectBeamPrice: 4*attrs.width*rectBeamPrice;
+            postPrice = 2*squareTubePrice*attrs.height*numberOfColumns;
+            optionalPostCorePrice = attrs.optionalPostCore==0?0:attrs.optionalPostCore==1?5.20*numberOfColumns*2:15.33*numberOfColumns*2;
+        }
+
+
+        totalPrice+= latticePrice+columnPrice+raftersPrice+beamsPrice+beamAndRafterEnds+rectBeamsPrice+postPrice+optionalPostCorePrice;
+
+        return totalPrice;
         
 
     }
 
-    const getQuote = () => {
-
+    const calculateInsulatedQuote = (attrs)=>{
+          
         const lattice2x2Price = 1.69;
         const lattice3x3Price = 2.47;
         const post3x3Price = 2.47;
@@ -327,90 +366,107 @@ const handleSubmission = () => {
 
         let totalPrice = 0;
 
-        if(attrs){
-            let numberOfColumns = 2;
-            if(attrs.width <= 22){
-                numberOfColumns = 2;
-              }
-            else if(attrs.width <= 34){
-                numberOfColumns = 3;
+        let numberOfColumns = 2;
+        if(attrs.width <= 22){
+            numberOfColumns = 2;
             }
-            else if(attrs.width <= 45){
-                numberOfColumns = 4;
-            }
-            else if(attrs.width <= 56){
-                numberOfColumns = 5;
-            }
-            else if(attrs.width <= 68){
-                numberOfColumns = 6;
-            }
-            else if(attrs.width <= 79){
-                numberOfColumns = 7;
-            }
-            else if(attrs.width <= 90){
-                numberOfColumns = 8;
-            }
-            else if(attrs.width > 90){
-                numberOfColumns = 0.0883*attrs.width + 0.0291;
-            }
+        else if(attrs.width <= 34){
+            numberOfColumns = 3;
+        }
+        else if(attrs.width <= 45){
+            numberOfColumns = 4;
+        }
+        else if(attrs.width <= 56){
+            numberOfColumns = 5;
+        }
+        else if(attrs.width <= 68){
+            numberOfColumns = 6;
+        }
+        else if(attrs.width <= 79){
+            numberOfColumns = 7;
+        }
+        else if(attrs.width <= 90){
+            numberOfColumns = 8;
+        }
+        else if(attrs.width > 90){
+            numberOfColumns = Math.floor(0.0883*attrs.width + 0.0291);
+        }
 
-            let latticePrice = 0;
-            let columnPrice = 0;
-            let raftersPrice = 0;
-            let beamsPrice = 0;
-            let beamAndRafterEnds = 0;
-            let rectBeamsPrice = 0;
-            let postPrice = 0;
-            let optionalPostCorePrice = 0;
-            let vPrice = 0;
-            let gutterPrice = 0;
-            let platePrice = 0;
+        let latticePrice = 0;
+        let columnPrice = 0;
+        let raftersPrice = 0;
+        let beamsPrice = 0;
+        let beamAndRafterEnds = 0;
+        let rectBeamsPrice = 0;
+        let postPrice = 0;
+        let optionalPostCorePrice = 0;
+        let vPrice = 0;
+        let gutterPrice = 0;
+        let platePrice = 0;
 
-            if(attrs.mountMode!=3){
+        if(attrs.mountMode!=3){
 
-                latticePrice = attrs.rafterSize == 2? lattice2x2Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize)): lattice3x3Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize));
-                columnPrice = attrs.postType == 0? post3x3Price*attrs.height*numberOfColumns:post4x4Price*attrs.height*numberOfColumns;
-                raftersPrice = attrs.projection * rafterPrice * Math.floor(attrs.width/2.5);
-                beamsPrice = attrs.selectedHead == 0? attrs.width*beamPrice: 2*attrs.width*beamPrice;
-                beamAndRafterEnds =  attrs.selectedHead == 0? 2*tailKitsPrice* Math.floor(attrs.width/2.5): 4*tailKitsPrice* Math.floor(attrs.width/2.5);
-                rectBeamsPrice = attrs.selectedHead == 0? attrs.width*rectBeamPrice: 2*attrs.width*rectBeamPrice;
-                postPrice = squareTubePrice*attrs.height*numberOfColumns;
-                optionalPostCorePrice = attrs.optionalPostCore==0?0:attrs.optionalPostCore==1?5.20*numberOfColumns:15.33*numberOfColumns;
+            latticePrice = attrs.rafterSize == 2? lattice2x2Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize)): lattice3x3Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize));
+            columnPrice = attrs.postType == 0? post3x3Price*attrs.height*numberOfColumns:post4x4Price*attrs.height*numberOfColumns;
+            raftersPrice = attrs.projection * rafterPrice * Math.floor(attrs.width/2.5);
+            beamsPrice = attrs.selectedHead == 0? attrs.width*beamPrice: 2*attrs.width*beamPrice;
+            beamAndRafterEnds =  attrs.selectedHead == 0? 2*tailKitsPrice* Math.floor(attrs.width/2.5): 4*tailKitsPrice* Math.floor(attrs.width/2.5);
+            rectBeamsPrice = attrs.selectedHead == 0? attrs.width*rectBeamPrice: 2*attrs.width*rectBeamPrice;
+            postPrice = squareTubePrice*attrs.height*numberOfColumns;
+            optionalPostCorePrice = attrs.optionalPostCore==0?0:attrs.optionalPostCore==1?5.20*numberOfColumns:15.33*numberOfColumns;
+            vPrice = attrs.width * 4.448;
+            gutterPrice = attrs.width * 8.9;
+            platePrice = attrs.width * (attrs.projection+1) * 6.5;
+            
+        }
+        else{
+            latticePrice = attrs.rafterSize == 2? lattice2x2Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize)): lattice3x3Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize));
+            columnPrice = attrs.postType == 0? 2*post3x3Price*attrs.height*numberOfColumns:2*post4x4Price*attrs.height*numberOfColumns;
+            raftersPrice = attrs.projection * rafterPrice * Math.floor(attrs.width/2.5);
+            beamsPrice = attrs.selectedHead == 0? 2*attrs.width*beamPrice: 4*attrs.width*beamPrice;
+            beamAndRafterEnds =  attrs.selectedHead == 0? 4*tailKitsPrice* Math.floor(attrs.width/2.5): 8*tailKitsPrice* Math.floor(attrs.width/2.5);
+            rectBeamsPrice = attrs.selectedHead == 0? 2*attrs.width*rectBeamPrice: 4*attrs.width*rectBeamPrice;
+            postPrice = 2*squareTubePrice*attrs.height*numberOfColumns;
+            optionalPostCorePrice = attrs.optionalPostCore==0?0:attrs.optionalPostCore==1?5.20*numberOfColumns*2:15.33*numberOfColumns*2;
+            gutterPrice = attrs.width * 8.9;
+            platePrice = attrs.width * (attrs.projection+1) * 6.5;
+        }
 
-                if(attrs.model!="lattice"){
 
-                    vPrice = attrs.width * 4.448;
-                    gutterPrice = attrs.width * 8.9;
-                    platePrice = attrs.width * attrs.projection * 6.5;
+        totalPrice+= latticePrice+columnPrice+raftersPrice+beamsPrice+beamAndRafterEnds+rectBeamsPrice+postPrice+optionalPostCorePrice+vPrice+gutterPrice+platePrice;
 
+        return totalPrice;
+    
+
+    }
+
+
+    const getQuote = () => {
+        let price = 0;
+        switch(attrs.model){
+            case "lattice":
+                price = calculateLatticeQuote(attrs);
+                break
+            case "insulated":
+                price = calculateInsulatedQuote(attrs);
+                break
+            case "mixed":
+                if(attrs.isLatticeMiddle){
+                    price = calculateLatticeQuote(attrs.middleAttrs)+ calculateInsulatedQuote(attrs.leftAttrs) + calculateInsulatedQuote(attrs.rightAttrs);
                 }
-            }
-            else{
-                latticePrice = attrs.rafterSize == 2? lattice2x2Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize)): lattice3x3Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize));
-                columnPrice = attrs.postType == 0? 2*post3x3Price*attrs.height*numberOfColumns:2*post4x4Price*attrs.height*numberOfColumns;
-                raftersPrice = attrs.projection * rafterPrice * Math.floor(attrs.width/2.5);
-                beamsPrice = attrs.selectedHead == 0? 2*attrs.width*beamPrice: 4*attrs.width*beamPrice;
-                beamAndRafterEnds =  attrs.selectedHead == 0? 4*tailKitsPrice* Math.floor(attrs.width/2.5): 8*tailKitsPrice* Math.floor(attrs.width/2.5);
-                rectBeamsPrice = attrs.selectedHead == 0? 2*attrs.width*rectBeamPrice: 4*attrs.width*rectBeamPrice;
-                postPrice = 2*squareTubePrice*attrs.height*numberOfColumns;
-                optionalPostCorePrice = attrs.optionalPostCore==0?0:attrs.optionalPostCore==1?5.20*numberOfColumns*2:15.33*numberOfColumns*2;
-            }
+                else{
+                    price = calculateLatticeQuote(attrs.leftAttrs)+ calculateInsulatedQuote(attrs.middleAttrs) + calculateLatticeQuote(attrs.rightAttrs);
+                }
+                break
+            case "lattice-insulated":
+                price = calculateLatticeQuote(attrs.rightAttrs) + calculateInsulatedQuote(attrs.leftAttrs);
+                break
 
-
-            totalPrice+= latticePrice+columnPrice+raftersPrice+beamsPrice+beamAndRafterEnds+rectBeamsPrice+postPrice+optionalPostCorePrice+vPrice+gutterPrice+platePrice;
-
-            let prices = {
-                "LatticePrice": latticePrice,
-                "ColumnsPrice": columnPrice,
-                "RaftersPrice": raftersPrice,
-                "BeamsPrice": beamsPrice,
-                "BeamAndRafterEndsPrice": beamAndRafterEnds,
-                "RectangularBeamsPrice": rectBeamsPrice,
-                "SquaredPostPrice": postPrice,
-                "TotalPrice": Math.round(totalPrice)
-            }
-            return prices;
-        }         
+        }
+        let prices = {
+            "TotalPrice": Math.round(price)
+        }
+        return prices;
     }
     const createOrder = () => {
         const apiKey = 'da2-dz4zldsidrdexe5wx2bfz4dhpm';

@@ -9,7 +9,6 @@ import MoreInfo from "../components/Sections/NewUserFormSection/MoreInfo";
 import UserAgreement from "../components/Sections/NewUserFormSection/UserAgreement";
 import ThankYou from "../components/Sections/NewUserFormSection/ThankYou";
 import withPublicAccess from "../hooks/withPublicAccess";
-import { saveAs } from 'file-saver';
 
 function NewUserForm() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -50,7 +49,7 @@ function NewUserForm() {
     // Fetch the existing leads when the component mounts
     const fetchData = async () => {
       try {
-        const response = await fetch('/api/leads');
+        const response = await fetch("https://ymlgp7w2h2jl6fzyhim27yonry0ighas.lambda-url.us-west-2.on.aws",{method: 'GET',userAgent:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 OPR/106.0.0.0'});
         const data = await response.json();
         setLeads(data);
       } catch (error) {
@@ -63,21 +62,26 @@ function NewUserForm() {
 
 
   useEffect(() => {
-    if(data.userAgreement){
 
+    const setData = async (list) => {
       try {
-        fetch('/api/leads', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        });
-  
-
-      } catch (error) {
-        console.error('Error adding lead:', error);
+        console.log(list)
+        const response = await fetch(`https://twaiblf6ms6lqj53lfp56suzni0gsyro.lambda-url.us-west-2.on.aws?data=${encodeURI(JSON.stringify(list))}`,{method: 'POST',userAgent:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 OPR/106.0.0.0'});
+        if (response.ok) {
+          const result = await response.json();
+          console.log(result.message);
+      } else {
+          console.error('Error writing data to S3:', response.statusText);
       }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    if(data.userAgreement){
+      let newLeads = leads;
+      newLeads.push(data);
+      setData(newLeads);
   }
   },[data]);
 

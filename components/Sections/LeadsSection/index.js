@@ -7,7 +7,6 @@ import mockData from "../../../utils/mockData";
 import { SnackbarContext } from "../../../context/snackBar-context";
 import LeadSelected from "./LeadSelected";
 import { useAuth } from "@/context/auth-context";
-import { fetchLeads } from "@/api/customers";
 import { v4 as uuidv4 } from 'uuid';
 
 const initialColumns = [
@@ -43,8 +42,9 @@ export default function LeadsSection() {
     // Fetch the existing leads when the component mounts
     const fetchData = async () => {
       try {
-        const response = await fetch('/api/leads');
+        const response = await fetch("https://ymlgp7w2h2jl6fzyhim27yonry0ighas.lambda-url.us-west-2.on.aws",{method: 'GET',userAgent:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 OPR/106.0.0.0'});
         const data = await response.json();
+        console.log(data)
         setLeads(data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -55,7 +55,7 @@ export default function LeadsSection() {
   }, []);
 
   useEffect(() => {
-    if(user){
+    if(user && leads.length>0){
       let dealerLeads = []
       leads.map(item => {
         if(item.projectLocation == user.zipCodes[0]){

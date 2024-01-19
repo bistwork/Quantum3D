@@ -8,6 +8,8 @@ import GeneralInfo from "../GeneralInfo";
 import Shipping from "../Shipping";
 import Accounting from "../Accounting";
 import Security from "../SecuritySection";
+import Zipcodes from "../Zipcodes";
+import Documents from "../Documents";
 
 const DEFAULT_SECTION = "General Information";
 
@@ -16,6 +18,8 @@ const SECTION_COMPONENTS = {
   Accounting: Accounting,
   Security: Security,
   Shipping: Shipping,
+  Zipcodes: Zipcodes,
+  Documents: Documents,
 };
 
 export default function ProfileInfo(props) {

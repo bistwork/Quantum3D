@@ -7,6 +7,7 @@ export const getUser = /* GraphQL */ `
       id
       role
       email
+      tierId
       companyName
       fullName
       zipCodes

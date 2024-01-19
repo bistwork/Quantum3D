@@ -28,7 +28,7 @@ export default function UpdateCancel({
         disabled={!hasChangedAndValid}
         type="submit"
       >
-        Updates
+        Update
       </Button>
       <Button
         className="cancel-btn"

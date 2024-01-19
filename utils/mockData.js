@@ -111,7 +111,7 @@ let mockData = {
     //   ],
     // },
   ],
-  tabProfileInfo: ["General Information", "Shipping", "Accounting", "Security"],
+  tabProfileInfo: ["General Information", "Shipping", "Accounting", "Security","Zipcodes","Documents"],
   createCustomer: [
     {
       label: "Primary Customer information",

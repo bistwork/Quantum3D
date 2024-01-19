@@ -57,8 +57,9 @@ export default function LeadsSection() {
   useEffect(() => {
     if(user && leads.length>0){
       let dealerLeads = []
+      console.log(leads)
       leads.map(item => {
-        if(item.projectLocation == user.zipCodes[0]){
+        if(user.zipCodes.includes(item.projectLocation)){
           dealerLeads.push({
             'fullName':`${item.moreInfo.firstName} ${item.moreInfo.lastName}`,
             'email': item.moreInfo.email,

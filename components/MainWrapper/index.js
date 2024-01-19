@@ -174,7 +174,9 @@ export default function MainWrapper(props) {
         )}
         {mockData.sideMenuData.map((item, index) => {
           const isAdmin = user?.role === "Admin";
-          if (!isAdmin || (isAdmin && index !== 1 && index !== 2)) {
+          const isVerified = user?.role === "Verified";
+
+          if (isVerified || (isAdmin && index !== 1 && index !== 2) || (!isVerified && index !== 1 && index !== 2 && index !== 3 && index !== 4)) {
             return typeof item.items !== "undefined" ? (
                 <SideMenu
                 key={index}

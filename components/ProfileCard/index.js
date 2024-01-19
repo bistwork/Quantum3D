@@ -80,8 +80,19 @@ export default function FacebookCard() {
             >
               {user?.fullName || "My name"}
             </Typography>
-            <VerifiedIcon sx={{ fontSize: 14, color: "#439eae", ml: 1 }} />
+            {user?.role==="Verified" &&
+            <VerifiedIcon sx={{ fontSize: 14, color: "#439eae", ml: 1 }} />}
           </div>
+            {user?.role!=="Verified" &&
+            <Typography
+            variant="body2"
+            color="textSecondary"
+            component="p"
+            fontFamily={"var(--primary-font-family)"}
+            fontSize={"13px"}
+          >
+            Unverified
+          </Typography>}
           <Typography
             variant="body2"
             color="textSecondary"

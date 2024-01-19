@@ -1995,7 +1995,7 @@ const handleSubmission = () => {
                                     <th></th>
                                     <th></th>
                                     <th></th>
-                                    <th>${parseFloat(prices.TotalPrice).toFixed(2)} <span className="original-price">${dealerDiscount?prices.TotalPrice*(1+dealerDiscount):""}</span></th>
+                                    <th>${parseFloat(prices.TotalPrice).toFixed(2)} <span className="original-price">{dealerDiscount?`$${prices.TotalPrice*(1+dealerDiscount)}`:""}</span></th>
                                     
                                 </tr>
                                 

@@ -88,7 +88,7 @@ export default function Orders(props) {
         PaperProps={{
           elevation: 0,
           sx: {
-            overflow: "visible",
+            overflow: "hidden",
             filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
             mt: 1.5,
             "& .MuiAvatar-root": {
@@ -139,7 +139,7 @@ export default function Orders(props) {
           </ListItemIcon>
           Logout
         </MenuItem> */}
-        <OrdersContent orders={ordersList}/>
+        <OrdersContent id={"OrdersContentContainer"} orders={ordersList}/>
       </Menu>
     </>
   );

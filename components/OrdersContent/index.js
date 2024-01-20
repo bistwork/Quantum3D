@@ -71,7 +71,7 @@ export default function OrdersContent({orders}) {
         </Collapse>
         <Divider />
       </Box>
-      <Box>
+      <Box sx={{overflowY:"scroll"}}>
         <List className={styles.list}>
           <TransitionGroup>
             {Array.isArray(orders)?(orders.map((item, index, self) => (

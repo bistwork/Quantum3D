@@ -3,7 +3,7 @@
   padding: 0 10px;
   max-height: 770px;
   min-height: 220px;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 .header {

@@ -68,7 +68,7 @@ export default function NotificationsContent({notifications}) {
         </Collapse>
         <Divider />
       </Box>
-      <Box>
+      <Box sx={{overflowY:"scroll"}}>
         <List className={styles.list}>
           <TransitionGroup>
           {Array.isArray(notifications)?(notifications.map((item, index, self) => (

@@ -85,7 +85,7 @@ export default function Notifications(props) {
         PaperProps={{
           elevation: 0,
           sx: {
-            overflow: "visible",
+            overflow: "hidden",
             filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
             mt: 1.5,
             "& .MuiAvatar-root": {

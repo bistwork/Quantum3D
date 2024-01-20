@@ -75,12 +75,16 @@ function App() {
     if (comId) {
       attrs.setComId(comId);
     }
+    const optionalPostCore = params.get('optionalPostCore');
+    if(optionalPostCore) {
+      attrs.setOptionalPostCore(optionalPostCore);
+    }
     setLoadingAttrs(false)
   }, [attrs]);
 
   const board = attrs!=null ? attrs.selectedBoard : 0;
   
-  if(attrs && !loadingAttrs){if(!attrs.orderId){
+  if(attrs && !loadingAttrs){if(!attrs.orderId && attrs.dealerId){
       return (
         <>
           <link href='https://fonts.googleapis.com/css?family=Barlow Condensed' rel='stylesheet'/>    

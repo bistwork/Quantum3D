@@ -18,13 +18,13 @@ const PergolaOptionTab = ({attrs})=>{
                 label = "MIXED";
                 break;
             case "lattice-insulated":
-                label = "LATTICE & MIXED";
+                label = "LATTICE & INSULATED";
                 break;
             default:
                 label = "OASIS PATIO SYSTEMS";
                 break;
         }
-        if(!attrs.orderId){
+        if(!attrs.orderId && attrs.dealerId){
             return <><div className="PergolaOptionTab">
                 <span className="model">{label}</span>
                 <div className="selection-buttons">

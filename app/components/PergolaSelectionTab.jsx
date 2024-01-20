@@ -1,82 +1,15 @@
 import React,{useEffect, useMemo, useState} from 'react';
-import Popup from './Popup';
-import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
-import { nanoid } from 'nanoid';
-import { defaultConfig } from 'next/dist/server/config-shared';
+import OverviewTable from './OverviewTable';
+import { calculateDiscount, getQuote } from '../utils/quoting';
+import {createNotification } from './api/notifications'
+import { updateOrder } from './api/orders';
 
 const PergolaSelectionTab = ({attrs})=>{
-    const [showLink, setShowLink] = useState(false);
-    const [isPopupOpen, setPopupOpen] = useState(false);
     const [isNotified, setNotifiedPayment] = useState(false);
-    const [isClientSelected, setClientSelected] = useState(false);
-    const [selectedClient, setSelectedClient] = useState("");
-    const [clients, setClients] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [orderCreated,setOrderCreated] = useState(false);
     const [dealerDiscount,setDealerDiscount] = useState(null);
     const [isCheckbox1Checked, setIsCheckbox1Checked] = useState(false);
     const [isCheckbox2Checked, setIsCheckbox2Checked] = useState(false);
-
-    const calculateDiscount = ()=>{
-          
-        useMemo(() => {
-          const fetchData = async () => {
-              try {
-                  const apiKey = 'da2-dz4zldsidrdexe5wx2bfz4dhpm';
-                  const apiUrl = 'https://lzm2bp7eunag3la2hfq6oyyyq4.appsync-api.us-west-2.amazonaws.com/graphql';
-                  const query = `
-                  query ListCustomersByUser {
-                      getUser(id:"${attrs.dealerId}"){
-                          tierId
-                      }
-                }
-                `;
-  
-          const response = await axios.post(
-            apiUrl,
-            {
-              query: query,
-              variables: {
-                  userId: String(attrs.dealerId) // Replace with the actual user ID
-              }
-          },
-            {
-              headers: {
-                  'x-api-key': apiKey,
-                  'Content-Type': 'application/json'
-              }
-          }
-          );
-          
-          const fetchedDiscount = response.data.data.getUser.tierId;
-          switch(fetchedDiscount){
-                case "Tier0":
-                    setDealerDiscount(0)
-                    break;
-                case "Tier1":
-                    setDealerDiscount(0.05)
-                    break;
-                case "Tier2":
-                    setDealerDiscount(0.1)
-                    break;
-                case "Tier3":
-                    setDealerDiscount(0.25);
-                  break;
-                default:
-                    setDealerDiscount(0)
-                    break;
-          }
-      } catch (error) {
-          console.error('Error fetching data:', error);
-      }
-  };
-  if(!dealerDiscount)
-      fetchData()
-}, []);
-      };          
-    calculateDiscount();
-
+    
     let label = " ";
     if(attrs){ 
         switch(attrs.model){
@@ -96,167 +29,39 @@ const PergolaSelectionTab = ({attrs})=>{
                 label = "Choice";
                 break;
         }
-}
-
-
-// Handle checkbox changes
-const handleCheckbox1Change = (event) => {
-  setIsCheckbox1Checked(event.target.checked);
-};
-
-const handleCheckbox2Change = (event) => {
-  setIsCheckbox2Checked(event.target.checked);
-};
-const createNotification = (orderId) => {
-    const apiKey = 'da2-dz4zldsidrdexe5wx2bfz4dhpm';
-    const apiUrl = 'https://lzm2bp7eunag3la2hfq6oyyyq4.appsync-api.us-west-2.amazonaws.com/graphql';
-    const currentDate = new Date();
-
-// Format the date in ISO 8601 format
-    const isoDate = currentDate.toISOString();
-    const variables = {
-        input: {
-            id: uuidv4(),
-            userID: attrs.dealerId,
-            createdAt:isoDate,
-            read:false,
-            category:"Update",
-            description: `The Project ${orderId} has been paid`,
-
-        }
-      };
-
-      const mutation = `
-      mutation MyMutation($input: CreateNotificationInput!) {
-        createNotification(input: $input) {
-          id
-          # Otros campos que quieras retornar
-        }
-      }
-    `;
-
-    axios({
-
-    url: apiUrl,
-
-    method: 'post',
-
-    headers: {
-
-        'x-api-key': apiKey,
-
-        'Content-Type': 'application/json'
-
-    },
-
-    data: {
-
-        query: mutation,
-
-        variables: variables
-
     }
+    
+    const handleDealerDiscountChange=(discount)=>setDealerDiscount(discount);
+    calculateDiscount(attrs,handleDealerDiscountChange);
 
-    })
 
-    .then((response) => {
-
-        if(response.data.errors==null) {
-            console.log(response.data);
-            setNotifiedPayment(true);
-            console.log(isNotified)
-        }
-
-    })
-
-    .catch((error) => {
-
-        console.error("err",error);
-
-    });
-
-}
-const updateOrder = () => {
-    const apiKey = 'da2-dz4zldsidrdexe5wx2bfz4dhpm';
-    const apiUrl = 'https://lzm2bp7eunag3la2hfq6oyyyq4.appsync-api.us-west-2.amazonaws.com/graphql';
-    const variables = {
-        input: {
-          id: attrs.orderId,
-          comercialId: attrs.comId,
-          status: 1,
-        }
-      };
-      
-      const mutation = `
-        mutation MyMutation($input: UpdateOrderInput!) {
-          updateOrder(input: $input) {
-            id
-          }
-        }
-      `;
-
-    axios({
-
-    url: apiUrl,
-
-    method: 'post',
-
-    headers: {
-
-        'x-api-key': apiKey,
-
-        'Content-Type': 'application/json'
-
-    },
-
-    data: {
-
-        query: mutation,
-        variables:variables,
-
-    }
-
-    })
-    .then((response) => {
-
-        console.log(response.data);
-        if(response.data.errors==null) {
-            console.log("changed status");
-        }
-
-    })
-
-    .catch((error) => {
-
-        console.error("err",error);
-
-    });
-
-}
-// Handle submission logic
-const handleSubmission = () => {
-    if(attrs.orderId){
-        if (isCheckbox1Checked && isCheckbox2Checked) {
-          // Perform your submission logic here
-          // For example, redirect to the link
-          createNotification(attrs.comId);
-          updateOrder();
-          window.location.href = "https://www.oasispatiosystems.com/";
-        }
-        else {
-          // Display an error message or take appropriate action
-          alert("Please check both checkboxes before submitting.");
-        }
-    }
-    else{
-        alert("There is not a related order to work with")
-    }
-  // Check if both checkboxes are checked before allowing submission
-};
-    const hidePhoneNumber = (phoneNumber) => {
-        return `***-****-${phoneNumber.slice(-4)}`;
+    const handleCheckbox1Change = (event) => {
+        setIsCheckbox1Checked(event.target.checked);
     };
-    if(attrs!=undefined){
+
+    const handleCheckbox2Change = (event) => {
+        setIsCheckbox2Checked(event.target.checked);
+    };
+
+    const handleNotificationCreation = (event) => setNotifiedPayment(event);
+
+    const handleSubmission = () => {
+        if(attrs.orderId){
+            if (isCheckbox1Checked && isCheckbox2Checked) {
+            
+                createNotification(attrs,attrs.comId,handleNotificationCreation);
+                updateOrder(attrs);
+                window.location.href = "https://www.oasispatiosystems.com/";
+            }
+            else {
+                alert("Please check both checkboxes before submitting.");
+            }
+        }
+        else{
+            alert("There is not a related order to work with")
+        }
+    };
+
     const handleWidthChange =  (event) =>{
         const {value} = (event.target);
         if(attrs.model=="lattice-insulated"){
@@ -330,484 +135,9 @@ const handleSubmission = () => {
           ...prevState,
           [key]: option,
         }));
-      };
-    
-            
-      const calculateLatticeQuote = (attrs)=>{
-          
-        const lattice2x2Price = 1.69;
-        const lattice3x3Price = 2.47;
-        const post3x3Price = 2.47;
-        const post4x4Price = 2.75;
-        const rafterPrice = 3.87;
-        const beamPrice = 4.27;
-        const tailKitsPrice = 15.79;
-        const rectBeamPrice = 15.02;
-        const squareTubePrice = 6.17;
-
-        let totalPrice = 0;
-
-        let numberOfColumns = 2;
-        if(attrs.width <= 22){
-            numberOfColumns = 2;
-            }
-        else if(attrs.width <= 34){
-            numberOfColumns = 3;
-        }
-        else if(attrs.width <= 45){
-            numberOfColumns = 4;
-        }
-        else if(attrs.width <= 56){
-            numberOfColumns = 5;
-        }
-        else if(attrs.width <= 68){
-            numberOfColumns = 6;
-        }
-        else if(attrs.width <= 79){
-            numberOfColumns = 7;
-        }
-        else if(attrs.width <= 90){
-            numberOfColumns = 8;
-        }
-        else if(attrs.width > 90){
-            numberOfColumns = Math.floor(0.0883*attrs.width + 0.0291);
-        }
-
-        let latticePrice = 0;
-        let columnPrice = 0;
-        let raftersPrice = 0;
-        let beamsPrice = 0;
-        let beamAndRafterEnds = 0;
-        let rectBeamsPrice = 0;
-        let postPrice = 0;
-        let optionalPostCorePrice = 0;
-        
-
-        if(attrs.mountMode!=3){
-
-            latticePrice = attrs.rafterSize == 2? lattice2x2Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize)): lattice3x3Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize));
-            columnPrice = attrs.postType == 0? post3x3Price*attrs.height*numberOfColumns:post4x4Price*attrs.height*numberOfColumns;
-            raftersPrice = attrs.projection * rafterPrice * (Math.floor(attrs.width/2.5)+1);
-            beamsPrice = attrs.selectedHead == 0? attrs.width*beamPrice: 2*attrs.width*beamPrice;
-            beamAndRafterEnds =  attrs.selectedHead == 0? 2*tailKitsPrice* (Math.floor(attrs.width/2.5)+1): 4*tailKitsPrice* (Math.floor(attrs.width/2.5)+1);
-            rectBeamsPrice = attrs.selectedHead == 0? attrs.width*rectBeamPrice: 2*attrs.width*rectBeamPrice;
-            postPrice = squareTubePrice*attrs.height*numberOfColumns;
-            optionalPostCorePrice = attrs.optionalPostCore==0?0:attrs.optionalPostCore==1?5.20*numberOfColumns:15.33*numberOfColumns;
-
-        }
-        else{
-            latticePrice = attrs.rafterSize == 2? lattice2x2Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize)): lattice3x3Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize));
-            columnPrice = attrs.postType == 0? 2*post3x3Price*attrs.height*numberOfColumns:2*post4x4Price*attrs.height*numberOfColumns;
-            raftersPrice = attrs.projection * rafterPrice * Math.floor(attrs.width/2.5);
-            beamsPrice = attrs.selectedHead == 0? 2*attrs.width*beamPrice: 4*attrs.width*beamPrice;
-            beamAndRafterEnds =  attrs.selectedHead == 0? 4*tailKitsPrice* (Math.floor(attrs.width/2.5)+1): 8*tailKitsPrice* (Math.floor(attrs.width/2.5)+1);
-            rectBeamsPrice = attrs.selectedHead == 0? 2*attrs.width*rectBeamPrice: 4*attrs.width*rectBeamPrice;
-            postPrice = 2*squareTubePrice*attrs.height*numberOfColumns;
-            optionalPostCorePrice = attrs.optionalPostCore==0?0:attrs.optionalPostCore==1?5.20*numberOfColumns*2:15.33*numberOfColumns*2;
-        }
-
-
-        totalPrice+= latticePrice+columnPrice+raftersPrice+beamsPrice+beamAndRafterEnds+rectBeamsPrice+postPrice+optionalPostCorePrice;
-
-
-        return dealerDiscount?totalPrice*(1-dealerDiscount):totalPrice;
-        
-
-    }
-
-    const calculateInsulatedQuote = (attrs)=>{
-          
-        const lattice2x2Price = 1.69;
-        const lattice3x3Price = 2.47;
-        const post3x3Price = 2.47;
-        const post4x4Price = 2.75;
-        const rafterPrice = 3.87;
-        const beamPrice = 4.27;
-        const tailKitsPrice = 15.79;
-        const rectBeamPrice = 15.02;
-        const squareTubePrice = 6.17;
-
-        let totalPrice = 0;
-
-        let numberOfColumns = 2;
-        if(attrs.width <= 22){
-            numberOfColumns = 2;
-            }
-        else if(attrs.width <= 34){
-            numberOfColumns = 3;
-        }
-        else if(attrs.width <= 45){
-            numberOfColumns = 4;
-        }
-        else if(attrs.width <= 56){
-            numberOfColumns = 5;
-        }
-        else if(attrs.width <= 68){
-            numberOfColumns = 6;
-        }
-        else if(attrs.width <= 79){
-            numberOfColumns = 7;
-        }
-        else if(attrs.width <= 90){
-            numberOfColumns = 8;
-        }
-        else if(attrs.width > 90){
-            numberOfColumns = Math.floor(0.0883*attrs.width + 0.0291);
-        }
-
-        let latticePrice = 0;
-        let columnPrice = 0;
-        let raftersPrice = 0;
-        let beamsPrice = 0;
-        let beamAndRafterEnds = 0;
-        let rectBeamsPrice = 0;
-        let postPrice = 0;
-        let optionalPostCorePrice = 0;
-        let vPrice = 0;
-        let gutterPrice = 0;
-        let platePrice = 0;
-
-        if(attrs.mountMode!=3){
-
-            latticePrice = attrs.rafterSize == 2? lattice2x2Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize)): lattice3x3Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize));
-            columnPrice = attrs.postType == 0? post3x3Price*attrs.height*numberOfColumns:post4x4Price*attrs.height*numberOfColumns;
-            raftersPrice = attrs.projection * rafterPrice * Math.floor(attrs.width/2.5);
-            beamsPrice = attrs.selectedHead == 0? attrs.width*beamPrice: 2*attrs.width*beamPrice;
-            beamAndRafterEnds =  attrs.selectedHead == 0? 2*tailKitsPrice* (Math.floor(attrs.width/2.5)+1): 4*tailKitsPrice* (Math.floor(attrs.width/2.5)+1);
-            rectBeamsPrice = attrs.selectedHead == 0? attrs.width*rectBeamPrice: 2*attrs.width*rectBeamPrice;
-            postPrice = squareTubePrice*attrs.height*numberOfColumns;
-            optionalPostCorePrice = attrs.optionalPostCore==0?0:attrs.optionalPostCore==1?5.20*numberOfColumns:15.33*numberOfColumns;
-            vPrice = attrs.width * 4.448;
-            gutterPrice = attrs.width * 8.9;
-            platePrice = attrs.width * (attrs.projection+1) * 6.5;
-            
-        }
-        else{
-            latticePrice = attrs.rafterSize == 2? lattice2x2Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize)): lattice3x3Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize));
-            columnPrice = attrs.postType == 0? 2*post3x3Price*attrs.height*numberOfColumns:2*post4x4Price*attrs.height*numberOfColumns;
-            raftersPrice = attrs.projection * rafterPrice * (Math.floor(attrs.width/2.5)+1);
-            beamsPrice = attrs.selectedHead == 0? 2*attrs.width*beamPrice: 4*attrs.width*beamPrice;
-            beamAndRafterEnds =  attrs.selectedHead == 0? 4*tailKitsPrice* (Math.floor(attrs.width/2.5)+1): 8*tailKitsPrice* (Math.floor(attrs.width/2.5)+1);
-            rectBeamsPrice = attrs.selectedHead == 0? 2*attrs.width*rectBeamPrice: 4*attrs.width*rectBeamPrice;
-            postPrice = 2*squareTubePrice*attrs.height*numberOfColumns;
-            optionalPostCorePrice = attrs.optionalPostCore==0?0:attrs.optionalPostCore==1?5.20*numberOfColumns*2:15.33*numberOfColumns*2;
-            gutterPrice = attrs.width * 8.9;
-            platePrice = attrs.width * (attrs.projection+1) * 6.5;
-        }
-
-
-        totalPrice+= latticePrice+columnPrice+raftersPrice+beamsPrice+beamAndRafterEnds+rectBeamsPrice+postPrice+optionalPostCorePrice+vPrice+gutterPrice+platePrice;
-
-        return dealerDiscount?totalPrice*(1-dealerDiscount):totalPrice;
-    
-
-    }
-
-
-    const getQuote = () => {
-        let price = 0;
-        switch(attrs.model){
-            case "lattice":
-                price = calculateLatticeQuote(attrs);
-                break
-            case "insulated":
-                price = calculateInsulatedQuote(attrs);
-                break
-            case "mixed":
-                if(attrs.isLatticeMiddle){
-                    price = calculateLatticeQuote(attrs.middleAttrs)+ calculateInsulatedQuote(attrs.leftAttrs) + calculateInsulatedQuote(attrs.rightAttrs);
-                }
-                else{
-                    price = calculateLatticeQuote(attrs.leftAttrs)+ calculateInsulatedQuote(attrs.middleAttrs) + calculateLatticeQuote(attrs.rightAttrs);
-                }
-                break
-            case "lattice-insulated":
-                price = calculateLatticeQuote(attrs.rightAttrs) + calculateInsulatedQuote(attrs.leftAttrs);
-                break
-
-        }
-        let prices = {
-            "TotalPrice": Math.round(price)
-        }
-        return prices;
-    }
-    const createOrder = () => {
-        const apiKey = 'da2-dz4zldsidrdexe5wx2bfz4dhpm';
-        const apiUrl = 'https://lzm2bp7eunag3la2hfq6oyyyq4.appsync-api.us-west-2.amazonaws.com/graphql';
-    
-        const comId = `PER${(nanoid(8)).toUpperCase()}`;
-        const orderId = uuidv4();      
-        const variables = {
-            input: {
-                createdAt:new Date().toISOString(),
-                updatedAt:new Date().toISOString,
-                id: orderId,
-                userID: attrs.dealerId, 
-                customerId: clients[selectedClient].id,
-                comercialId: comId,
-                deliveryDate: "Pending",
-                retailAmount:String(prices.TotalPrice),
-                model:attrs.model,    
-                height: attrs.props.height,
-                materials: JSON.stringify(attrs.props.materials),
-                width: attrs.props.width,
-                selectedRafterHeaders: attrs.props.selectedRafterHeaders,
-                selectedRafterEndCaps: attrs.props.selectedRafterEndCaps,
-                selectedHead: attrs.props.selectedHead,
-                selectedEnd: attrs.props.selectedEnd,
-                rafterSize: attrs.props.rafterSize,
-                rafterAlign: attrs.props.rafterAlign,
-                projection: attrs.props.projection,
-                postType: attrs.props.postType,
-                mountMode: attrs.props.mountMode,
-                status:0,
-                url:String(generateShareableLink(attrs.props,comId,orderId))
-            }
-          };
-
-          const mutation = `
-          mutation MyMutation($input: CreateOrderInput!) {
-            createOrder(input: $input) {
-              id
-              # Otros campos que quieras retornar
-            }
-          }
-        `;
-        console.log(variables);
-
-        axios({
-
-        url: apiUrl,
-
-        method: 'post',
-
-        headers: {
-
-            'x-api-key': apiKey,
-
-            'Content-Type': 'application/json'
-
-        },
-
-        data: {
-
-            query: mutation,
-
-            variables: variables
-
-        }
-
-        })
-
-        .then((response) => {
-
-            console.log(response.data);
-            if(response.data.errors==null) {
-                setOrderCreated(true);
-                createOrderNotification(comId)
-            }
-
-        })
-
-        .catch((error) => {
-
-            console.error("err",error);
-
-        });
-
-
-    }
-    const createOrderNotification = (orderId) => {
-        const apiKey = 'da2-dz4zldsidrdexe5wx2bfz4dhpm';
-        const apiUrl = 'https://lzm2bp7eunag3la2hfq6oyyyq4.appsync-api.us-west-2.amazonaws.com/graphql';
-        const currentDate = new Date();
-        const orderNotificationId = uuidv4()
-
-    // Format the date in ISO 8601 format
-        const isoDate = currentDate.toISOString();
-        const variables = {
-            input: {
-                id: uuidv4(),
-                userID: attrs.dealerId,
-                createdAt:isoDate,
-                read:false,
-                category:"Order",
-                description: `The Project ${orderId} has been created`,
-
-                
-            }
-          };
-
-          const mutation = `
-          mutation MyMutation($input: CreateOrderNotificationInput!) {
-            createOrderNotification(input: $input) {
-              id
-              # Otros campos que quieras retornar
-            }
-          }
-        `;
-
-        axios({
-
-        url: apiUrl,
-
-        method: 'post',
-
-        headers: {
-
-            'x-api-key': apiKey,
-
-            'Content-Type': 'application/json'
-
-        },
-
-        data: {
-
-            query: mutation,
-
-            variables: variables
-
-        }
-
-        })
-
-        .then((response) => {
-
-            console.log(response.data);
-            if(response.data.errors==null) {
-                setOrderCreated(true);
-            }
-
-        })
-
-        .catch((error) => {
-
-            console.error("err",error);
-
-        });
-
-    }
-
-    const generateShareableLink = (attrs,comId,orderId) => {
-        if (typeof window !== 'undefined') {
-            const params = new URLSearchParams();
-            const baseUrl = window.location.origin; 
-            
-            if(attrs){
-                Object.entries(attrs).forEach(([key, value]) => {
-                    const paramValue = typeof value === 'object' ? encodeURIComponent(JSON.stringify(value)) : value;
-                    params.append(key, paramValue);
-                });
-            
-                return `${baseUrl}/?orderId=${orderId}&comId=${comId}&${params.toString()}`;}
-          }
-        return '';
-        
     };
-    const MySelectComponent = ({onSelectChange }) => {
 
-        if(!clients){
-
-            useMemo(() => {
-                const fetchData = async () => {
-                    try {
-                        const apiKey = 'da2-dz4zldsidrdexe5wx2bfz4dhpm';
-                        const apiUrl = 'https://lzm2bp7eunag3la2hfq6oyyyq4.appsync-api.us-west-2.amazonaws.com/graphql';
-                        const query = `
-                        query ListCustomersByUser {
-                            getUser(id:"${attrs.dealerId}"){
-                                tier {
-                                    id
-                                    discountPercentage
-                                }
-                                customers {
-                                    items {
-                                        primaryInfo {
-                                            primaryPhone
-                                            firstName
-                                            lastName
-                                        }
-                                        id
-                                    }
-                                }
-                            }
-                      }
-                      `;
-        
-                const response = await axios.post(
-                  apiUrl,
-                  {
-                    query: query,
-                    variables: {
-                        userId: String(attrs.dealerId) // Replace with the actual user ID
-                    }
-                },
-                  {
-                    headers: {
-                        'x-api-key': apiKey,
-                        'Content-Type': 'application/json'
-                    }
-                }
-                );
-                
-                const fetchedClients = response.data.data.getUser.customers.items;
-                setClients(fetchedClients);
-                setLoading(false);
-                console.log(response.data.data.getUser);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                setLoading(false);
-            }
-        };
-        
-        if (!clients) {
-            fetchData();
-        }
-    }, []);
-    }   
     
-          if (loading) {
-            return <p>Loading...</p>;
-          }
-        
-            const processedOptions = clients != null ? clients.map((option, index) => {
-            const { firstName, lastName, primaryPhone } = option.primaryInfo;
-            const displayText = `${firstName} ${lastName} ${hidePhoneNumber(primaryPhone)}`;
-            return (
-              <option key={index} value={index}>
-                {displayText}
-              </option>
-            );
-          }):null;
-        
-          return (
-            <>
-                {!orderCreated &&(
-                <select className="customer-select" onChange={onSelectChange} value={selectedClient}>
-                <option value="">Select a Customer</option>
-                {processedOptions}
-                </select>)}
-                <div className='get-estimate-container'>
-                {!orderCreated &&(<button className={isClientSelected?'get-estimate-button':''} onClick={()=>{if(isClientSelected){createOrder()}}}>SEND QUOTE</button>)}
-                    {orderCreated && (<>
-                        <p className="success-message">Order succesfully created</p>
-                        <p className="success-message">Thank you!</p>
-                    </>)}
-                </div>
-            </>
-          );
-        };
-    const openPopup = () => {
-        setPopupOpen(true);
-      };
-    
-      const closePopup = () => {
-        setPopupOpen(false);
-      };
-    const handleSelectionChange = (event) => {
-        setSelectedClient(event.target.value);
-        setClientSelected(event.target.value!=""?true:false)
-    }
 
     const handleOptional3x3 = (event) => {
         if(attrs.model=="lattice-insulated"){
@@ -846,6 +176,9 @@ const handleSubmission = () => {
         }
     }
 
+
+    if(attrs){
+    
     const beamHeaderSelections = ["Single Beam Headers","Double Beam Header"];
     const beamEndSelections = ["Beveled","Mitered","Corbel","Scallop"];
     const rafterHeadSelection = ["Single Rafter"];
@@ -853,11 +186,11 @@ const handleSubmission = () => {
     const mountSelections = ["Attached to the Wall","Attached to Fascia/Eave","Attached to Roof","Free Standing"];
     const postSizing = ['3x3',"4x4"];
     const mats = ['Smokey Gray', "Cedar Wood", "Gray Feather", "Musket Brown", "Bronze", "Sand Stone", "Brown Oak Wood", "Platinum Gray", "Black"];
-    const prices = getQuote()
+
+    const prices = getQuote(attrs,dealerDiscount);
 
     switch(attrs.selectedBoard){
         case 0:
-
             return <><div className="PergolaSelectionTab">
                 <h2>Dimensions</h2>
 
@@ -1544,28 +877,28 @@ const handleSubmission = () => {
                 </div>
                 <h3>Aluminum Inserts (PCS)</h3>
 
-                <div class="post-form-check mb-2">
+                <div className="post-form-check mb-2">
                     <input
-                        class="form-check-input"
+                        className="form-check-input"
                         type="checkbox"
                         id="3x3optional"
                         onChange={handleOptional3x3}
                         checked={attrs.model=="lattice-insulated"?false:attrs.model=="mixed"?false:attrs.optionalPostCore==1}
                     />
-                    <label class="form-check-label" for="3x3optional">
+                    <label className="form-check-label" htmlFor="3x3optional">
                         3x3 (PCS) Price: $5.20
                     </label>
                 </div>
 
-                <div class="post-form-check">
+                <div className="post-form-check">
                     <input
-                        class="form-check-input"
+                        className="form-check-input"
                         type="checkbox"
                         id="4x4optional"
                         onChange={handleOptional4x4}
                         checked={attrs.model=="lattice-insulated"?false:attrs.model=="mixed"?false:attrs.optionalPostCore==2}
                     />
-                    <label class="form-check-label" for="4x4optional">
+                    <label className="form-check-label" htmlFor="4x4optional">
                         4x4 (PCS) Price: $15.33
                     </label>
                 </div>
@@ -1818,386 +1151,15 @@ const handleSubmission = () => {
                 
             </div></>;
         case 6:
-            if(attrs.orderId==null){return <><div className="PergolaSelectionTab overview">
-                <div className="share-config-container">
-                    <img src="/textures/logo.webp" className='logo'/>
-                    {/* <button className='share-config' onClick={()=>{setShowLink(true)}}>SHARE</button>
-                    {showLink && (
-                    <div className="share-link-container">
-                        <input className="share-link" type="text" value={shareableLink} readOnly />
-                    </div>
-                    )} */}
-                </div>
-                <div className="overview-container">
-                    <div className='overview-table'>
-                        <table>
-                            <thead>
-                                <tr className='overview-header'>
-                                    <th>Model & Dimensions</th>
-                                    <th>Product Name</th>
-                                    <th>Dimensions (ft)</th>
-                                    <th>Slats</th>
-                                    <th>Count</th>
-                                    <th>Retail Price</th>
-                                    
-                                    
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th></th>
-                                    <th>Lattice</th>
-                                    <th>{attrs['width']}x{attrs['projection']}x{attrs['height']}</th>
-                                    <th>{attrs['rafterSize']}"</th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                <tr className='sec-header'>
-                                    <th>Structure</th>
-                                    <th>Property</th>
-                                    <th>Selection</th>
-                                    <th></th>
-                                    <th>Count</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Attachment</th>
-                                    <th>{mountSelections[attrs.mountMode]}</th>
-                                    <th></th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                <tr className='sec-header'>
-                                    <th>Headers & Ends</th>
-                                    <th>Property</th>
-                                    <th>Selection</th>
-                                    <th></th>
-                                    <th>Count</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Headers</th>
-                                    <th>{beamHeaderSelections[attrs.selectedHead]}</th>
-                                    <th></th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Ends</th>
-                                    <th>{beamEndSelections[attrs.selectedEnd]}</th>
-                                    <th></th>
-                                    <th>{attrs.selectedHead==1?attrs.mountMode!=3?"4":"8":attrs.mountMode!=3?"2":"4"}</th>
-                                    
-                                </tr>
-                                <tr className='sec-header'>
-                                    <th>Posts</th>
-                                    <th>Property</th>
-                                    <th>Selection</th>
-                                    <th></th>
-                                    <th>Count</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Size</th>
-                                    <th>{postSizing[attrs.postType]}</th>
-                                    <th></th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Aluminum Insert (PCS)</th>
-                                    <th>{attrs.optionalPostCore==0?"None":attrs.optionalPostCore==1?"3x3":"4x4"}</th>
-                                    <th></th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                <tr className='sec-header'>
-                                    <th>Rafter</th>
-                                    <th>Property</th>
-                                    <th>Selection</th>
-                                    <th></th>
-                                    <th>Count</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Header</th>
-                                    <th>{rafterHeadSelection[attrs.selectedRafterHeaders]}</th>
-                                    <th></th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Rafter End Caps</th>
-                                    <th>{rafterEndCapsSelection[attrs.selectedRafterEndCaps]}</th>
-                                    <th></th>
-                                    <th>{Math.floor(attrs.width/(2.5))+1}</th>
-                                    
-                                </tr>
-                                <tr className='sec-header'>
-                                    <th>Materials</th>
-                                    <th>Property</th>
-                                    <th>Selection</th>
-                                    <th></th>
-                                    <th>Count</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>{label} Material</th>
-                                    <th>{mats[attrs["materials"]["option"]]}</th>
-                                    <th></th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Rafter Material</th>
-                                    <th>{mats[attrs["materials"]["rafter"]]}</th>
-                                    <th></th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Beam Material</th>
-                                    <th>{mats[attrs["materials"]["beam"]]}</th>
-                                    <th></th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Cover Material</th>
-                                    <th>{mats[attrs["materials"]["cover"]]}</th>
-                                    <th></th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                
-                                <tr>
-                                    <th></th>
-                                    <th>Post Material</th>
-                                    <th>{mats[attrs["materials"]["post"]]}</th>
-                                    <th></th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th>${parseFloat(prices.TotalPrice).toFixed(2)} <span className="original-price">{dealerDiscount?`$${prices.TotalPrice*(1+dealerDiscount)}`:""}</span></th>
-                                    
-                                </tr>
-                                
-                            
-                            </tbody>
-                        </table>
-                    </div>
+            return(  attrs &&
+                    (<OverviewTable
+                        globalAttrs = {attrs} 
+                        specificAttrs = {attrs} 
+                        prices = {prices} 
+                        dealerDiscount = {dealerDiscount}
+                    />)
+                )
 
-                    <div className="customer-select-container">
-                        <h3>Customer Select</h3>
-                        <MySelectComponent onSelectChange={handleSelectionChange} />
-                            {/* <Popup isOpen={isPopupOpen} onClose={closePopup} onSend={()=>{createOrder()}}>
-                                <form className='popup-form'>
-                                <div className="form-selection-block" errormessages="this field is required"><label className="form-label" data-shrink="false" htmlFor=":aa:" id=":aa:-label">First Name<span aria-hidden="true" className="asterisk"> *</span></label><div className="input-container"><input aria-invalid="false" id=":aa:" name="firstName" required type="text" className="form-input" /></div></div>
-                                <div className="form-selection-block" errormessages="this field is required"><label className="form-label" data-shrink="false" htmlFor=":ab:" id=":ab:-label">Last Name<span aria-hidden="true" className="asterisk"> *</span></label><div className="input-container"><input aria-invalid="false" id=":ab:" name="lastName" required type="text" className="form-input" /></div></div>
-                                <div className="form-selection-block" errormessages="this field is required"><label className="form-label" data-shrink="false" htmlFor=":ac:" id=":ac:-label">Email<span aria-hidden="true" className="asterisk"> *</span></label><div className="input-container"><input aria-invalid="false" id=":ac:" name="lastName" required type="text" className="form-input" /></div></div>
-                                <div className="form-selection-block" errormessages="this field is required"><label className="form-label" data-shrink="false" htmlFor=":ad:" id=":ad:-label">Phone<span aria-hidden="true" className="asterisk"> *</span></label><div className="input-container"><input aria-invalid="false" id=":ad:" name="lastName" required type="text" className="form-input" /></div></div>
-                                <div className="form-selection-block" errormessages="this field is required"><label className="form-label" data-shrink="false" htmlFor=":ae:" id=":ae:-label">Address<span aria-hidden="true" className="asterisk"> *</span></label><div className="input-container"><input aria-invalid="false" id=":ae:" name="lastName" required type="text" className="form-input" /></div></div>
-                                <div className="form-selection-block" errormessages="this field is required"><label className="form-label" data-shrink="false" htmlFor=":af:" id=":af:-label">Zip code<span aria-hidden="true" className="asterisk"> *</span></label><div className="input-container"><input aria-invalid="false" id=":af:" name="lastName" required type="text" className="form-input" /></div></div>
-                                <div className="form-selection-block" errormessages="this field is required"><label className="form-label" data-shrink="false" htmlFor=":ag:" id=":ag:-label">City<span aria-hidden="true" className="asterisk"> *</span></label><div className="input-container"><input aria-invalid="false" id=":ag:" name="lastName" required type="text" className="form-input" /></div></div>
-                                <div className="form-selection-block" errormessages="this field is required"><label className="form-label" data-shrink="false" htmlFor=":ah:" id=":ah:-label">How did you hear about us?</label><div className="input-container"><input aria-invalid="false" id=":ah:" name="lastName" required type="text" className="form-input" /></div></div>
-                                <div className="form-selection-block" errormessages="this field is required"><label className="form-label" data-shrink="false" htmlFor=":ah:" id=":ah:-label">Message</label><div className="input-container"><input aria-invalid="false" id=":ah:" name="lastName" required type="text" className="form-input" /></div></div>
-                                </form>
-                            </Popup> */}
-                    </div>
-                    
-                </div>
-
-
-                
-            </div></>;}
-            else{return <>
-            <div className="PergolaSelectionTab overview">
-                <div className="share-config-container">
-                    <img src="/textures/logo.webp" className='logo'/>
-                </div>
-                <div className="overview-container">
-                    <div className='overview-table'>
-                        <table>
-                            <thead>
-                                <tr className='overview-header'>
-                                    <th>Model & Dimensions</th>
-                                    <th>Product Name</th>
-                                    <th>Dimensions (ft)</th>
-                                    <th>Slats</th>
-                                    <th>Count</th>
-                                    
-                                    
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th></th>
-                                    <th>{label}</th>
-                                    <th>{attrs['width']}x{attrs['projection']}x{attrs['height']}</th>
-                                    <th>{attrs['rafterSize']}"</th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                <tr className='sec-header'>
-                                    <th>Structure</th>
-                                    <th>Property</th>
-                                    <th>Selection</th>
-                                    <th></th>
-                                    <th>Count</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Attachment</th>
-                                    <th>{mountSelections[attrs.mountMode]}</th>
-                                    <th></th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                <tr className='sec-header'>
-                                    <th>Headers & Ends</th>
-                                    <th>Property</th>
-                                    <th>Selection</th>
-                                    <th></th>
-                                    <th>Count</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Headers</th>
-                                    <th>{beamHeaderSelections[attrs.selectedHead]}</th>
-                                    <th></th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Ends</th>
-                                    <th>{beamEndSelections[attrs.selectedEnd]}</th>
-                                    <th></th>
-                                    <th>{attrs.selectedHead==1?attrs.mountMode!=3?"4":"8":attrs.mountMode!=3?"2":"4"}</th>
-                                    
-                                </tr>
-                                <tr className='sec-header'>
-                                    <th>Posts</th>
-                                    <th>Property</th>
-                                    <th>Selection</th>
-                                    <th></th>
-                                    <th>Count</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Size</th>
-                                    <th>{postSizing[attrs.postType]}</th>
-                                    <th></th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Aluminum Insert (PCS)</th>
-                                    <th>{optionalPostCore==0?"None":optionalPostCore==1?"3x3":"4x4"}</th>
-                                    <th></th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                <tr className='sec-header'>
-                                    <th>Rafter</th>
-                                    <th>Property</th>
-                                    <th>Selection</th>
-                                    <th></th>
-                                    <th>Count</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Header</th>
-                                    <th>{rafterHeadSelection[attrs.selectedRafterHeaders]}</th>
-                                    <th></th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Rafter End Caps</th>
-                                    <th>{rafterEndCapsSelection[attrs.selectedRafterEndCaps]}</th>
-                                    <th></th>
-                                    <th>{(Math.floor(attrs.width/(2.5))+1)}</th>
-                                    
-                                </tr>
-                                <tr className='sec-header'>
-                                    <th>Materials</th>
-                                    <th>Property</th>
-                                    <th>Selection</th>
-                                    <th></th>
-                                    <th>Count</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Lattice Material</th>
-                                    <th>{mats[attrs["materials"]["option"]]}</th>
-                                    <th></th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Rafter Material</th>
-                                    <th>{mats[attrs["materials"]["rafter"]]}</th>
-                                    <th></th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Beam Material</th>
-                                    <th>{mats[attrs["materials"]["beam"]]}</th>
-                                    <th></th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>Cover Material</th>
-                                    <th>{mats[attrs["materials"]["cover"]]}</th>
-                                    <th></th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                                
-                                <tr>
-                                    <th></th>
-                                    <th>Post Material</th>
-                                    <th>{mats[attrs["materials"]["post"]]}</th>
-                                    <th></th>
-                                    <th>1</th>
-                                    
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            </>;}
         case 7:
             return <>
             <div className="PergolaSelectionTab overview">
@@ -2217,28 +1179,28 @@ const handleSubmission = () => {
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit laudantium doloribus voluptatum omnis eius et optio eos! Recusandae at maxime sequi voluptatibus laudantium quae. Doloremque impedit nihil itaque quos dolorum!</p>
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit laudantium doloribus voluptatum omnis eius et optio eos! Recusandae at maxime sequi voluptatibus laudantium quae. Doloremque impedit nihil itaque quos dolorum!</p>
                         { !isNotified &&(<><div className="checkbox-container">
-                        <div class="form-check mb-2">
+                        <div className="form-check mb-2">
                         <input
-                            class="form-check-input"
+                            className="form-check-input"
                             type="checkbox"
                             id="formCheck1"
                             onChange={handleCheckbox1Change}
                             checked={isCheckbox1Checked}
                         />
-                        <label class="form-check-label" for="formCheck1">
+                        <label className="form-check-label" htmlFor="formCheck1">
                         By checking this box, I acknowledge that I have read and agree to the terms and conditions, and I confirm my acceptance of the project specifications and measures.
                         </label>
                         </div>
 
-                        <div class="form-check">
+                        <div className="form-check">
                         <input
-                            class="form-check-input"
+                            className="form-check-input"
                             type="checkbox"
                             id="formCheck2"
                             onChange={handleCheckbox2Change}
                             checked={isCheckbox2Checked}
                         />
-                        <label class="form-check-label" for="formCheck2">
+                        <label className="form-check-label" htmlFor="formCheck2">
                         By checking this box, I acknowledge and confirm that I have completed the payment required to initiate the project. I authorize the commencement of the project based on the agreed terms and conditions.
                         </label>
                         </div>

@@ -58,7 +58,7 @@ export default function ProjectsSection() {
     if(newStatus == 3){
       console.log(params.row.data)
       if(params.row.data){
-        createAdmnOrder(params.row.data)
+        createAdmnOrder(params.row.data,user)
         createOrderNotification(params.row.comercialId)
       }
     }
@@ -144,6 +144,12 @@ export default function ProjectsSection() {
       headerName: "Retail Amount",
       flex: 1.5,
       valueGetter: (params) => `$${parseFloat(params.row.retailAmount).toFixed(2)} `,
+    },
+    {
+      field: "dealerName",
+      headerName: "Dealer Name",
+      flex: 1.5,
+      valueGetter: (params) => params.row.dealerName
     },
     {
       field: "projectStatus",

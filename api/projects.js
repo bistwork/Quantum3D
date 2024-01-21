@@ -27,6 +27,7 @@ export const fetchOrders = async (userID) => {
         status: item.status,
         url:item.url,
         data:item,
+        dealerName:item.dealerName
       };
     });
   } catch (error) {
@@ -76,7 +77,7 @@ export const updateOrderState = async (_id, _status) => {
     }
 }
 
-export const createAdmnOrder = async (data) => {
+export const createAdmnOrder = async (data,user) => {
   try{
     if (!data) {
       throw new Error("ID is required for fetching the order.");
@@ -106,7 +107,8 @@ export const createAdmnOrder = async (data) => {
             postType: data.postType,
             mountMode: data.mountMode,
             status:0,
-            url:data.url
+            url:data.url,
+            dealerName:user.fullName,
         }
       };
 

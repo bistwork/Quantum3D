@@ -277,6 +277,7 @@ export const ordersByUserId = /* GraphQL */ `
         projection
         postType
         mountMode
+        dealerName
       }
     }
   }

@@ -731,3 +731,7 @@ width: 100%;
   color:#75757580;
   text-decoration-color:#ff505070;
 }
+.multiple-overview-container{
+  width:100%;
+  overflow-y: scroll;
+}

@@ -3,6 +3,7 @@ import OverviewTable from './OverviewTable';
 import { calculateDiscount, getQuote } from '../utils/quoting';
 import {createNotification } from './api/notifications'
 import { updateOrder } from './api/orders';
+import CustomerSelect from './OverviewTable/CustomerSelect';
 
 const PergolaSelectionTab = ({attrs})=>{
     const [isNotified, setNotifiedPayment] = useState(false);
@@ -179,13 +180,8 @@ const PergolaSelectionTab = ({attrs})=>{
 
     if(attrs){
     
-    const beamHeaderSelections = ["Single Beam Headers","Double Beam Header"];
-    const beamEndSelections = ["Beveled","Mitered","Corbel","Scallop"];
-    const rafterHeadSelection = ["Single Rafter"];
-    const rafterEndCapsSelection = ["Beveled","Mitered","Corbel","Scallop"];
     const mountSelections = ["Attached to the Wall","Attached to Fascia/Eave","Attached to Roof","Free Standing"];
     const postSizing = ['3x3',"4x4"];
-    const mats = ['Smokey Gray', "Cedar Wood", "Gray Feather", "Musket Brown", "Bronze", "Sand Stone", "Brown Oak Wood", "Platinum Gray", "Black"];
 
     const prices = getQuote(attrs,dealerDiscount);
 
@@ -1151,14 +1147,18 @@ const PergolaSelectionTab = ({attrs})=>{
                 
             </div></>;
         case 6:
-            return(  attrs &&
-                    (<OverviewTable
+    
+            return( attrs &&
+                    (
+                    <OverviewTable
                         globalAttrs = {attrs} 
-                        specificAttrs = {attrs} 
                         prices = {prices} 
                         dealerDiscount = {dealerDiscount}
-                    />)
+                    />
+                    )
+                    
                 )
+        
 
         case 7:
             return <>

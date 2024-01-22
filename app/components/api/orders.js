@@ -78,7 +78,7 @@ export const createOrder = (attrs,client,prices,handleOrderCreated) => {
             comercialId: comId,
             deliveryDate: "Pending",
             retailAmount:String(prices.TotalPrice),
-            model:attrs.model,    
+            model:attrs.model=="lattice-insulated"?"latticeInsulated":attrs.model,    
             height: attrs.props.height,
             materials: JSON.stringify(attrs.props.materials),
             width: attrs.props.width,
@@ -92,7 +92,12 @@ export const createOrder = (attrs,client,prices,handleOrderCreated) => {
             postType: attrs.props.postType,
             mountMode: attrs.props.mountMode,
             status:0,
-            url:String(generateShareableLink(attrs.props,comId,orderId))
+            url:String(generateShareableLink(attrs.props,comId,orderId)),
+            leftAttrs: JSON.stringify(attrs.leftAttrs),
+            middleAttrs: JSON.stringify(attrs.middleAttrs),
+            rightAttrs: JSON.stringify(attrs.rightAttrs),
+            mixedRight: attrs.mixedRight,
+            isLatticeMiddle: attrs.isLatticeMiddle,
         }
       };
 

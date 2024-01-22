@@ -1,6 +1,7 @@
 import CustomerSelect from "./CustomerSelect";
+import { useState } from "react";
 
-export default function OverviewTable({globalAttrs,prices,dealerDiscount,renderedLast=true}) {
+export default function OverviewTable({globalAttrs,prices,dealerDiscount}) {
 
     const beamHeaderSelections = ["Single Beam Headers","Double Beam Header"];
     const beamEndSelections = ["Beveled","Mitered","Corbel","Scallop"];
@@ -13,7 +14,7 @@ export default function OverviewTable({globalAttrs,prices,dealerDiscount,rendere
     const latticeInsulated = [globalAttrs.leftAttrs,globalAttrs.rightAttrs];
     const mixed = [globalAttrs.leftAttrs,globalAttrs.rightAttrs,globalAttrs.middleAttrs];
 
-    const generateTable = (globalAttrs,specificAttrs) => {
+    const generateTable = (globalAttrs,specificAttrs,index=3) => {
         if(!globalAttrs?.orderId && globalAttrs?.dealerId){
             console.log("DealerView")
             switch(globalAttrs.model){
@@ -43,13 +44,13 @@ export default function OverviewTable({globalAttrs,prices,dealerDiscount,rendere
                                         <th>Dimensions (ft)</th>
                                         <th>Slats</th>
                                         <th>Count</th>
-                                        <th>Retail Price</th>
+                                        <th className={globalAttrs.model=="mixed"?index==0?"":"not-visible-at-all":globalAttrs.model=="lattice-insulated"?index==0?"":"not-visible-at-all":""}>Retail Price</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <th></th>
-                                        <th>{label}</th>
+                                        <th>{globalAttrs.model=="mixed"?globalAttrs.isLatticeMiddle?index==1?"Lattice":"Insulated":index==1?"Insulated":"Lattice":globalAttrs.model=="lattice-insulated"?globalAttrs.mixedRight?index==0?"Insulated":"Lattice":index==0?"Lattice":"Insulated":label}</th>
                                         <th>{specificAttrs['width']}x{specificAttrs['projection']}x{specificAttrs['height']}</th>
                                         <th>{specificAttrs['rafterSize']}"</th>
                                         <th>1</th>
@@ -140,7 +141,7 @@ export default function OverviewTable({globalAttrs,prices,dealerDiscount,rendere
                                         <th>Rafter End Caps</th>
                                         <th>{rafterEndCapsSelection[specificAttrs.selectedRafterEndCaps]}</th>
                                         <th></th>
-                                        <th>{Math.floor(specificAttrs.width/(2.5))+1}</th>
+                                        <th>{globalAttrs.model=="mixed"?globalAttrs.isLatticeMiddle?index==1?Math.floor(specificAttrs.width/(2.5))+1:Math.floor(specificAttrs.width/(4))+1:index==1?Math.floor(specificAttrs.width/(4))+1:Math.floor(specificAttrs.width/(2.5))+1:globalAttrs.model=="lattice-insulated"?globalAttrs.mixedRight?index==0?Math.floor(specificAttrs.width/(4))+1:Math.floor(specificAttrs.width/(2.5))+1:index==0?Math.floor(specificAttrs.width/(2.5))+1:Math.floor(specificAttrs.width/(4))+1:Math.floor(specificAttrs.width/(2.5))+1}</th>
                                         
                                     </tr>
                                     <tr className='sec-header'>
@@ -198,7 +199,7 @@ export default function OverviewTable({globalAttrs,prices,dealerDiscount,rendere
                                         <th></th>
                                         <th></th>
                                         <th></th>
-                                        <th>${parseFloat(prices.TotalPrice).toFixed(2)} <span className="original-price">{dealerDiscount?`$${prices.TotalPrice*(1+dealerDiscount)}`:""}</span></th>
+                                        <th className={globalAttrs.model=="mixed"?index==2?"":"not-visible":globalAttrs.model=="lattice-insulated"?index==1?"":"not-visible":""}>${parseFloat(prices.TotalPrice).toFixed(2)} <span className={globalAttrs.model=="mixed"?index==2?"original-price":"not-visible":globalAttrs.model=="lattice-insulated"?index==1?"original-price":"not-visible":"original-price"}>{dealerDiscount?`$${prices.TotalPrice*(1+dealerDiscount)}`:""}</span></th>
                                         
                                     </tr>
                                     
@@ -388,8 +389,9 @@ export default function OverviewTable({globalAttrs,prices,dealerDiscount,rendere
                 <div className="overview-container">
 
                     {latticeInsulated.map((dict, index) => (
-                        <div key={index}>
-                            {generateTable(globalAttrs,dict)}
+                        
+                        <div className="mult-overview" key={index}>
+                            {generateTable(globalAttrs,dict,index)}
                         </div>            
                     ))}
 
@@ -411,9 +413,11 @@ export default function OverviewTable({globalAttrs,prices,dealerDiscount,rendere
                 <div className="overview-container">
 
                     {mixed.map((dict, index) => (
-                        <div key={index}>
-                            {generateTable(globalAttrs,dict)}
-                        </div>            
+                        
+                        <div className="mult-overview" key={index}>
+                            {generateTable(globalAttrs,dict,index)}
+                        </div>
+                        
                     ))}
 
                     {globalAttrs.dealerId && !globalAttrs.orderId &&

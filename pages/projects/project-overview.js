@@ -40,7 +40,7 @@ const ProjectOverviewPage = () => {
     if(id && !projectInfo){try {
         fetchOrder(id)
           .then((data) => {
-            console.log(data);
+            console.log("Project Info",data);
             setProjectInfo(data);
           })
           .catch((error) => {

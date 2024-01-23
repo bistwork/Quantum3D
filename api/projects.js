@@ -27,7 +27,15 @@ export const fetchOrders = async (userID) => {
         status: item.status,
         url:item.url,
         data:item,
-        dealerName:item.dealerName
+        dealerName:item.dealerName,
+        leftAttrs:item.leftAttrs,
+        rightAttrs:item.rightAttrs,
+        middleAttrs:item.middleAttrs,
+        isLatticeMiddle:item.isLatticeMiddle,
+        mixedRight:item.mixedRight,
+        optionalPostCore:item.optionalPostCore,
+
+
       };
     });
   } catch (error) {
@@ -47,6 +55,7 @@ export const fetchOrder = async (id) => {
       variables: { id },
       authMode: "userPool",
     });
+    console.log(orderData.data.getOrder)
 
     return orderData.data.getOrder; // Assuming getOrder returns a single item
   } catch (error) {
@@ -109,6 +118,12 @@ export const createAdmnOrder = async (data,user) => {
             status:0,
             url:data.url,
             dealerName:user.fullName,
+            leftAttrs: JSON.stringify(data.leftAttrs),
+            middleAttrs: JSON.stringify(data.middleAttrs),
+            rightAttrs: JSON.stringify(data.rightAttrs),
+            mixedRight: data.mixedRight,
+            isLatticeMiddle: data.isLatticeMiddle,
+            optionalPostCore: data.optionalPostCore,
         }
       };
 

@@ -278,6 +278,12 @@ export const ordersByUserId = /* GraphQL */ `
         postType
         mountMode
         dealerName
+        leftAttrs
+        rightAttrs
+        middleAttrs
+        isLatticeMiddle
+        mixedRight
+        optionalPostCore
       }
     }
   }
@@ -331,6 +337,9 @@ export const orderById = /* GraphQL */ `
       materials
       height
       url
+      leftAttrs
+      middleAttrs
+      rightAttrs
     }
   }      
 `;

@@ -49,6 +49,7 @@ const Model = ({ url, position, name, rotation, onLoadCallback, scale,mat_index=
     8:new THREE.MeshStandardMaterial({ color: 0x2B2F23, wireframe:false, roughness:0.2, metalness:1, side: THREE.DoubleSide}),
     9:new THREE.MeshToonMaterial({ color: 0x405461, side: THREE.DoubleSide}),
     10: new THREE.MeshToonMaterial( { color: 0x91BDDB, side: THREE.BackSide,opacity:0.9}),
+    11:new THREE.MeshStandardMaterial({ color: 0xFDFDFD, wireframe:false, roughness:.8, metalness:.2, side: THREE.DoubleSide}),
   }
   scene.traverse((child) => {
     if (child.isMesh) {

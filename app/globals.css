@@ -386,6 +386,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .black-mat{
   background-color:black;
 }
+.white-mat{
+  background-color:white;
+}
 .prev-button:hover, .next-button:hover, .rafter-alignment button:hover, .rafter-sizing button:hover,.disclaimer-button:hover{
   background-color:rgb(80, 105, 121);
 }

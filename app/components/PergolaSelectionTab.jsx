@@ -1078,6 +1078,7 @@ const PergolaSelectionTab = ({attrs})=>{
                             <button onClick={()=>{handleMaterialConfig("option",6);}} className='brown-mat'><p>Brown Oak Wood</p></button>
                             <button onClick={()=>{handleMaterialConfig("option",7);}} className='platinum-mat'><p>Platinum Gray</p></button>
                             <button onClick={()=>{handleMaterialConfig("option",8);}} className='black-mat'><p>Black</p></button>
+                            <button onClick={()=>{handleMaterialConfig("option",11);}} className='white-mat'><p>White</p></button>
                         </div>
                     </div>
                     <div className="color-selector-block">
@@ -1092,6 +1093,7 @@ const PergolaSelectionTab = ({attrs})=>{
                             <button onClick={()=>{handleMaterialConfig("rafter",6);}} className='brown-mat'><p>Brown Oak Wood</p></button>
                             <button onClick={()=>{handleMaterialConfig("rafter",7);}} className='platinum-mat'><p>Platinum Gray</p></button>
                             <button onClick={()=>{handleMaterialConfig("rafter",8);}} className='black-mat'><p>Black</p></button>
+                            <button onClick={()=>{handleMaterialConfig("rafter",11);}} className='white-mat'><p>White</p></button>
                         </div>
                     </div>
                     <div className="color-selector-block">
@@ -1106,6 +1108,7 @@ const PergolaSelectionTab = ({attrs})=>{
                             <button onClick={()=>{handleMaterialConfig("beam",6);}} className='brown-mat'><p>Brown Oak Wood</p></button>
                             <button onClick={()=>{handleMaterialConfig("beam",7);}} className='platinum-mat'><p>Platinum Gray</p></button>
                             <button onClick={()=>{handleMaterialConfig("beam",8);}} className='black-mat'><p>Black</p></button>
+                            <button onClick={()=>{handleMaterialConfig("beam",11);}} className='white-mat'><p>White</p></button>
                         </div>
                     </div>
                     <div className="color-selector-block">
@@ -1120,6 +1123,7 @@ const PergolaSelectionTab = ({attrs})=>{
                             <button onClick={()=>{handleMaterialConfig("cover",6);}} className='brown-mat'><p>Brown Oak Wood</p></button>
                             <button onClick={()=>{handleMaterialConfig("cover",7);}} className='platinum-mat'><p>Platinum Gray</p></button>
                             <button onClick={()=>{handleMaterialConfig("cover",8);}} className='black-mat'><p>Black</p></button>
+                            <button onClick={()=>{handleMaterialConfig("cover",11);}} className='white-mat'><p>White</p></button>
                         </div>
                     </div>
                     <div className="color-selector-block">
@@ -1134,6 +1138,7 @@ const PergolaSelectionTab = ({attrs})=>{
                             <button onClick={()=>{handleMaterialConfig("post",6);}} className='brown-mat'><p>Brown Oak Wood</p></button>
                             <button onClick={()=>{handleMaterialConfig("post",7);}} className='platinum-mat'><p>Platinum Gray</p></button>
                             <button onClick={()=>{handleMaterialConfig("post",8);}} className='black-mat'><p>Black</p></button>
+                            <button onClick={()=>{handleMaterialConfig("post",11);}} className='white-mat'><p>White</p></button>
                         </div>
                     </div>
                 </div>

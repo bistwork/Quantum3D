@@ -139,9 +139,9 @@ export const calculateInsulatedQuote = (attrs,dealerDiscount)=>{
 
         latticePrice = attrs.rafterSize == 2? lattice2x2Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize)): lattice3x3Price*attrs.width*Math.floor(attrs.projection/(0.3+attrs.rafterSize));
         columnPrice = attrs.postType == 0? post3x3Price*attrs.height*numberOfColumns:post4x4Price*attrs.height*numberOfColumns;
-        raftersPrice = attrs.projection * rafterPrice * Math.floor(attrs.width/2.5);
+        raftersPrice = attrs.projection * rafterPrice * Math.floor((attrs.width/4)+1);
         beamsPrice = attrs.selectedHead == 0? attrs.width*beamPrice: 2*attrs.width*beamPrice;
-        beamAndRafterEnds =  attrs.selectedHead == 0? 2*tailKitsPrice* (Math.floor(attrs.width/2.5)+1): 4*tailKitsPrice* (Math.floor(attrs.width/2.5)+1);
+        beamAndRafterEnds =  attrs.selectedHead == 0? 2*tailKitsPrice* (Math.floor(attrs.width/4)+1): 4*tailKitsPrice* (Math.floor(attrs.width/4)+1);
         rectBeamsPrice = attrs.selectedHead == 0? attrs.width*rectBeamPrice: 2*attrs.width*rectBeamPrice;
         postPrice = squareTubePrice*attrs.height*numberOfColumns;
         optionalPostCorePrice = attrs.optionalPostCore==0?0:attrs.optionalPostCore==1?5.20*numberOfColumns:15.33*numberOfColumns;

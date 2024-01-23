@@ -98,6 +98,7 @@ export const createOrder = (attrs,client,prices,handleOrderCreated) => {
             rightAttrs: JSON.stringify(attrs.rightAttrs),
             mixedRight: attrs.mixedRight,
             isLatticeMiddle: attrs.isLatticeMiddle,
+            optionalPostCore: attrs.optionalPostCore,
         }
       };
 

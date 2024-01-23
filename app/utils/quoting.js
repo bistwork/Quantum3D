@@ -76,8 +76,7 @@ export const calculateLatticeQuote = (attrs,dealerDiscount)=>{
 
 
     totalPrice+= latticePrice+columnPrice+raftersPrice+beamsPrice+beamAndRafterEnds+rectBeamsPrice+postPrice+optionalPostCorePrice;
-
-
+    totalPrice *= 1.07
     return dealerDiscount?totalPrice*(1-dealerDiscount):totalPrice;
     
 
@@ -165,7 +164,7 @@ export const calculateInsulatedQuote = (attrs,dealerDiscount)=>{
 
 
     totalPrice+= latticePrice+columnPrice+raftersPrice+beamsPrice+beamAndRafterEnds+rectBeamsPrice+postPrice+optionalPostCorePrice+vPrice+gutterPrice+platePrice;
-
+    totalPrice *= 1.07
     return dealerDiscount?totalPrice*(1-dealerDiscount):totalPrice;
 
 

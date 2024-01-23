@@ -294,7 +294,7 @@ const PergolaSelectionTab = ({attrs})=>{
                         )}
 
                     </div>
-                    <div className="rafter-selector">
+                    <div className={attrs.model=='insulated'?'not-visible-at-all':"rafter-selector"}>
                         <div className="rafter-sizing">
 
                             <button className={(attrs.model=="lattice-insulated")?(attrs.activeModelRight?attrs.rightAttrs.rafterSize==2?"activeMountMode":"rafterButton":attrs.leftAttrs.rafterSize==2?"activeMountMode":"rafterButton"):(attrs.model=='mixed'?(attrs.activeModelLeft?attrs.leftAttrs.rafterSize==2?"activeMountMode":"rafterButton":attrs.activeModelMiddle?attrs.middleAttrs.rafterSize==2?"activeMountMode":"rafterButton":attrs.rightAttrs.rafterSize==2?"activeMountMode":"rafterButton"):attrs.rafterSize==2?"activeMountMode":"rafterButton")} onClick={() =>{attrs.model=='lattice-insulated'?(attrs.activeModelRight?attrs.rightAttrs.setRafterSize(2):attrs.leftAttrs.setRafterSize(2)):attrs.model=="mixed"?attrs.activeModelLeft?attrs.leftAttrs.setRafterSize(2):attrs.activeModelMiddle?attrs.middleAttrs.setRafterSize(2):attrs.rightAttrs.setRafterSize(2):attrs.setRafterSize(2);}}>2"</button>
@@ -898,6 +898,8 @@ const PergolaSelectionTab = ({attrs})=>{
                         4x4 (PCS) Price: $15.33
                     </label>
                 </div>
+
+                <p className='mounting-disclaimer'>The installation of aluminum inserts are required if the system will be placed on top of a concrete slat</p>
                         
                 <div className="tab-changer">
                     <button className='prev-button' onClick={()=>{

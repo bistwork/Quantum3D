@@ -61,25 +61,25 @@ let mockData = {
       items: [
         {
           title: "Lattice",
-          url: "https://master.d2syxkx30o4g07.amplifyapp.com",
+          url: "https://builder.oasispatiosystems.com",
           addUserId: true,
           model: "lattice",
         },
         {
           title: "Insulated",
-          url: "https://master.d2syxkx30o4g07.amplifyapp.com",
+          url: "https://builder.oasispatiosystems.com",
           addUserId: true,
           model: "insulated",
         },
         {
           title: "Lattice & Insulated Mixed",
-          url: "https://master.d2syxkx30o4g07.amplifyapp.com",
+          url: "https://builder.oasispatiosystems.com",
           addUserId: true,
           model: "lattice-insulated",
         },
         {
           title: "Mixed",
-          url: "https://master.d2syxkx30o4g07.amplifyapp.com",
+          url: "https://builder.oasispatiosystems.com",
           addUserId: true,
           model: "mixed",
         },

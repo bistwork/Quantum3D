@@ -1,9 +1,8 @@
-import React,{useEffect, useMemo, useState} from 'react';
+import React,{useState} from 'react';
 import OverviewTable from './OverviewTable';
 import { calculateDiscount, getQuote } from '../utils/quoting';
 import {createNotification } from './api/notifications'
 import { updateOrder } from './api/orders';
-import CustomerSelect from './OverviewTable/CustomerSelect';
 
 const PergolaSelectionTab = ({attrs})=>{
     const [isNotified, setNotifiedPayment] = useState(false);

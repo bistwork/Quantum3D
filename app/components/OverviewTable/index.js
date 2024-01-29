@@ -14,6 +14,7 @@ export default function OverviewTable({globalAttrs,prices,dealerDiscount}) {
     const latticeInsulated = [globalAttrs.leftAttrs,globalAttrs.rightAttrs];
     const mixed = [globalAttrs.leftAttrs,globalAttrs.rightAttrs,globalAttrs.middleAttrs];
 
+
     const generateTable = (globalAttrs,specificAttrs,index=3) => {
         if(!globalAttrs?.orderId && globalAttrs?.dealerId){
             console.log("DealerView")
@@ -193,6 +194,129 @@ export default function OverviewTable({globalAttrs,prices,dealerDiscount}) {
                                         <th>1</th>
                                         
                                     </tr>
+                                    <tr className='sec-header'>
+                                        <th>Additionals</th>
+                                        <th>Product Name</th>
+                                        <th>Count</th>
+                                        <th></th>
+                                        <th>Type</th>
+                                        
+                                    </tr>
+                                        <>
+                                    {(globalAttrs.model === 'insulated' ||
+                                    (globalAttrs.model === 'mixed' &&
+                                    globalAttrs.isLatticeMiddle &&
+                                    index !== 1) ||
+                                    (globalAttrs.model === 'lattice-insulated' &&
+                                    globalAttrs.mixedRight &&
+                                    index === 0)) && (
+                                        <>
+                                            <tr>
+                                                <th></th>
+                                                <th>#14 X 4 SDS ZINC AVG</th>
+                                                <th>50</th>
+                                                <th></th>
+                                                <th>ca</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th>1/4 X 1-1/2 NEOP. BONDED WASHERS AVG</th>
+                                                <th>50</th>
+                                                <th></th>
+                                                <th>ca</th>
+                                            </tr>
+                                            </>
+                                            )}
+                                            <tr>
+                                                <th></th>
+                                                <th>#10X3/4 SDS WHITE CTN-500 AVG</th>
+                                                <th>1</th>
+                                                <th></th>
+                                                <th>Box</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th>1/4 X 4 1/2 HEX BOLT ZINC AVG</th>
+                                                <th>12</th>
+                                                <th></th>
+                                                <th>ca</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th>1/4-20 HEX NUTS ZINC PLATED (EA)</th>
+                                                <th>12</th>
+                                                <th></th>
+                                                <th>ca</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th>1/4 FLAT WASHER ZINC PLATED</th>
+                                                <th>24</th>
+                                                <th></th>
+                                                <th>ca</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th>1/4 X 3 1/4 QUICKSET (TAPCON) WHITE CT-100</th>
+                                                <th>1</th>
+                                                <th></th>
+                                                <th>Box</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th>#14X2 SDS WHITE CTN-100 AVG</th>
+                                                <th>1</th>
+                                                <th></th>
+                                                <th>Box</th>
+                                            </tr>
+                                            {(globalAttrs.model === 'lattice' ||
+                                    (globalAttrs.model === 'mixed' &&
+                                    globalAttrs.isLatticeMiddle &&
+                                    index == 1) ||
+                                    (globalAttrs.model === 'lattice-insulated' &&
+                                    globalAttrs.mixedRight &&
+                                    index !== 0)) && (
+                                        <>
+                                            <tr>
+                                                <th></th>
+                                                <th>14X3 HX SDS WITH BONDED WASHER (5/8)</th>
+                                                <th>500</th>
+                                                <th></th>
+                                                <th>ca</th>
+                                            </tr>
+                                            </>
+                                            )}
+                                            <tr>
+                                                <th></th>
+                                                <th>PAINT WHITE HIGH GLOSS (PIECES) BASE</th>
+                                                <th>1</th>
+                                                <th></th>
+                                                <th>ca</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th>4" PEEL & SEAL ROLL 33' WHITE </th>
+                                                <th>2</th>
+                                                <th></th>
+                                                <th>ca</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th>915 CAULKING WHITE (24 PC PER BOX)</th>
+                                                <th>4</th>
+                                                <th></th>
+                                                <th>ca</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th>5/8" PERGALUM PLASTIC PLUG WHITE COLOR</th>
+                                                <th>100</th>
+                                                <th></th>
+                                                <th>ca</th>
+                                            </tr>
+                        
+                                        </>
+
                                     <tr>
                                         <th></th>
                                         <th></th>

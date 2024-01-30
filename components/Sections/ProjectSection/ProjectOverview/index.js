@@ -12,9 +12,9 @@ export default function ProjectOverview(props) {
     const mats = ['Smokey Gray', "Cedar Wood", "Gray Feather", "Musket Brown", "Bronze", "Sand Stone", "Brown Oak Wood", "Platinum Gray", "Black"];
     const latticeInsulated = [data?JSON.parse(data.leftAttrs):null,data?JSON.parse(data.rightAttrs):null];
     const mixed = [data?JSON.parse(data.leftAttrs):null,data?JSON.parse(data.rightAttrs):null,data?JSON.parse(data.middleAttrs):null];
-
     const generateTable = (data,specificData,index=0) => {
-
+        console.log(data)
+        if(data){
         return (
             <table className={styles.overviewTable}>
                             <thead>
@@ -174,17 +174,140 @@ export default function ProjectOverview(props) {
                                     <th>1</th>
                                     
                                 </tr>
+                                <tr className={styles.secHeader}>
+                                        <th>Additionals</th>
+                                        <th>Product Name</th>
+                                        <th>Count</th>
+                                        <th></th>
+                                        <th>Type</th>
+                                        
+                                    </tr>
+                                        <>
+                                        {
+                                            (data?.model == 'insulated' ||
+                                                (data?.model == 'mixed' &&
+                                                data?.isLatticeMiddle &&
+                                                index != 1) ||
+                                                (data?.model == 'latticeInsulated' &&
+                                                data?.mixedRight &&
+                                                index == 0)) && (
+                                                <>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>#14 X 4 SDS ZINC AVG</th>
+                                                    <th>50</th>
+                                                    <th></th>
+                                                    <th>ca</th>
+                                                </tr>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>1/4 X 1-1/2 NEOP. BONDED WASHERS AVG</th>
+                                                    <th>50</th>
+                                                    <th></th>
+                                                    <th>ca</th>
+                                                </tr>
+                                                </>
+                                            )
+                                            }
+                                            <tr>
+                                                <th></th>
+                                                <th>#10X3/4 SDS WHITE CTN-500 AVG</th>
+                                                <th>1</th>
+                                                <th></th>
+                                                <th>Box</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th>1/4 X 4 1/2 HEX BOLT ZINC AVG</th>
+                                                <th>12</th>
+                                                <th></th>
+                                                <th>ca</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th>1/4-20 HEX NUTS ZINC PLATED (EA)</th>
+                                                <th>12</th>
+                                                <th></th>
+                                                <th>ca</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th>1/4 FLAT WASHER ZINC PLATED</th>
+                                                <th>24</th>
+                                                <th></th>
+                                                <th>ca</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th>1/4 X 3 1/4 QUICKSET (TAPCON) WHITE CT-100</th>
+                                                <th>1</th>
+                                                <th></th>
+                                                <th>Box</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th>#14X2 SDS WHITE CTN-100 AVG</th>
+                                                <th>1</th>
+                                                <th></th>
+                                                <th>Box</th>
+                                            </tr>
+                                            {(data?.model == 'lattice' ||
+                                    (data?.model == 'mixed' &&
+                                    data?.isLatticeMiddle &&
+                                    index == 1) ||
+                                    (data?.model == 'latticeInsulated' &&
+                                    data?.mixedRight &&
+                                    index != 0)) && (
+                                        <>
+                                            <tr>
+                                                <th></th>
+                                                <th>14X3 HX SDS WITH BONDED WASHER (5/8)</th>
+                                                <th>500</th>
+                                                <th></th>
+                                                <th>ca</th>
+                                            </tr>
+                                            </>
+                                            )}
+                                            <tr>
+                                                <th></th>
+                                                <th>PAINT WHITE HIGH GLOSS (PIECES) BASE</th>
+                                                <th>1</th>
+                                                <th></th>
+                                                <th>ca</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th>4" PEEL & SEAL ROLL 33' WHITE </th>
+                                                <th>2</th>
+                                                <th></th>
+                                                <th>ca</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th>915 CAULKING WHITE (24 PC PER BOX)</th>
+                                                <th>4</th>
+                                                <th></th>
+                                                <th>ca</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th>5/8" PERGALUM PLASTIC PLUG WHITE COLOR</th>
+                                                <th>100</th>
+                                                <th></th>
+                                                <th>ca</th>
+                                            </tr>
+                        
+                                        </>
                                 
                             
                             </tbody>
                         </table>)
-    }
+    }}
+
     if(data){
 
         if(data?.model=="latticeInsulated"){
             return (<>
-                
-
                         {latticeInsulated.map((dict, index) => (
                             
                             <div className="mult-overview" key={index}>

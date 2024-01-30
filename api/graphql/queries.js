@@ -340,6 +340,8 @@ export const orderById = /* GraphQL */ `
       leftAttrs
       middleAttrs
       rightAttrs
+      isLatticeMiddle
+      mixedRight
     }
   }      
 `;
